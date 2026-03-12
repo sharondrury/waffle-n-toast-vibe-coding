@@ -1,0 +1,76 @@
+.nav-wrapper {
+  background: var(--green-light);
+  padding: 20px 0 40px;
+}
+
+.nav {
+  max-width: 1270px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav__logo {
+  background: var(--green-dark);
+  padding: 10px 18px;
+  border-radius: var(--nav-radius);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.nav__links {
+  display: flex;
+  gap: 30px;
+  background: var(--green-dark);
+  padding: var(--nav-item-pad);
+  border-radius: var(--nav-radius);
+
+  a {
+    text-decoration: none;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 500;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+
+    &:hover,
+    &.active {
+      opacity: 1;
+    }
+  }
+}
+
+.nav__phone {
+  background: var(--green-dark);
+  padding: 12px;
+  border-radius: var(--nav-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  
+}
+
+.nav__phone-icon {
+  font-size: 2rem;
+  animation: phone-ring 2.4s infinite;
+}
+
+@keyframes phone-ring {
+  0%   { transform: rotate(0); }
+  5%   { transform: rotate(15deg); }
+  10%  { transform: rotate(-15deg); }
+  15%  { transform: rotate(12deg); }
+  20%  { transform: rotate(-12deg); }
+  25%  { transform: rotate(8deg); }
+  30%  { transform: rotate(-8deg); }
+  35%  { transform: rotate(4deg); }
+  40%  { transform: rotate(-4deg); }
+  45%  { transform: rotate(0); }
+  100% { transform: rotate(0); }
+}

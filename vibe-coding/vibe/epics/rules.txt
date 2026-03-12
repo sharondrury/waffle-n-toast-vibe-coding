@@ -141,3 +141,14 @@ Working Agreement While Vibe Coding
 - If blocked, log the blocker and next best option instead of guessing silently.
 - Prefer shippable progress over large risky rewrites.
 - When changing core/shared systems, note potential impact on other epics.
+
+When creating a new file:
+- File name should follow this format
+  - const <fileName> = () =>   {
+  return ( 
+    <>  
+    </>
+  )
+}
+
+export default <fileName> 

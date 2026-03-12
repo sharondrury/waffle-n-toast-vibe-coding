@@ -1,0 +1,15 @@
+@use './assets/scss/ui/import' as *;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--green-light);
+  font-family: var(--font-body);
+  color: var(--sub-text-color);
+}
