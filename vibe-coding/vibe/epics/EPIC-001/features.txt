@@ -1,0 +1,15 @@
+EPIC 001 — Navbar: Implementation Log
+======================================
+
+Feature: Global SCSS Token Setup
+---------------------------------
+
+Feature: Navbar Component
+--------------------------
+
+Feature: Phone Icon Vibrate Animation
+---------------------------------------
+
+Feature: React Router Pages
+-----------------------------
+

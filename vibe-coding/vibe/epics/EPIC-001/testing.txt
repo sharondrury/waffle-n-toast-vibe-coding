@@ -1,0 +1,34 @@
+
+- Pages live in: `src/website/pages/<pageName>/<pageName>.jsx` + `<pageName>.scss`
+- Shared components (used across multiple pages) live in: `src/website/components/<componentName>/<componentName>.jsx` + `<componentName>.scss`
+- Engine/framework logic lives in: `src/engine/`
+- Global styles/tokens live in: `src/assets/scss/ui/`
+- Feature-specific styles live next to the component they style.
+- Do not create random top-level folders under `src/` without a clear reason.
+- For new larger features, use this shape:
+  - `src/website/<feature>/components/`
+  - `src/website/<feature>/hooks/`
+  - `src/website/<feature>/utils/`
+  - `src/website/<feature>/state/` (if needed)
+  - `src/website/<feature>/index.jsx` (feature entry)
+
+Current established structure:
+  src/
+  ├── main.jsx                          — app entry, BrowserRouter lives here
+  ├── App.jsx                           — renders <AppRoutes />
+  ├── routes.jsx                        — all Routes + Route definitions
+  ├── index.scss                        — global reset + body styles
+  ├── assets/scss/ui/
+  │   ├── colours.scss                  — all CSS custom property tokens
+  │   ├── typography.scss               — Google Fonts import + font tokens
+  │   └── _import.scss                  — @forward barrel for both
+  ├── engine/                           — shared framework utilities (see Engine Reuse Checklist)
+  └── website/
+      ├── components/
+      │   └── navBar/navBar.jsx + navBar.scss   — shared navbar, used on every page
+      └── pages/
+          ├── homePage/homePage.jsx + homePage.scss
+          ├── aboutPage/aboutPage.jsx + aboutPage.scss
+          ├── projectsPage/projectsPage.jsx + projectsPage.scss
+          ├── pricingPage/pricingPage.jsx + pricingPage.scss
+          └── contactPage/contactPage.jsx + contactPage.scss
