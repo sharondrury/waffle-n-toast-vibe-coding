@@ -55,7 +55,6 @@ Styling and Theme Rules
 - Component styles must consume global tokens; avoid hard-coded hex values.
 - The theme system can evolve, but there must always be one global source of truth for colors and typography.
 
-Engine Reuse Checklist (MANDATORY Before New Code)
 - Before implementing any feature, review and decide if these can be reused:
   - `src/engine/websiteContext/websiteContext.jsx`
   - `src/engine/ui/bars/bars.jsx`

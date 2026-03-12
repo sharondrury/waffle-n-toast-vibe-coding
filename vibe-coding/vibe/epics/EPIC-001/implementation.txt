@@ -1,0 +1,71 @@
+EPIC 001 — Navbar: Implementation Log
+======================================
+
+Feature: Global SCSS Token Setup
+---------------------------------
+What was implemented:
+  - colours.scss: all design tokens (--green-light, --green-dark, --sub-text-color,
+    --bottom-color, --right-color, --secondary-bg, --white, --nav-radius, --nav-item-pad)
+  - typography.scss: Google Fonts import (Syne + DM Sans), font variables
+  - _import.scss: @forward barrel for both files
+Files changed:
+  src/assets/scss/ui/colours.scss
+  src/assets/scss/ui/typography.scss
+  src/assets/scss/ui/_import.scss
+
+---
+
+Feature: Navbar Component
+--------------------------
+What was implemented:
+  - nav-wrapper div carries --green-light background with extra bottom padding
+    to bleed visually into the hero section (Epic 002)
+  - Three pill sections: logo (left), links (centre), phone icon (right)
+  - All three use --green-dark background with 12px border radius
+  - Max-width 1270px, centred via margin: 0 auto
+  - NavLink used from react-router-dom so .active class is applied automatically
+Files changed:
+  src/website/navBar/navBar.jsx
+  src/website/navBar/navBar.scss
+
+Engine components considered:
+  - websiteContext.jsx — not needed yet, no persistent state in navbar
+  - button.jsx — not used; nav phone button is custom to match pill aesthetic
+  - modal.jsx / slidePanel.jsx — not needed for this epic
+  - bars.jsx — not needed; custom layout built for this nav
+  - toast.jsx / tooltip.jsx — not needed
+
+---
+
+Feature: Phone Icon Vibrate Animation
+---------------------------------------
+What was implemented:
+  - Pure CSS @keyframes phone-ring on the SVG element
+  - Rotates left/right in a rapid burst then pauses (2.4s loop)
+  - Mimics a phone vibrating on a table: 8 quick alternating rotations, then rest
+  - transform-origin: center for natural pivot
+
+---
+
+Feature: React Router Pages
+-----------------------------
+What was implemented:
+  - BrowserRouter + Routes in App.jsx
+  - Routes: / → HomePage, /about → AboutPage, /projects → ProjectsPage, /pricing → PricingPage
+  - Each page imports Navbar so it renders on every route
+  - Page content stubs ready for future epics
+Files changed:
+  src/App.jsx
+  src/website/pages/homePage.jsx
+  src/website/pages/aboutPage.jsx
+  src/website/pages/projectsPage.jsx
+  src/website/pages/pricingPage.jsx
+
+Tradeoffs:
+  - Pages are stub shells only — no content until respective epics
+  - Hamburger/mobile menu hidden at <640px for now; can be added as its own epic
+
+Learning note:
+  NavLink from react-router-dom automatically adds an `active` class when the
+  current URL matches the `to` prop. We leverage this to style the active link
+  differently without any manual state tracking.
