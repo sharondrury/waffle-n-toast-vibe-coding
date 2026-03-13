@@ -1,0 +1,255 @@
+EPIC 003 — Company Services Section: Implementation Log
+========================================================
+
+Feature: Feat-001 | Folder & file scaffold
+-------------------------------------------
+What was implemented:
+  Created companyServices folder under the correct project path and scaffolded
+  all three files. Added CompanyServices import and render to homePage.jsx.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.jsx  (created)
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss  (created)
+  vibe-coding/src/website/pages/homePage/companyServices/data.json  (created)
+  vibe-coding/src/website/pages/homePage/homePage.jsx  (import + render added)
+Engine components considered:
+  - None needed for scaffolding.
+Tradeoffs / follow-up:
+  Note: features.txt listed the path as src/pages/homepage/ but the actual
+  project structure uses src/website/pages/homePage/ — used the correct path.
+
+---
+
+Feature: Feat-002 | --secondary-bg token
+------------------------------------------
+What was implemented:
+  Token already present in colours.scss — no change needed.
+Files changed:
+  vibe-coding/src/assets/scss/ui/colours.scss  (confirmed, no edit required)
+Engine components considered:
+  - None.
+Tradeoffs / follow-up:
+
+---
+
+Feature: Feat-003 | Section container — background, radius, max-width, spacing
+--------------------------------------------------------------------------------
+What was implemented:
+  .company-services section with 50px margin. Inner .company-services__container
+  uses var(--secondary-bg), border-radius 12px 12px 0 0, max-width 1000px,
+  margin auto, padding 60px 50px, flex row.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - None.
+Tradeoffs / follow-up:
+  The 50px margin is applied to the outer section element. The container itself
+  uses margin auto for horizontal centering inside that.
+
+---
+
+Feature: Feat-004 | data.json — services data array
+-----------------------------------------------------
+What was implemented:
+  Three service objects with icon (number), heading, and text fields. The
+  "Get in touch." suffix on card 3 is plain text in data.json. JSX renderText()
+  helper splits the string at the last occurrence of "Get in touch." and wraps
+  it in <strong><Link to="/contact">.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/data.json
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.jsx
+Engine components considered:
+  - None.
+Tradeoffs / follow-up:
+  renderText uses lastIndexOf so it is safe even if "Get in touch." appeared
+  elsewhere in the string.
+
+---
+
+Feature: Feat-005 | Two-column flex layout
+-------------------------------------------
+What was implemented:
+  .company-services__left is width 380px, flex-shrink 0, padding-right 30px.
+  .company-services__right is flex: 1 with column direction and 32px gap.
+  padding-bottom: 50px on left column creates the sticky stop-point 50px
+  from the bottom of the section.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.jsx
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - None.
+Tradeoffs / follow-up:
+
+---
+
+Feature: Feat-006 | Section heading — sticky scroll
+-----------------------------------------------------
+What was implemented:
+  h2 with font-size 2.25rem (36 / 16), font-weight 700. "service" wrapped in a
+  span with text-decoration underline, color var(--green-light), thickness 3px.
+  Sticky behaviour: position sticky, top 50px. The left column has no
+  overflow: hidden — sticky works correctly.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.jsx
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - None.
+Note: The left column padding-bottom: 50px is what causes the heading to
+detach 50px before the section ends — the sticky element cannot travel beyond
+its containing block.
+Tradeoffs / follow-up:
+
+---
+
+Feature: Feat-007 | Service cards — icon + heading + text
+-----------------------------------------------------------
+What was implemented:
+  Cards map over servicesData. Each card is a flex row with icon left,
+  heading+text column right. Icons: Monitor (1), Server (2), Pen (3) from
+  lucide-react (installed as new dependency). renderText handles the
+  "Get in touch." Link for card 3.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.jsx
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+  vibe-coding/package.json  (lucide-react added)
+Engine components considered:
+  - bars.jsx, button.jsx, modal.jsx, slidePanel.jsx, toast.jsx, tooltip.jsx —
+    none applicable; cards are simple display components.
+  - makeDecision.jsx, rng.jsx, savewebsite.jsx, timer.jsx — none applicable.
+Tradeoffs / follow-up:
+  lucide-react added as a dependency (1 package, 0 vulnerabilities).
+
+---
+
+Feature: Feat-008 | Scroll-triggered entrance animation
+---------------------------------------------------------
+What was implemented:
+  Each card starts at opacity 0, translateX(60px). IntersectionObserver in
+  useEffect watches each card via cardRefs. On intersection (threshold 0.2),
+  adds .is-visible class after a staggered setTimeout delay (i * 150ms).
+  Observer disconnects immediately so the animation never re-triggers.
+  CSS transition: opacity 0.5s ease, transform 0.5s ease.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.jsx
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - timer.jsx — reviewed; not used. IntersectionObserver handles the timing
+    natively without needing the engine timer utility.
+Note: Once .is-visible is applied it is never removed, so cards stay in
+position on scroll back. Observer is disconnected in the same callback to
+prevent any re-trigger.
+Tradeoffs / follow-up:
+  hero.jsx had a pre-existing lint error (react-hooks/set-state-in-effect)
+  which blocked `npm run lint`. Fixed by wrapping the two direct setState calls
+  in setTimeout(fn, 0) so they run in a callback rather than synchronously in
+  the effect body. Behaviour is identical.
+
+---
+
+Implementation notes for Claude Code:
+  - Feat-002 must run before Feat-003 so the --secondary-bg token exists when
+    the SCSS is written.
+  - Feat-006 (sticky heading): the left column parent must not have
+    overflow: hidden set — position: sticky will silently break if it does.
+  - Actual folder path is src/website/pages/homePage/ not src/pages/homepage/
+    as listed in features.txt. Always check the real project tree first.
+
+---
+
+Amendment: Amend-001 | Full-width section background
+------------------------------------------------------
+What was implemented:
+  Moved background: var(--secondary-bg) from .company-services__container to
+  .company-services. Removed border-radius and background from the container.
+  Removed margin: 50px from .company-services so the section is edge-to-edge.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - None.
+Tradeoffs / follow-up:
+  Vertical padding remains on the container (60px top/bottom) for breathing room.
+
+---
+
+Amendment: Amend-002 | Increase inner content max-width to 1100px
+------------------------------------------------------------------
+What was implemented:
+  Changed max-width on .company-services__container from 1000px to 1100px.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - None.
+Tradeoffs / follow-up:
+
+---
+
+Amendment: Amend-003 | Heading — right-aligned, width 370px, vertically centred in section
+--------------------------------------------------------------------------------------------
+What was implemented:
+  1. Changed .company-services__left width from 380px to 370px.
+  2. Added text-align: right to .company-services__heading.
+  3. Added display: flex; flex-direction: column; justify-content: center to
+     .company-services__left so the heading is vertically centred within the
+     column height (driven by the taller right column).
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - None.
+Note: No overflow: hidden added to the left column — kept absent to preserve
+sticky behaviour (Amend-004).
+Tradeoffs / follow-up:
+
+---
+
+Amendment: Amend-004 | Heading sticky — viewport-centred follow, stops 50px from bottom
+-----------------------------------------------------------------------------------------
+What was implemented:
+  Changed position: sticky top value on .company-services__heading from 50px
+  to calc(50vh - 50px). This pins the heading at vertical centre of the viewport
+  while the user scrolls. padding-bottom: 50px on .company-services__left remains
+  unchanged — this is the stop buffer that prevents the heading travelling past
+  50px from the section bottom.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - timer.jsx — not needed; pure CSS handles this.
+Note: Heading height is approximately 100px (2 lines at 2.25rem / 1.3 line-height).
+calc(50vh - 50px) centres it in the viewport. Tune if heading wraps differently.
+Tradeoffs / follow-up:
+
+---
+
+Amendment: Amend-005 | Cards — scroll-driven bidirectional animation
+---------------------------------------------------------------------
+What was implemented:
+  Replaced IntersectionObserver (one-shot, Feat-008) with a scroll-event-driven
+  approach. A single updateCards function runs on mount and on every scroll event.
+  For each card, getBoundingClientRect().top is used to derive a progress value
+  (0 = off-screen, 1 = fully in view) using TRIGGER_DISTANCE = 300px.
+  Opacity and translateX are applied as inline styles directly on the DOM node,
+  avoiding React re-renders on every scroll tick.
+  Scrolling up reverses the animation naturally since progress decreases as
+  cards move back below the trigger zone.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.jsx
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - timer.jsx — not needed; scroll listener handles timing.
+Note: opacity: 0 / translateX initial state is now set by the scroll handler
+on mount (before first scroll), not by CSS. CSS only has will-change as a
+GPU compositing hint.
+Tradeoffs / follow-up:
+  Stagger delay from Feat-008 removed intentionally — card position offsets
+  produce natural sequential reveal as the user scrolls.
+
+---
+
+Amendment: Amend-006 | Icon — top-left alignment, level with heading
+---------------------------------------------------------------------
+What was implemented:
+  Changed align-items from center to flex-start on .company-services__card.
+  Icon now sits at the top of the card, level with the first line of the heading.
+Files changed:
+  vibe-coding/src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - None.
+Tradeoffs / follow-up:

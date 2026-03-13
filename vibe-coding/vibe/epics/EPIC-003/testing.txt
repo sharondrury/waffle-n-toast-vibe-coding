@@ -1,0 +1,86 @@
+EPIC 003 — Company Services Section: Testing
+=============================================
+
+Manual Test Steps
+-----------------
+These steps are written for a non-developer to follow.
+
+Step 1 — Section is visible on the homepage
+  1. Open the site in a browser (run `npm run dev` from vibe-coding/).
+  2. Navigate to the home page (/).
+  3. Scroll down past the hero section.
+  Expected: A section with a light grey background appears below the hero.
+  Status: passed
+
+Step 2 — Section container styling
+  1. On the homepage, observe the section below the hero.
+  Expected:
+    - Background is a light translucent grey (#D9D9D9CC).
+    - Top-left and top-right corners are rounded.
+    - Bottom corners are square.
+    - The container is centred with breathing room on all sides.
+  Status: passed
+
+Step 3 — Two-column layout
+  1. On a desktop-width screen, observe the layout inside the section.
+  Expected:
+    - Left column is narrower and contains the heading.
+    - Right column contains three service cards stacked vertically.
+  Status: passed
+
+Step 4 — Sticky heading behaviour
+  1. Scroll slowly through the company services section.
+  Expected:
+    - The heading on the left stays in view as you scroll past the cards.
+    - The heading stops scrolling before the section ends (it does not
+      overlap or escape the section).
+  Status: passed
+
+Step 5 — Heading typography
+  1. Observe the heading text: "What's on offer for our service".
+  Expected:
+    - Text is large (approx 36px / 2.25rem).
+    - The word "service" has a green underline.
+  Status: passed
+
+Step 6 — Service cards content
+  1. Observe the three cards in the right column.
+  Expected:
+    - Card 1: Monitor icon, heading "Modern website", descriptive text.
+    - Card 2: Server icon, heading "Hosting and Domains", descriptive text.
+    - Card 3: Pen icon, heading "Design", text ending with a bold "Get in touch." link.
+  Status: passed
+
+Step 7 — "Get in touch." link
+  1. On card 3 (Design), click "Get in touch."
+  Expected: Navigates to the /contact page.
+  Status: passed
+
+Step 8 — Scroll entrance animation
+  1. Start at the top of the page and scroll down into the company services section.
+  Expected:
+    - Each card slides in from the right.
+    - Cards arrive one after the other (staggered, not all at once).
+    - Once in view, cards stay in place when scrolling back up.
+  Status: passed
+
+Step 9 — No console errors
+  1. Open browser DevTools → Console.
+  2. Reload the page and scroll through the section.
+  Expected: No errors in the console.
+  Status: passed
+
+Step 10 — Lint and build
+  Expected: `npm run lint` passes with 0 errors. `npm run build` succeeds.
+  Status: passed
+
+Automated Tests
+---------------
+Unit tests: none added — component is presentational with no complex logic.
+Integration tests: none added.
+E2E tests still needed:
+  - Navigate to / and assert company-services section is present.
+  - Assert "Get in touch." link navigates to /contact.
+  - Assert cards are initially off-screen and become visible on scroll.
+
+Overall test status: passed

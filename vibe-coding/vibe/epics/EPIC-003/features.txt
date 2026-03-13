@@ -1,0 +1,189 @@
+EPIC 003 — Company Services Section
+=====================================
+
+Feat-001 | Folder & file scaffold
+  - Create folder: vibe-coding/src/pages/homepage/companyServices/
+  - Create files inside:
+      companyServices.jsx
+      companyServices.scss
+      data.json
+  - Import companyServices.jsx into homePage.jsx
+  Status: done
+
+Feat-002 | Add --secondary-bg token to colours.scss
+  - Confirm --secondary-bg: #D9D9D9CC exists in vibe-coding/src/assets/scss/ui/colours.scss
+  - If missing, add it
+  - No hard-coded hex values in component files
+  Status: done
+
+Feat-003 | Section container — background, radius, max-width, spacing
+  - Background: var(--secondary-bg)
+  - Border radius: top-left and top-right 12px only (bottom corners square)
+  - Max-width: 1000px, centred with margin auto
+  - Outer margin: 50px on all sides (or as horizontal breathing room — clarify if vertical only)
+  - All text content centred within this section
+  Status: done
+
+Feat-004 | data.json — services data array
+  - File: vibe-coding/src/pages/homepage/companyServices/data.json
+  - Array name referenced in JSX as const servicesData (imported from data.json)
+  - Three objects:
+      {
+        icon: 1,
+        heading: "Modern website",
+        text: "We help build interactive, modern websites to demonstrate a professional website for your customers."
+      },
+      {
+        icon: 2,
+        heading: "Hosting and Domains",
+        text: "No need to worry about hosting and domains we've got you covered if you haven't done already. Take a look at our price-list and see what suites your business best."
+      },
+      {
+        icon: 3,
+        heading: "Design",
+        text: "If you have a design in mind great, we can work from that. If you need help with some design ideas, we can help with that. If you need something from scratch, we can also help with that. Get in touch."
+      }
+  - Note: "Get in touch." in the Design object text should render as a bold
+    <Link> to /contact (react-router-dom). This logic lives in the JSX render,
+    not in the data.json string itself — data.json stores plain text only.
+  Status: done
+
+Feat-005 | Two-column layout — sticky heading left, cards right
+  - Use flex layout (row) inside the max-width container
+  - Left column:
+      - Width: 380px, fixed
+      - Right padding: 30px
+      - Contains the section heading (see Feat-006)
+      - Sits to the left of the vertical centre line
+  - Right column:
+      - Takes remaining space
+      - Contains the servicesData cards (see Feat-007)
+      - Cards stack vertically in column format
+  Status: done
+
+Feat-006 | Section heading — sticky scroll behaviour
+  - Text: "What's on offer for our service"
+  - Font size: 36px recalculated to rem (36 / 16 = 2.25rem)
+  - The word "service" is underlined using a custom underline:
+      text-decoration: underline
+      text-decoration-color: var(--green-light)
+      text-decoration-thickness: 3px
+  - Sticky scroll behaviour:
+      position: sticky
+      top: [calculated so heading stops 50px above the bottom of the section]
+      This keeps the heading travelling with the user as they scroll through
+      the cards, then it detaches 50px before the section ends
+  - Heading sits in the left column defined in Feat-005
+  Status: done
+
+Feat-007 | Service cards — icon + heading + text
+  - Rendered by mapping over servicesData
+  - Each card layout (flex row):
+      [Icon]  [Heading + Text column]
+  - Icon sits to the left of the heading/text pair
+  - Heading and text stack vertically (column) to the right of the icon
+  - Icons: use a placeholder or lucide-react icon mapped by icon number (1, 2, 3)
+      Suggested mapping:
+        1 → Monitor or Globe icon
+        2 → Server or Cloud icon
+        3 → Pen or Figma icon
+      Final icon choice to be confirmed during implementation
+  - "Get in touch." in card 3 text renders as a bold <Link to="/contact">
+  Status: done
+
+Feat-008 | Scroll-triggered entrance animation — cards slide in right to left
+  - Each service card animates into view when the section scrolls into the
+    viewport — use IntersectionObserver in a custom hook or inline useEffect
+  - Animation: slides in from right (translateX positive) to its natural position (translateX 0)
+  - Cards should be centred vertically in the screen's viewport when they come to rest
+  - Each card staggers slightly (e.g. 150ms delay per card) so they don't all
+    arrive at once
+  - Once in view, cards stay in position (no re-trigger on scroll back up)
+  - CSS transition or @keyframes — no external animation library required
+  Status: done
+
+
+One thing to flag for Claude Code: Feat-002 should run before Feat-003 so the token exists when the SCSS is written. Also worth noting — the sticky heading (Feat-006) requires the left column parent to not have overflow: hidden, otherwise position: sticky will silently break. That's noted in the implementation log.
+
+
+---
+STOP AND TEST when all 8 features are marked done.
+See testing.txt for manual test steps.
+
+
+--- AMENDMENTS ---
+
+Amend-001 | Full-width section background
+  - The background colour (var(--secondary-bg)) must span the full width of the
+    browser window — no horizontal margins on the section element.
+  - Remove margin: 50px from .company-services (the outer section).
+  - The inner content container (.company-services__container) keeps its own
+    horizontal padding for breathing room. Vertical padding on the section is fine.
+  - Amends: Feat-003
+  Status: done
+
+Amend-002 | Increase inner content max-width to 1100px
+  - Change .company-services__container max-width from 1000px to 1100px.
+  - Amends: Feat-003
+  Status: done
+
+Amend-003 | Heading — right-aligned text, width 370px, vertically centred in section
+  - Change left column width from 380px to 370px.
+  - Text inside the heading should be right-aligned (text-align: right).
+  - The heading should appear vertically centred within the full height of the
+    companyServices section when the user first reaches it.
+  - Use flexbox on the left column: align-items: center (to vertically centre
+    the heading block within the column height which is set by the cards on the right).
+  - Amends: Feat-005, Feat-006
+  Status: done
+
+Amend-004 | Heading sticky — viewport-centred scroll follow, stops 50px from section bottom
+  - As the user scrolls through the companyServices section, the heading should
+    travel with them and remain visible — centred vertically in the viewport.
+  - Use CSS position: sticky with top: calc(50vh - [half heading height]) so
+    the heading naturally sits in the vertical centre of the viewport while sticky.
+    Estimated heading height is ~100px, so top: calc(50vh - 50px) is the starting
+    point — adjust if the heading wraps differently.
+  - The heading must stop 50px before the bottom of the section.
+    Keep padding-bottom: 50px on the left column — sticky cannot travel beyond
+    its containing block, so this naturally creates the 50px stop buffer.
+  - Do NOT use overflow: hidden on the left column (breaks sticky).
+  - Amends: Feat-006
+  Status: done
+
+Amend-005 | Cards — scroll-position-driven bidirectional animation (replaces Feat-008)
+  - Replace the current IntersectionObserver one-shot animation with a
+    scroll-event-driven approach so the animation plays forward on scroll down
+    and reverses on scroll up.
+  - Remove: IntersectionObserver, .is-visible class, CSS transition on cards,
+    staggered setTimeout delays.
+  - New approach:
+      - In useEffect, attach a scroll event listener to window (or use
+        requestAnimationFrame for smoothness).
+      - For each card, use getBoundingClientRect() to calculate how far into the
+        viewport the card has scrolled.
+      - Derive a progress value from 0 (card off-screen right) to 1 (card fully
+        in view).
+        Suggested calculation: clamp((viewportBottom - cardTop) / triggerDistance, 0, 1)
+        where triggerDistance is e.g. 300px.
+      - Apply opacity and translateX as inline styles driven by progress:
+          opacity: progress
+          transform: translateX((1 - progress) * 60px)
+      - No stagger delay — the natural difference in card positions creates the
+        sequential feel as the user scrolls.
+      - Clean up the scroll listener on unmount.
+  - Replaces: Feat-008
+  Status: done
+
+Amend-006 | Icon — top-left alignment, level with heading
+  - The icon should align to the top of the card, sitting level with the first
+    line of the heading — not vertically centred in the card.
+  - Change align-items on .company-services__card from center to flex-start.
+  - No other card layout changes.
+  - Amends: Feat-007
+  Status: done
+
+
+---
+STOP AND TEST when all amendments are marked done.
+Re-run testing.txt manual test steps and update results.

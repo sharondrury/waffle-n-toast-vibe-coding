@@ -29,9 +29,11 @@ const Hero = () => {
 
     if (isDeleting) {
       if (displayText.length === 0) {
-        setIsDeleting(false)
-        setStringIndex((prev) => (prev + 1) % STRINGS.length)
-        return
+        const reset = setTimeout(() => {
+          setIsDeleting(false)
+          setStringIndex((prev) => (prev + 1) % STRINGS.length)
+        }, 0)
+        return () => clearTimeout(reset)
       }
       const timeout = setTimeout(() => {
         setDisplayText((prev) => prev.slice(0, -1))
@@ -40,8 +42,8 @@ const Hero = () => {
     }
 
     if (displayText.length === current.length) {
-      setIsIdle(true)
-      return
+      const idle = setTimeout(() => setIsIdle(true), 0)
+      return () => clearTimeout(idle)
     }
 
     const timeout = setTimeout(() => {
