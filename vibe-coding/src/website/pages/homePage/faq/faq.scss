@@ -1,0 +1,144 @@
+.faq {
+  position: relative;
+  background: var(--white);
+  padding: 80px 0;
+}
+
+.faq__inner {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.faq__heading {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--black);
+  width: 750px;
+  margin-bottom: 32px;
+}
+
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq__pill {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.faq__question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 12px 20px;
+  background: color-mix(in srgb, var(--green-light) 50%, transparent);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--black);
+  text-align: left;
+}
+
+.faq__icon {
+  font-size: 1.5rem;
+  font-weight: 400;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.faq__answer-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.faq__pill--open .faq__answer-wrapper {
+  grid-template-rows: 1fr;
+}
+
+.faq__answer {
+  overflow: hidden;
+  min-height: 0;
+
+  p {
+    padding: 16px 20px;
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    background: color-mix(in srgb, var(--green-light) 80%, transparent);
+  }
+}
+
+// Floating question mark decorations
+.faq__decorations {
+  pointer-events: none;
+  user-select: none;
+}
+
+.faq__decoration {
+  position: absolute;
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  font-weight: 800;
+  opacity: 0.3;
+  line-height: 1;
+}
+
+.faq__decoration--tl {
+  color: var(--green-light);
+  top: 40px;
+  left: 5%;
+  animation: floatA 4s ease-in-out infinite;
+}
+
+.faq__decoration--bl {
+  color: var(--green-dark);
+  bottom: 40px;
+  left: 8%;
+  animation: floatB 5.5s ease-in-out infinite;
+}
+
+.faq__decoration--tr {
+  color: var(--right-color);
+  top: 60px;
+  right: 6%;
+  animation: floatC 3.5s ease-in-out infinite;
+}
+
+.faq__decoration--br {
+  color: var(--bottom-color);
+  bottom: 60px;
+  right: 4%;
+  animation: floatD 6s ease-in-out infinite;
+}
+
+@keyframes floatA {
+  0%, 100% { transform: translate(0, 0); }
+  40%       { transform: translate(8px, -12px); }
+  70%       { transform: translate(-4px, 6px); }
+}
+
+@keyframes floatB {
+  0%, 100% { transform: translate(0, 0); }
+  30%       { transform: translate(-10px, 8px); }
+  65%       { transform: translate(5px, -5px); }
+}
+
+@keyframes floatC {
+  0%, 100% { transform: translate(0, 0); }
+  45%       { transform: translate(6px, 10px); }
+  75%       { transform: translate(-8px, -4px); }
+}
+
+@keyframes floatD {
+  0%, 100% { transform: translate(0, 0); }
+  25%       { transform: translate(-6px, -8px); }
+  60%       { transform: translate(10px, 4px); }
+}

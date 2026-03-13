@@ -1,6 +1,7 @@
 import NavBar from '../../components/navBar/navBar'
 import Hero from './hero/hero'
 import CompanyServices from './companyServices/companyServices'
+import Faq from './faq/faq'
 import './homePage.scss'
 
 const HomePage = () => {
@@ -10,6 +11,7 @@ const HomePage = () => {
       <main className="homePage">
         <Hero />
         <CompanyServices />
+        <Faq />
       </main>
     </>
   )

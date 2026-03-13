@@ -1,28 +1,57 @@
 EPIC 004 — FAQ Section: Implementation Log
 ==========================================
 
+Implementation notes for Claude Code:
+  - Actual folder path is src/website/pages/homePage/faq/ (camelCase) —
+    features.txt lists it as homepage/ (lowercase). Always check the real
+    project tree first.
+  - The section element must use position: relative and be full-width with NO
+    max-width. Only the inner .faq__inner wrapper is constrained to 350px.
+    This is what allows the absolute-positioned ? decorations to break outside
+    the content boundary. If max-width is placed on the section itself the
+    decorations will be clipped inside it.
+  - Feat-006 animation: use the CSS grid-template-rows technique
+    (grid-template-rows: 0fr → 1fr on the answer wrapper, inner div with
+    overflow: hidden and min-height: 0). Do NOT use max-height animation —
+    it requires an arbitrary large value and causes sluggish ease-out. Do NOT
+    use display: none/block — it cannot be transitioned.
+  - Add --black: #000000 to colours.scss before using it in faq.scss (no
+    hard-coded hex values in component files per rules.txt).
+  - color-mix() for 50% and 80% opacity green backgrounds:
+      color-mix(in srgb, var(--green-light) 50%, transparent)
+      color-mix(in srgb, var(--green-light) 80%, transparent)
+    This is native CSS, not a SCSS function — Vite passes it through correctly.
+
+---
+
 Feature: Feat-001 | Folder & file scaffold
 -------------------------------------------
 What was implemented:
+  Created faq/ folder under src/website/pages/homePage/ (correct camelCase path).
+  Scaffolded faq.jsx, faq.scss, data.json. Added Faq import and render to
+  homePage.jsx below CompanyServices.
 Files changed:
-  vibe-coding/src/website/pages/homepage/faq/faq.jsx
-  vibe-coding/src/website/pages/homepage/faq/faq.scss
-  vibe-coding/src/website/pages/homepage/faq/data.json
-  vibe-coding/src/website/pages/homepage/homePage.jsx  (import added)
+  vibe-coding/src/website/pages/homePage/faq/faq.jsx  (created)
+  vibe-coding/src/website/pages/homePage/faq/faq.scss  (created)
+  vibe-coding/src/website/pages/homePage/faq/data.json  (created)
+  vibe-coding/src/website/pages/homePage/homePage.jsx  (import + render added)
 Engine components considered:
-  -
+  - None needed for scaffolding.
 Tradeoffs / follow-up:
+  features.txt lists path as homepage/ — actual project uses homePage/ (camelCase).
 
 ---
 
 Feature: Feat-002 | data.json — FAQ data array
 ------------------------------------------------
 What was implemented:
+  Four FAQ objects with question and answer strings. Imported into faq.jsx as
+  faqData (default import, accessed as array).
 Files changed:
-  vibe-coding/src/website/pages/homepage/faq/data.json
-  vibe-coding/src/website/pages/homepage/faq/faq.jsx  (import as const faqData)
+  vibe-coding/src/website/pages/homePage/faq/data.json
+  vibe-coding/src/website/pages/homePage/faq/faq.jsx
 Engine components considered:
-  -
+  - None.
 Tradeoffs / follow-up:
 
 ---
@@ -30,14 +59,17 @@ Tradeoffs / follow-up:
 Feature: Feat-003 | Section container — background, spacing, positioning
 --------------------------------------------------------------------------
 What was implemented:
+  .faq section: position relative, background var(--white), margin 50px 0,
+  padding 60px 0. No max-width on the section — full width is required.
+  .faq__inner wrapper: max-width 350px, margin 0 auto — this constrains the
+  heading and accordion without constraining the section or its decorations.
 Files changed:
-  vibe-coding/src/website/pages/homepage/faq/faq.scss
+  vibe-coding/src/website/pages/homePage/faq/faq.scss
 Engine components considered:
-  -
-Note: Section must use position: relative. The inner content wrapper (heading
-+ accordion) uses max-width: 350px and margin: auto. The section itself is
-full-width so the absolute-positioned question marks (Feat-007) can break
-outside the 350px constraint freely.
+  - None.
+Note: Section is position: relative and full-width so ? decorations with
+position: absolute can sit anywhere relative to the section, including outside
+the 350px inner constraint. This is the critical layout requirement.
 Tradeoffs / follow-up:
 
 ---
@@ -45,27 +77,38 @@ Tradeoffs / follow-up:
 Feature: Feat-004 | Section heading
 --------------------------------------
 What was implemented:
+  h2 with font-size 1.5rem (24/16), font-weight 700, color var(--black).
+  Width 350px matches the accordion constraint. Margin bottom 32px before
+  first pill.
 Files changed:
-  vibe-coding/src/website/pages/homepage/faq/faq.jsx
-  vibe-coding/src/website/pages/homepage/faq/faq.scss
+  vibe-coding/src/website/pages/homePage/faq/faq.jsx
+  vibe-coding/src/website/pages/homePage/faq/faq.scss
+  vibe-coding/src/assets/scss/ui/colours.scss  (--black: #000000 added)
 Engine components considered:
-  -
+  - None.
 Tradeoffs / follow-up:
+  --black token added to colours.scss per rules (no hard-coded hex in component
+  files).
 
 ---
 
 Feature: Feat-005 | Accordion pills — layout and open/close behaviour
 -----------------------------------------------------------------------
 What was implemented:
+  faqData.map renders each pill. openIndex state (null = all closed) in faq.jsx.
+  Toggle: setOpenIndex(i === openIndex ? null : i) — handles close-on-reclick
+  and close-previous in one expression. Question row is a <button> for
+  accessibility (aria-expanded). + / × icon swaps on open state.
+  Closed bg: color-mix(in srgb, var(--green-light) 50%, transparent).
+  Open answer bg: color-mix(in srgb, var(--green-light) 80%, transparent).
 Files changed:
-  vibe-coding/src/website/pages/homepage/faq/faq.jsx
-  vibe-coding/src/website/pages/homepage/faq/faq.scss
+  vibe-coding/src/website/pages/homePage/faq/faq.jsx
+  vibe-coding/src/website/pages/homePage/faq/faq.scss
 Engine components considered:
-  - modal.jsx — reviewed; not used. Accordion open/close is inline state
-    within the faq component, no overlay or portal needed.
-Note: openIndex state lives in faq.jsx. Clicking a pill calls
-setOpenIndex(i === openIndex ? null : i) — this handles both close-on-reclick
-and close-previous-on-new-selection in a single line.
+  - modal.jsx — reviewed; not used. Accordion open/close is inline state,
+    no overlay or portal needed.
+  - bars.jsx, button.jsx, slidePanel.jsx, toast.jsx, tooltip.jsx — none applicable.
+  - makeDecision.jsx, rng.jsx, savewebsite.jsx, timer.jsx — none applicable.
 Tradeoffs / follow-up:
 
 ---
@@ -73,13 +116,18 @@ Tradeoffs / follow-up:
 Feature: Feat-006 | Accordion open/close animation
 ----------------------------------------------------
 What was implemented:
+  .faq__answer-wrapper uses display: grid with grid-template-rows: 0fr (closed)
+  transitioning to 1fr (open). Inner .faq__answer has overflow: hidden and
+  min-height: 0. Transition: grid-template-rows 0.3s ease on the wrapper.
+  This animates height from 0 to auto without any JS height measurement.
 Files changed:
-  vibe-coding/src/website/pages/homepage/faq/faq.scss
+  vibe-coding/src/website/pages/homePage/faq/faq.scss
 Engine components considered:
-  -
-Note: CSS grid-template-rows: 0fr / 1fr transition is the most reliable
-cross-browser technique for animating height from 0 to auto without JavaScript
-height calculations. Inner div requires overflow: hidden and min-height: 0.
+  - None.
+Note: grid-template-rows 0fr/1fr is the most reliable cross-browser technique
+for animating height-to-auto. max-height approach avoided — it requires an
+arbitrary ceiling value and produces sluggish ease-out. display: none/block
+avoided — it cannot be CSS-transitioned.
 Tradeoffs / follow-up:
 
 ---
@@ -87,17 +135,18 @@ Tradeoffs / follow-up:
 Feature: Feat-007 | Floating question mark decorations
 --------------------------------------------------------
 What was implemented:
+  Four <span aria-hidden="true"> elements with '?' in a .faq__decorations
+  wrapper. Each is position: absolute relative to .faq (position: relative).
+  Colours from existing tokens only: --green-light (tl), --green-dark (bl),
+  --right-color (tr), --bottom-color (br). Font-size 5rem, opacity 0.3.
+  Four unique @keyframes (floatA–floatD) with different translateX/Y values
+  and durations (3.5s–6s) ensure no two move in sync.
+  pointer-events: none and user-select: none on the decorations container.
 Files changed:
-  vibe-coding/src/website/pages/homepage/faq/faq.jsx
-  vibe-coding/src/website/pages/homepage/faq/faq.scss
+  vibe-coding/src/website/pages/homePage/faq/faq.jsx
+  vibe-coding/src/website/pages/homePage/faq/faq.scss
 Engine components considered:
-  -
-Note: Four separate @keyframes blocks (floatA, floatB, floatC, floatD) with
-unique translateX/translateY values and durations ensure no two question marks
-move in sync. pointer-events: none and user-select: none prevent them from
-interfering with accordion interaction.
-Colours reference tokens from vibe-coding/src/assets/scss/ui/colours.scss only —
-no hard-coded hex values.
+  - None.
 Tradeoffs / follow-up:
 
 ---

@@ -1,0 +1,87 @@
+EPIC 004 — FAQ Section: Testing
+================================
+
+Manual Test Steps
+-----------------
+
+Step 1 — FAQ section appears on the homepage
+  1. Run `npm run dev` and navigate to the home page (/).
+  2. Scroll below the Company Services section.
+  Expected: A white section appears with the heading
+    "Frequently asked question at Waffles and Toast Web Creatives"
+    and four collapsed accordion pills below it.
+  Status: passed
+
+Step 2 — Section background and spacing
+  1. Observe the FAQ section.
+  Expected:
+    - Background is white, full width of the browser window.
+    - Vertical breathing room above and below the section (50px margin).
+  Status: passed
+
+Step 3 — Floating question mark decorations
+  1. Observe the four ? characters around the accordion.
+  Expected:
+    - Two on the left, two on the right of the content area.
+    - Each is a different colour (green-light, green-dark, right-color, bottom-color).
+    - All four float with slightly different movement — no two are in sync.
+    - They sit outside/behind the accordion content and do not block clicking.
+  Status: passed
+
+Step 4 — Accordion closed state
+  1. Observe each pill before clicking.
+  Expected:
+    - Question text is left-aligned, bold, in a light green background.
+    - A + icon is on the right side of each pill.
+    - No answer text is visible.
+  Status: passed
+
+Step 5 — Open a pill
+  1. Click on "question 1".
+  Expected:
+    - The answer panel smoothly expands downward (not a snap/jump).
+    - The + icon changes to ×.
+    - The answer panel has a slightly darker green background than the question row.
+  Status: passed
+
+Step 6 — Close a pill by clicking it again
+  1. With "question 1" open, click it again.
+  Expected: The answer panel smoothly collapses. The × changes back to +.
+  Status: passed
+
+Step 7 — Only one pill open at a time
+  1. Open "question 1". Then click "question 2".
+  Expected:
+    - "question 1" closes.
+    - "question 2" opens.
+    - Only one pill is open at any given time.
+  Status: passed
+
+Step 8 — Animation is smooth (grid-rows technique)
+  1. Open and close pills several times at different speeds.
+  Expected:
+    - Expand and collapse are smooth in both directions.
+    - No jump to full height or instant snap.
+    - No sluggish ease-out (confirms max-height approach was not used).
+  Status: passed
+
+Step 9 — No console errors
+  1. Open browser DevTools → Console.
+  2. Reload and interact with all four pills.
+  Expected: No errors in the console.
+  Status: passed
+
+Step 10 — Lint and build
+  Expected: `npm run lint` passes with 0 errors. `npm run build` succeeds.
+  Status: passed
+
+Automated Tests
+---------------
+Unit tests: none added — component is presentational with simple toggle state.
+Integration tests: none added.
+E2E tests still needed:
+  - Navigate to / and assert .faq section is present.
+  - Click each pill and assert aria-expanded toggles correctly.
+  - Assert only one pill is open at a time.
+
+Overall test status: passed

@@ -8,7 +8,7 @@ Feat-001 | Folder & file scaffold
       faq.scss
       data.json
   - Import faq.jsx into homePage.jsx
-  Status: not started
+  Status: done
 
 Feat-002 | data.json — FAQ data array
   - File: vibe-coding/src/website/pages/homepage/faq/data.json
@@ -31,7 +31,7 @@ Feat-002 | data.json — FAQ data array
         answer: "Some answer here about the title, some blah blah. Some answer here about the title, some blah blah. Some answer here about the title, some blah blah."
       }
   - Import into faq.jsx as const faqData
-  Status: not started
+  Status: done
 
 Feat-003 | Section container — background, spacing, positioning
   - Background: white
@@ -40,7 +40,7 @@ Feat-003 | Section container — background, spacing, positioning
     (Feat-007) can use position: absolute relative to this section
   - Max-width constraint: 350px centred, applied to the inner content wrapper
     (heading + accordion), NOT the full section — so decorations can sit outside
-  Status: not started
+  Status: done
 
 Feat-004 | Section heading
   - Text: "Frequently asked question at Waffles and Toast Web Creatives"
@@ -50,7 +50,7 @@ Feat-004 | Section heading
   - Width: 350px (matches the accordion max-width)
   - Positioned to the left of the accordion content area
   - Margin bottom spacing before first accordion pill
-  Status: not started
+  Status: done
 
 Feat-005 | Accordion pills — layout and open/close behaviour
   - Render by mapping over faqData
@@ -70,7 +70,7 @@ Feat-005 | Accordion pills — layout and open/close behaviour
       Track openIndex in useState (null = all closed)
       Clicking an open pill closes it (set to null)
       Clicking a different pill closes the current one and opens the new one
-  Status: not started
+  Status: done
 
 Feat-006 | Accordion open/close animation
   - Answer panel expands and collapses smoothly — do not use display:none/block
@@ -79,7 +79,7 @@ Feat-006 | Accordion open/close animation
       grid-template-rows: 0fr → 1fr on open
       Inner div with overflow: hidden
   - + / × icon rotates or swaps on state change with a short CSS transition
-  Status: not started
+  Status: done
 
 Feat-007 | Floating question mark decorations
   - Four '?' characters total — two on the left side, two on the right side
@@ -99,7 +99,7 @@ Feat-007 | Floating question mark decorations
       so all four move independently and never look synchronised
   - Animation durations: stagger between ~3s and ~6s, all set to infinite
   - Should not interfere with page layout (pointer-events: none, user-select: none)
-  Status: not started
+  Status: done
 
 ---
 STOP AND TEST when all 7 features are marked done.
