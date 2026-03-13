@@ -1,0 +1,42 @@
+.showcase {
+  background: var(--white);
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+}
+
+.showcase__carousel {
+  overflow: hidden;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.showcase__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+  user-select: none;
+}
+
+.showcase__track--paused {
+  animation-play-state: paused;
+}
+
+.showcase__card {
+  width: 354px;
+  height: 423px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  margin-right: 16px;
+  background-color: var(--secondary-bg);
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

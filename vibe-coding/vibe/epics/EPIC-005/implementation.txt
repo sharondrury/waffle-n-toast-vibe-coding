@@ -1,18 +1,48 @@
 EPIC 005 — Showcase Carousel & Modal: Implementation Log
 =========================================================
 
+Implementation notes for Claude Code:
+  - Duplicate array modulo (Feat-008): The carousel renders thumbnailImage twice
+    back-to-back. Clicking card at index i in the doubled array must map back
+    to the correct modal entry using:
+      realIndex = clickedIndex % thumbnailImage.length
+    Without this, clicking any card in the second copy would be out of bounds or
+    show the wrong modal content.
+  - Drag + animation-play-state (Feat-006): During drag, pause the CSS animation
+    by setting trackRef.current.style.animationPlayState = 'paused' and apply the
+    drag delta as an inline transform on the ref. On mouse-up, clear both inline
+    styles (set to '') so the CSS class takes back control. DO NOT use useState
+    for drag position — updating state on every mousemove causes re-renders and
+    jank. Use refs only (isDragging, startX, dragMoved) for all drag tracking.
+  - e.stopPropagation() on modal content (Feat-010): The backdrop div has
+    onClick = onClose. The content div inside it MUST call e.stopPropagation()
+    on its onClick. Without it, any click inside the modal — images, heading,
+    close button area — bubbles up to the backdrop and fires onClose immediately.
+  - Seamless marquee loop: Use margin-right on each card instead of CSS gap on
+    the track container. With N cards each (cardWidth + marginRight)px wide,
+    translateX(-50%) lands exactly at the start of the second copy. CSS gap
+    gives N items N-1 gaps, leaving a fractional offset that causes a visible
+    jump on loop.
+  - Drag click suppression: set dragMoved ref (false on mousedown, true when
+    delta > 5px). Check in handleCardClick and return early if true. This
+    prevents a drag-release from accidentally opening the modal.
+
+---
+
 Feature: Feat-001 | Folder & file scaffold
 -------------------------------------------
 What was implemented:
+  Created showcase/ and showcase/modalShowcase/ folders. Scaffolded all five
+  files. Added Showcase import and render to homePage.jsx below Faq.
 Files changed:
-  vibe-coding/src/website/pages/homePage/showcase/showcase.jsx
-  vibe-coding/src/website/pages/homePage/showcase/showcase.scss
-  vibe-coding/src/website/pages/homePage/showcase/data.json
-  vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.jsx
-  vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.scss
-  vibe-coding/src/website/pages/homePage/homePage.jsx  (import added)
+  vibe-coding/src/website/pages/homePage/showcase/showcase.jsx  (created)
+  vibe-coding/src/website/pages/homePage/showcase/showcase.scss  (created)
+  vibe-coding/src/website/pages/homePage/showcase/data.json  (created)
+  vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.jsx  (created)
+  vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.scss  (created)
+  vibe-coding/src/website/pages/homePage/homePage.jsx  (Showcase import + render)
 Engine components considered:
-  -
+  - None needed for scaffolding.
 Tradeoffs / follow-up:
 
 ---
@@ -20,15 +50,18 @@ Tradeoffs / follow-up:
 Feature: Feat-002 | data.json — thumbnailImage & modalShowcaseContent arrays
 ------------------------------------------------------------------------------
 What was implemented:
+  data.json root object holds both named arrays. Imported via named
+  destructuring — thumbnailImage into showcase.jsx,
+  modalShowcaseContent into modalShowcase.jsx (path: '../data.json').
+  All image values are placeholder strings.
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/data.json
-  vibe-coding/src/website/pages/homePage/showcase/showcase.jsx  (thumbnailImage import)
-  vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.jsx  (modalShowcaseContent import)
+  vibe-coding/src/website/pages/homePage/showcase/showcase.jsx
+  vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.jsx
 Engine components considered:
-  -
-Note: Both arrays live in the same data.json file and are named exports.
-Image values are placeholder strings — replace with real asset paths when
-images are ready.
+  - None.
+Note: Vite supports named destructuring from JSON imports when the root is an
+object (not an array).
 Tradeoffs / follow-up:
 
 ---
@@ -36,12 +69,12 @@ Tradeoffs / follow-up:
 Feature: Feat-003 | Section container — background, border radius
 -------------------------------------------------------------------
 What was implemented:
+  .showcase: background var(--white), border-radius 0 0 16px 16px,
+  overflow: hidden to clip carousel at section edges.
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/showcase.scss
 Engine components considered:
-  -
-Note: Section is full-width. border-radius applies to bottom-left and
-bottom-right only. No max-width so carousel bleeds to viewport edges.
+  - None.
 Tradeoffs / follow-up:
 
 ---
@@ -49,14 +82,15 @@ Tradeoffs / follow-up:
 Feature: Feat-004 | Carousel — card layout and dimensions
 -----------------------------------------------------------
 What was implemented:
+  displayCards = [...thumbnailImage, ...thumbnailImage] declared at module level
+  (static, never changes). Cards are 354px x 423px, flex-shrink 0, border-radius
+  16px, margin-right 16px (not CSS gap — see implementation notes). background-image
+  set via inline style.
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/showcase.jsx
   vibe-coding/src/website/pages/homePage/showcase/showcase.scss
 Engine components considered:
-  -
-Note: The thumbnailImage array is duplicated in the render (spread twice into
-the display array) to create a seamless loop. Cards use CSS background-image
-with background-size: cover and background-position: center.
+  - None.
 Tradeoffs / follow-up:
 
 ---
@@ -64,16 +98,14 @@ Tradeoffs / follow-up:
 Feature: Feat-005 | Carousel — auto-scroll animation
 ------------------------------------------------------
 What was implemented:
+  @keyframes marquee: translateX(0) to translateX(-50%). Duration 35s linear
+  infinite. With margin-right on cards (not gap), -50% = exactly one full set
+  width — reset is invisible to the user.
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/showcase.scss
-  vibe-coding/src/website/pages/homePage/showcase/showcase.jsx
 Engine components considered:
-  - timer.jsx — reviewed; not used. CSS @keyframes marquee handles the loop
-    natively without a JS timer, which avoids frame-rate jank and is simpler
-    to pause/resume via animation-play-state.
-Note: @keyframes marquee translates the track from translateX(0) to
-translateX(-50%). Because the array is doubled, -50% lands exactly at the
-start of the second copy, making the reset invisible. Duration set to 35s.
+  - timer.jsx — reviewed; not used. CSS @keyframes handles the loop natively,
+    avoids frame-rate jank, and pause/resume via animation-play-state is simpler.
 Tradeoffs / follow-up:
 
 ---
@@ -81,17 +113,18 @@ Tradeoffs / follow-up:
 Feature: Feat-006 | Carousel — pause, hover and drag interactions
 ------------------------------------------------------------------
 What was implemented:
+  Hover: isPaused state toggles .showcase__track--paused CSS class.
+  Modal: isModalOpen also applies the class. Combined: isAnimPaused = isPaused || isModalOpen.
+  Drag: all tracking in refs (isDragging, startX, dragMoved). Mouse and touch
+  handlers registered on window inside mousedown/touchstart, removed on release.
+  During drag: inline animationPlayState = 'paused' + inline transform.
+  On release: both cleared (set to ''), CSS class resumes control.
+  dragMoved threshold 5px suppresses accidental card click on drag-release.
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/showcase.jsx
   vibe-coding/src/website/pages/homePage/showcase/showcase.scss
 Engine components considered:
-  -
-Note: isPaused state drives animation-play-state: paused / running.
-Drag is handled via onMouseDown / onMouseMove / onMouseUp on the track ref.
-A isDragging ref (not state) avoids unnecessary re-renders during drag.
-currentTranslate ref stores the drag offset and is applied as an inline
-transform during drag; on mouse-up the CSS animation resumes from the
-visual position.
+  - None.
 Tradeoffs / follow-up:
 
 ---
@@ -99,14 +132,13 @@ Tradeoffs / follow-up:
 Feature: Feat-007 | Carousel — pause when modal open
 ------------------------------------------------------
 What was implemented:
+  isModalOpen state in showcase.jsx. When true, isAnimPaused = true and the
+  paused CSS class is applied regardless of hover state.
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/showcase.jsx
 Engine components considered:
-  - websiteContext.jsx — reviewed; not used for this epic. isModalOpen is local
-    to showcase.jsx and passed as props to child components. If modal state needs
-    to be shared globally in a future epic, lift to websiteContext at that point.
-Note: The carousel respects both isPaused (hover/drag) and isModalOpen as
-separate booleans. animation-play-state pauses when either is true.
+  - websiteContext.jsx — reviewed; not used. isModalOpen is local to showcase.
+    Lift to context if cross-component access is needed in a future epic.
 Tradeoffs / follow-up:
 
 ---
@@ -114,16 +146,14 @@ Tradeoffs / follow-up:
 Feature: Feat-008 | Modal — open on card click
 ------------------------------------------------
 What was implemented:
+  handleCardClick: realIndex = i % thumbnailImage.length maps any duplicated card
+  index back to the correct modalShowcaseContent entry. Sets selectedIndex and
+  opens modal. dragMoved check prevents accidental opens on drag-release.
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/showcase.jsx
 Engine components considered:
-  - modal.jsx — reviewed; not used. The engine modal does not support the
-    carousel-pause integration or the three-image layout required here.
-    Custom modal kept inside the showcase feature folder.
-Note: selectedIndex state is set on card click. The duplicated array maps
-index back to the original data array using modulo:
-  realIndex = clickedIndex % thumbnailImage.length
-This ensures clicking a duplicated card still opens the correct modal content.
+  - modal.jsx — reviewed; not used. Engine modal does not support carousel-pause
+    integration or three-image layout. Custom modal in showcase/modalShowcase/.
 Tradeoffs / follow-up:
 
 ---
@@ -131,14 +161,14 @@ Tradeoffs / follow-up:
 Feature: Feat-009 | modalShowcase.jsx — modal layout and content
 -----------------------------------------------------------------
 What was implemented:
+  Receives selectedIndex and onClose. Imports modalShowcaseContent from
+  '../data.json'. Renders heading, three images in a flex row (8px gap),
+  x close button (position absolute, top-right of content box).
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.jsx
   vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.scss
 Engine components considered:
-  - modal.jsx — reviewed; not used (see Feat-008 note)
-Note: Three images rendered side by side with flex row and 8px gap.
-Images use src from image1/image2/image3 keys. Heading renders above images.
-× button is position: absolute top-right of the modal content box.
+  - modal.jsx — not used (see Feat-008).
 Tradeoffs / follow-up:
 
 ---
@@ -146,15 +176,17 @@ Tradeoffs / follow-up:
 Feature: Feat-010 | Modal — close behaviour
 ---------------------------------------------
 What was implemented:
+  Backdrop div onClick={onClose}. Content div onClick={e => e.stopPropagation()}.
+  stopPropagation is critical — without it clicks inside the modal bubble to the
+  backdrop and fire onClose.
+  x button calls onClose directly.
+  Transition: @keyframes fadeIn (opacity 0->1) on backdrop,
+  @keyframes popIn (opacity+scale 0.95->1) on content box.
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.jsx
   vibe-coding/src/website/pages/homePage/showcase/modalShowcase/modalShowcase.scss
 Engine components considered:
-  -
-Note: Backdrop and modal content are separate divs. onClick on the backdrop
-calls onClose. onClick on the modal content box calls e.stopPropagation() to
-prevent the backdrop handler firing when clicking inside the modal.
-Transition: opacity 0 → 1 and scale 0.95 → 1 on open for a subtle pop-in feel.
+  - None.
 Tradeoffs / follow-up:
 
 ---

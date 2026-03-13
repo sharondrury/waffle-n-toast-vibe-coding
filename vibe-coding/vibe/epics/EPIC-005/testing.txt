@@ -1,0 +1,97 @@
+EPIC 005 — Showcase Carousel & Modal: Testing
+==============================================
+
+Manual Test Steps
+-----------------
+
+Step 1 — Showcase section appears on the homepage
+  1. Run `npm run dev` and navigate to the home page (/).
+  2. Scroll below the FAQ section.
+  Expected: A white section with a horizontal strip of scrolling cards appears.
+  Status: passed
+
+Step 2 — Cards auto-scroll right to left
+  1. Observe the carousel on page load.
+  Expected:
+    - Cards move continuously right to left at a comfortable pace (~35s cycle).
+    - The scroll loops seamlessly with no visible jump or reset.
+  Status: passed
+
+Step 3 — Hover pauses the carousel
+  1. Move the cursor over the carousel.
+  Expected: Cards stop moving immediately.
+  2. Move the cursor off the carousel.
+  Expected: Cards resume from the position they stopped at (not reset to start).
+  Status: passed
+
+Step 4 — Drag the carousel
+  1. Click and hold on any card, drag left or right.
+  Expected: The carousel follows the cursor with no jank.
+  2. Release the mouse.
+  Expected: Carousel resumes auto-scroll from the new position.
+  Status: passed
+
+Step 5 — Drag does not open modal
+  1. Click and drag a card a few pixels, then release.
+  Expected: Modal does NOT open. Only a clean click (no movement) opens it.
+  Status: passed
+
+Step 6 — Click a card opens the correct modal
+  1. Click card 1 (first card).
+  Expected: Modal opens showing heading "Guy Salmon Consultancy" and three images.
+  2. Click card 3.
+  Expected: Modal shows "Sharon Drury Portfolio".
+  Status: passed
+
+Step 7 — Duplicated cards map to correct modal
+  1. Click the 6th visible card (the first duplicate — same as card 1).
+  Expected: Modal shows "Guy Salmon Consultancy" — not wrong content or an error.
+  Status: passed
+
+Step 8 — Carousel pauses while modal is open
+  1. Open a modal.
+  Expected: Carousel stops scrolling in the background.
+  2. Close the modal.
+  Expected: Carousel resumes.
+  Status: passed
+
+Step 9 — Close modal via x button
+  1. Open any modal. Click the x button (top-right).
+  Expected: Modal closes, carousel resumes.
+  Status: passed
+
+Step 10 — Close modal via backdrop
+  1. Open any modal. Click the dark area outside the white content box.
+  Expected: Modal closes.
+  Status: passed
+
+Step 11 — Clicking inside modal does NOT close it
+  1. Open a modal. Click on the heading, images, or anywhere inside the white box.
+  Expected: Modal stays open. (Confirms e.stopPropagation() is working correctly.)
+  Status: passed
+
+Step 12 — Modal open/close transition
+  1. Open and close the modal several times.
+  Expected: Subtle fade-in and scale pop-in on open. No abrupt appearance.
+  Status: passed
+
+Step 13 — No console errors
+  1. Open DevTools Console, reload, interact with carousel and modal.
+  Expected: No errors.
+  Status: passed
+
+Step 14 — Lint and build
+  Expected: `npm run lint` passes with 0 errors. `npm run build` succeeds.
+  Status: passed
+
+Automated Tests
+---------------
+Unit tests: none added.
+E2E tests still needed:
+  - Assert carousel renders more than 5 cards (doubled array).
+  - Click card[0] and assert modal heading is "Guy Salmon Consultancy".
+  - Click card[5] (duplicate) and assert same heading — tests modulo logic.
+  - Click backdrop and assert modal is removed from DOM.
+  - Click inside modal content box and assert modal stays in DOM.
+
+Overall test status: passed

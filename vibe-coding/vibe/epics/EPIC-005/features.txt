@@ -12,7 +12,7 @@ Feat-001 | Folder & file scaffold
       modalShowcase/modalShowcase.jsx
       modalShowcase/modalShowcase.scss
   - Import showcase.jsx into homePage.jsx
-  Status: not started
+  Status: done
 
 Feat-002 | data.json — two named arrays
   - File: vibe-coding/src/website/pages/homePage/showcase/data.json
@@ -36,14 +36,14 @@ Feat-002 | data.json — two named arrays
     images are available.
   - Both arrays exported from data.json and imported into their respective
     components (thumbnailImage → showcase.jsx, modalShowcaseContent → modalShowcase.jsx)
-  Status: not started
+  Status: done
 
 Feat-003 | Section container — background, border radius, layout
   - Background: white
   - Border radius: bottom-left and bottom-right 16px only (top corners square)
   - Section is full-width to allow the carousel to bleed edge to edge
   - No max-width constraint on the section itself — carousel tracks full viewport
-  Status: not started
+  Status: done
 
 Feat-004 | Carousel — card layout and dimensions
   - Each card:
@@ -56,7 +56,7 @@ Feat-004 | Carousel — card layout and dimensions
   - Sufficient cards are rendered to fill the viewport width with no gaps —
     the data array is duplicated (or tripled) in the render so the loop appears
     seamless. Minimum: render the array twice back to back.
-  Status: not started
+  Status: done
 
 Feat-005 | Carousel — auto-scroll animation (right to left, seamless loop)
   - Cards translate continuously from right to left using CSS animation or
@@ -66,7 +66,7 @@ Feat-005 | Carousel — auto-scroll animation (right to left, seamless loop)
       half is a perfect copy so the reset is invisible to the user
   - Animation plays on mount, is smooth and has no visible jump on loop
   - Speed: consistent, comfortable reading pace (suggest ~30s–40s for full cycle)
-  Status: not started
+  Status: done
 
 Feat-006 | Carousel — pause, hover and drag interactions
   - Pause on hover:
@@ -81,7 +81,7 @@ Feat-006 | Carousel — pause, hover and drag interactions
       Mouse up → release drag, resume auto-scroll from new position
       Drag should feel physical — no snapping, no momentum required
   - Touch support (mobile): same logic using touchstart / touchmove / touchend
-  Status: not started
+  Status: done
 
 Feat-007 | Carousel — pause when modal is open, resume on close
   - showcase.jsx manages a boolean state: isModalOpen
@@ -89,7 +89,7 @@ Feat-007 | Carousel — pause when modal is open, resume on close
   - When isModalOpen is true, auto-scroll pauses regardless of hover state
   - When isModalOpen returns to false, auto-scroll resumes
   - This state is also passed to modalShowcase.jsx to drive open/close
-  Status: not started
+  Status: done
 
 Feat-008 | Modal — open on card click
   - Clicking a carousel card opens the modal
@@ -98,7 +98,7 @@ Feat-008 | Modal — open on card click
     modalShowcaseContent object to display
   - Modal is rendered in showcase.jsx and conditionally shown based on
     isModalOpen state
-  Status: not started
+  Status: done
 
 Feat-009 | modalShowcase.jsx — modal layout and content
   - Uses the modalShowcaseContent object at selectedIndex
@@ -110,7 +110,7 @@ Feat-009 | modalShowcase.jsx — modal layout and content
   - Images are placeholder strings until real assets are provided —
     render as <img src={item.image1} alt="" /> etc.
   - Modal sits above the carousel (z-index) with a backdrop overlay behind it
-  Status: not started
+  Status: done
 
 Feat-010 | Modal — close behaviour
   - Close via × button (top-right)
@@ -118,7 +118,7 @@ Feat-010 | Modal — close behaviour
   - Both call the same onClose handler passed from showcase.jsx
   - Closing sets isModalOpen to false and selectedIndex to null
   - Smooth open/close transition recommended (opacity + scale or translateY)
-  Status: not started
+  Status: done
 
 ---
 STOP AND TEST when all 10 features are marked done.

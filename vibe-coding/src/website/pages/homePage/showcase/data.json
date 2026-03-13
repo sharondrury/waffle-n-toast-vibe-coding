@@ -1,0 +1,16 @@
+{
+  "thumbnailImage": [
+    { "backgroundImage": "image 1" },
+    { "backgroundImage": "image 2" },
+    { "backgroundImage": "image 3" },
+    { "backgroundImage": "image 4" },
+    { "backgroundImage": "image 5" }
+  ],
+  "modalShowcaseContent": [
+    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Guy Salmon Consultancy" },
+    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Gails Tails" },
+    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Sharon Drury Portfolio" },
+    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Something else" },
+    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Also something different" }
+  ]
+}
