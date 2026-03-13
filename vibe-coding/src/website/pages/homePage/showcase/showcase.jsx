@@ -1,7 +1,13 @@
 import { useState, useRef } from 'react'
 import { thumbnailImage } from './data.json'
 import ModalShowcase from './modalShowcase/modalShowcase'
+import img1 from '../../../../assets/images/image1.png'
+import img2 from '../../../../assets/images/image2.png'
+import img3 from '../../../../assets/images/image3.png'
+import img4 from '../../../../assets/images/image4.png'
 import './showcase.scss'
+
+const IMAGE_MAP = { image1: img1, image2: img2, image3: img3, image4: img4 }
 
 const displayCards = [...thumbnailImage, ...thumbnailImage]
 
@@ -106,7 +112,7 @@ const Showcase = () => {
             <div
               key={i}
               className="showcase__card"
-              style={{ backgroundImage: `url(${card.backgroundImage})` }}
+              style={{ backgroundImage: `url(${IMAGE_MAP[card.backgroundImage]})` }}
               onClick={() => handleCardClick(i)}
             />
           ))}

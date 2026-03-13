@@ -23,8 +23,8 @@ Feat-002 | data.json — two named arrays
       { backgroundImage: "image 3" }
       { backgroundImage: "image 4" }
       { backgroundImage: "image 5" }
-    Note: backgroundImage values are placeholder strings — swap for real asset
-    paths (e.g. /assets/images/showcase/card1.jpg) when images are available.
+    Note: backgroundImage values wired to real assets (image1–image4).
+    5th slot reuses image1. All 4 images in src/assets/images/.
   - Array 2 — name: modalShowcaseContent
     Five objects, each with image1, image2, image3 and heading keys:
       { image1: "image 1", image2: "image 2", image3: "image 3", heading: "Guy Salmon Consultancy" }
@@ -32,8 +32,8 @@ Feat-002 | data.json — two named arrays
       { image1: "image 1", image2: "image 2", image3: "image 3", heading: "Sharon Drury Portfolio" }
       { image1: "image 1", image2: "image 2", image3: "image 3", heading: "Something else" }
       { image1: "image 1", image2: "image 2", image3: "image 3", heading: "Also something different" }
-    Note: image values are placeholder strings — swap for real asset paths when
-    images are available.
+    Note: image values wired to real assets (image1–image4) via IMAGE_MAP in
+    modalShowcase.jsx. Strings in JSON are keys resolved at render time.
   - Both arrays exported from data.json and imported into their respective
     components (thumbnailImage → showcase.jsx, modalShowcaseContent → modalShowcase.jsx)
   Status: done

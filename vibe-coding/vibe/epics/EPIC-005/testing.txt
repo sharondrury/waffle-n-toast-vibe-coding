@@ -84,6 +84,24 @@ Step 14 — Lint and build
   Expected: `npm run lint` passes with 0 errors. `npm run build` succeeds.
   Status: passed
 
+Step 15 — Carousel card images render
+  1. Run `npm run dev`, navigate to homepage, scroll to Showcase section.
+  Expected: Each carousel card has a visible background image (not a blank/grey box).
+  Cards 1–4 show different images. Card 5 matches card 1 (image1 reused).
+  Status: passed
+
+Step 16 — Modal images render
+  1. Click any carousel card to open the modal.
+  Expected: Three images are visible side by side inside the modal content box.
+  No broken image icons. Images correspond to the correct modal entry.
+  Status: passed
+
+Step 17 — Build produces hashed image assets
+  1. Run `npm run build`. Inspect dist/assets/.
+  Expected: image1-*.png, image2-*.png, image3-*.png, image4-*.png all present
+  (Vite-hashed filenames confirm the asset pipeline processed them correctly).
+  Status: passed
+
 Automated Tests
 ---------------
 Unit tests: none added.

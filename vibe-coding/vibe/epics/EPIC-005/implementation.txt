@@ -53,7 +53,8 @@ What was implemented:
   data.json root object holds both named arrays. Imported via named
   destructuring — thumbnailImage into showcase.jsx,
   modalShowcaseContent into modalShowcase.jsx (path: '../data.json').
-  All image values are placeholder strings.
+  Image values updated from placeholder strings to real asset keys
+  ("image1"–"image4") wired to src/assets/images/image1–4.png.
 Files changed:
   vibe-coding/src/website/pages/homePage/showcase/data.json
   vibe-coding/src/website/pages/homePage/showcase/showcase.jsx
@@ -62,6 +63,22 @@ Engine components considered:
   - None.
 Note: Vite supports named destructuring from JSON imports when the root is an
 object (not an array).
+Image wiring — Vite asset pipeline:
+  String paths in JSON are NOT processed by Vite's asset pipeline (no hashing,
+  no bundling). The workaround is to import each image directly in the JSX
+  component and resolve via an IMAGE_MAP lookup:
+    import img1 from '../../../../assets/images/image1.png'
+    const IMAGE_MAP = { image1: img1, image2: img2, image3: img3, image4: img4 }
+  The JSON stores only the key name (e.g. "image1"), and the component resolves
+  it to the processed asset URL at render time. This applies to both
+  showcase.jsx (carousel card backgrounds) and modalShowcase.jsx (modal images).
+  showcase.jsx import path:  ../../../../assets/images/imageN.png
+  modalShowcase.jsx path:    ../../../../../assets/images/imageN.png
+  4 images cycle across 5 carousel slots — slot 5 reuses image1.
+  Modal entries distribute all 4 images (e.g. entry 2 uses image2/image3/image4).
+  Build output confirmed Vite processed all four:
+    image1-CMk9VP0o.png, image2-BMZnJrnx.png,
+    image3-B_Rdp5-F.png, image4-ShmfAuHa.png  (in dist/assets/)
 Tradeoffs / follow-up:
 
 ---

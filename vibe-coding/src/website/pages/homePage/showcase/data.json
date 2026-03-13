@@ -1,16 +1,16 @@
 {
   "thumbnailImage": [
-    { "backgroundImage": "image 1" },
-    { "backgroundImage": "image 2" },
-    { "backgroundImage": "image 3" },
-    { "backgroundImage": "image 4" },
-    { "backgroundImage": "image 5" }
+    { "backgroundImage": "image1" },
+    { "backgroundImage": "image2" },
+    { "backgroundImage": "image3" },
+    { "backgroundImage": "image4" },
+    { "backgroundImage": "image1" }
   ],
   "modalShowcaseContent": [
-    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Guy Salmon Consultancy" },
-    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Gails Tails" },
-    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Sharon Drury Portfolio" },
-    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Something else" },
-    { "image1": "image 1", "image2": "image 2", "image3": "image 3", "heading": "Also something different" }
+    { "image1": "image1", "image2": "image2", "image3": "image3", "heading": "Guy Salmon Consultancy" },
+    { "image1": "image2", "image2": "image3", "image3": "image4", "heading": "Gails Tails" },
+    { "image1": "image3", "image2": "image4", "image3": "image1", "heading": "Sharon Drury Portfolio" },
+    { "image1": "image4", "image2": "image1", "image3": "image2", "heading": "Something else" },
+    { "image1": "image1", "image2": "image2", "image3": "image3", "heading": "Also something different" }
   ]
 }
