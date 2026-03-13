@@ -1,0 +1,106 @@
+EPIC 004 — FAQ Section
+======================
+
+Feat-001 | Folder & file scaffold
+  - Create folder: vibe-coding/src/website/pages/homepage/faq/
+  - Create files inside:
+      faq.jsx
+      faq.scss
+      data.json
+  - Import faq.jsx into homePage.jsx
+  Status: not started
+
+Feat-002 | data.json — FAQ data array
+  - File: vibe-coding/src/website/pages/homepage/faq/data.json
+  - Array of objects, each with a question and answer string
+  - Four objects:
+      {
+        question: "question 1",
+        answer: "Some answer here about the title, some blah blah. Some answer here about the title, some blah blah. Some answer here about the title, some blah blah."
+      },
+      {
+        question: "question 2",
+        answer: "Some answer here about the title, some blah blah. Some answer here about the title, some blah blah. Some answer here about the title, some blah blah."
+      },
+      {
+        question: "question 3",
+        answer: "Some answer here about the title, some blah blah. Some answer here about the title, some blah blah. Some answer here about the title, some blah blah."
+      },
+      {
+        question: "question 4",
+        answer: "Some answer here about the title, some blah blah. Some answer here about the title, some blah blah. Some answer here about the title, some blah blah."
+      }
+  - Import into faq.jsx as const faqData
+  Status: not started
+
+Feat-003 | Section container — background, spacing, positioning
+  - Background: white
+  - Margin top and bottom: 50px
+  - position: relative — required so the floating question mark decorations
+    (Feat-007) can use position: absolute relative to this section
+  - Max-width constraint: 350px centred, applied to the inner content wrapper
+    (heading + accordion), NOT the full section — so decorations can sit outside
+  Status: not started
+
+Feat-004 | Section heading
+  - Text: "Frequently asked question at Waffles and Toast Web Creatives"
+  - Colour: black
+  - Font weight: bold
+  - Font size: 24px recalculated to rem (24 / 16 = 1.5rem)
+  - Width: 350px (matches the accordion max-width)
+  - Positioned to the left of the accordion content area
+  - Margin bottom spacing before first accordion pill
+  Status: not started
+
+Feat-005 | Accordion pills — layout and open/close behaviour
+  - Render by mapping over faqData
+  - Each pill:
+      - Gap between pills: 16px
+      - Closed state:
+          Background: --green-light at 50% opacity (rgba or color-mix)
+          Question text: left aligned, 20px → 1.25rem, bold, black
+          + icon: right aligned, changes to × when pill is open
+      - Open state:
+          Question pill background: --green-light at 50% opacity (unchanged)
+          Answer revealed below question row:
+            Background: --green-light at 80% opacity
+            Font size: 18px → 1.125rem
+            Smooth expand/collapse transition (max-height or grid-rows technique)
+  - Only one pill open at a time:
+      Track openIndex in useState (null = all closed)
+      Clicking an open pill closes it (set to null)
+      Clicking a different pill closes the current one and opens the new one
+  Status: not started
+
+Feat-006 | Accordion open/close animation
+  - Answer panel expands and collapses smoothly — do not use display:none/block
+    as this cannot be animated
+  - Recommended approach: CSS grid rows trick
+      grid-template-rows: 0fr → 1fr on open
+      Inner div with overflow: hidden
+  - + / × icon rotates or swaps on state change with a short CSS transition
+  Status: not started
+
+Feat-007 | Floating question mark decorations
+  - Four '?' characters total — two on the left side, two on the right side
+    of the accordion content area
+  - Position: absolute relative to the faq section container (position: relative)
+  - They sit outside the 350px max-width constraint of the heading/accordion
+  - Colours: pull from existing tokens in vibe-coding/src/assets/scss/ui/colours.scss
+      Suggested mapping (confirm tokens available):
+        Left top:    var(--green-light)
+        Left bottom: var(--green-dark)
+        Right top:   var(--right-color)
+        Right bottom: var(--bottom-color)
+  - Font size: make them large and decorative (e.g. 4rem–6rem), semi-transparent
+  - Each '?' has its own unique @keyframes float animation:
+      Small translateY and translateX movement within a limited area
+      Each keyframe set has slightly different timing, distance and easing
+      so all four move independently and never look synchronised
+  - Animation durations: stagger between ~3s and ~6s, all set to infinite
+  - Should not interfere with page layout (pointer-events: none, user-select: none)
+  Status: not started
+
+---
+STOP AND TEST when all 7 features are marked done.
+See testing.txt for manual test steps.

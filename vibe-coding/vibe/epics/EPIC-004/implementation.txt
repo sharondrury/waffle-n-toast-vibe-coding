@@ -1,0 +1,103 @@
+EPIC 004 — FAQ Section: Implementation Log
+==========================================
+
+Feature: Feat-001 | Folder & file scaffold
+-------------------------------------------
+What was implemented:
+Files changed:
+  vibe-coding/src/website/pages/homepage/faq/faq.jsx
+  vibe-coding/src/website/pages/homepage/faq/faq.scss
+  vibe-coding/src/website/pages/homepage/faq/data.json
+  vibe-coding/src/website/pages/homepage/homePage.jsx  (import added)
+Engine components considered:
+  -
+Tradeoffs / follow-up:
+
+---
+
+Feature: Feat-002 | data.json — FAQ data array
+------------------------------------------------
+What was implemented:
+Files changed:
+  vibe-coding/src/website/pages/homepage/faq/data.json
+  vibe-coding/src/website/pages/homepage/faq/faq.jsx  (import as const faqData)
+Engine components considered:
+  -
+Tradeoffs / follow-up:
+
+---
+
+Feature: Feat-003 | Section container — background, spacing, positioning
+--------------------------------------------------------------------------
+What was implemented:
+Files changed:
+  vibe-coding/src/website/pages/homepage/faq/faq.scss
+Engine components considered:
+  -
+Note: Section must use position: relative. The inner content wrapper (heading
++ accordion) uses max-width: 350px and margin: auto. The section itself is
+full-width so the absolute-positioned question marks (Feat-007) can break
+outside the 350px constraint freely.
+Tradeoffs / follow-up:
+
+---
+
+Feature: Feat-004 | Section heading
+--------------------------------------
+What was implemented:
+Files changed:
+  vibe-coding/src/website/pages/homepage/faq/faq.jsx
+  vibe-coding/src/website/pages/homepage/faq/faq.scss
+Engine components considered:
+  -
+Tradeoffs / follow-up:
+
+---
+
+Feature: Feat-005 | Accordion pills — layout and open/close behaviour
+-----------------------------------------------------------------------
+What was implemented:
+Files changed:
+  vibe-coding/src/website/pages/homepage/faq/faq.jsx
+  vibe-coding/src/website/pages/homepage/faq/faq.scss
+Engine components considered:
+  - modal.jsx — reviewed; not used. Accordion open/close is inline state
+    within the faq component, no overlay or portal needed.
+Note: openIndex state lives in faq.jsx. Clicking a pill calls
+setOpenIndex(i === openIndex ? null : i) — this handles both close-on-reclick
+and close-previous-on-new-selection in a single line.
+Tradeoffs / follow-up:
+
+---
+
+Feature: Feat-006 | Accordion open/close animation
+----------------------------------------------------
+What was implemented:
+Files changed:
+  vibe-coding/src/website/pages/homepage/faq/faq.scss
+Engine components considered:
+  -
+Note: CSS grid-template-rows: 0fr / 1fr transition is the most reliable
+cross-browser technique for animating height from 0 to auto without JavaScript
+height calculations. Inner div requires overflow: hidden and min-height: 0.
+Tradeoffs / follow-up:
+
+---
+
+Feature: Feat-007 | Floating question mark decorations
+--------------------------------------------------------
+What was implemented:
+Files changed:
+  vibe-coding/src/website/pages/homepage/faq/faq.jsx
+  vibe-coding/src/website/pages/homepage/faq/faq.scss
+Engine components considered:
+  -
+Note: Four separate @keyframes blocks (floatA, floatB, floatC, floatD) with
+unique translateX/translateY values and durations ensure no two question marks
+move in sync. pointer-events: none and user-select: none prevent them from
+interfering with accordion interaction.
+Colours reference tokens from vibe-coding/src/assets/scss/ui/colours.scss only —
+no hard-coded hex values.
+Tradeoffs / follow-up:
+
+---
