@@ -1,4 +1,5 @@
 import NavBar from '../../components/navBar/navBar'
+import Hero from './hero/hero'
 import './homePage.scss'
 
 const HomePage = () => {
@@ -6,7 +7,7 @@ const HomePage = () => {
     <>
       <NavBar />
       <main className="homePage">
-        <section className="hero"></section>
+        <Hero />
       </main>
     </>
   )

@@ -1,0 +1,105 @@
+EPIC 002 — Hero Section: Implementation Log
+============================================
+
+Feature: Global Token — --primary-btn-hvr
+------------------------------------------
+What was implemented:
+  - Added --primary-btn-hvr: #3e468e to colours.scss as a new design token
+Files changed:
+  src/assets/scss/ui/colours.scss
+
+Engine components considered:
+  - None required for a token addition
+
+---
+
+Feature: Hero Folder & File Scaffold
+--------------------------------------
+What was implemented:
+  - Created src/website/pages/homePage/hero/ subfolder
+  - Created hero.jsx and hero.scss inside it
+  - Imported <Hero /> into homePage.jsx, replacing the old empty <section className="hero"> stub
+Files changed:
+  src/website/pages/homePage/hero/hero.jsx       (new)
+  src/website/pages/homePage/hero/hero.scss      (new)
+  src/website/pages/homePage/homePage.jsx
+
+Engine components considered:
+  - websiteContext.jsx — not needed; hero has no persistent state
+  - button.jsx — not used; CTA is a plain anchor styled as a button, no engine dependency needed
+  - All other engine components — not applicable
+
+---
+
+Feature: Hero Background & Vertical Spacing
+---------------------------------------------
+What was implemented:
+  - background: var(--green-light) — matches navbar so there is no visible join between the two
+  - padding: 5.625rem 1.5rem (top/bottom 90px in rem, side padding for small screens)
+  - Inner content constrained to max-width: 1270px and centred with margin: 0 auto
+  - flex column + align-items: center + text-align: center for horizontal centring
+
+Learning note:
+  90px / 16px (browser default font size) = 5.625rem.
+  Always express fixed px sizes in rem so the layout respects user font-size preferences.
+
+---
+
+Feature: Typewriter Heading
+-----------------------------
+What was implemented:
+  - Two strings defined as a constant array outside the component to avoid re-creation on render
+  - useState tracks: displayText, stringIndex, isDeleting, isIdle
+  - useEffect drives the animation loop — each state change re-triggers the effect
+  - Typing speed: 60ms per character
+  - Deleting speed: 35ms per character (faster delete feels more natural)
+  - Idle pause: 1800ms before starting to delete
+  - Cursor rendered as a | span; when isIdle is true the hero__cursor--blink class is added
+  - Blink is a CSS step-end animation (on/off, not fade) to mimic a real terminal cursor
+Files changed:
+  src/website/pages/homePage/hero/hero.jsx
+  src/website/pages/homePage/hero/hero.scss
+
+Tradeoffs:
+  - Logic lives directly in the component. If the typewriter is ever needed elsewhere,
+    extract it into a custom hook at src/website/hooks/useTypewriter.js.
+
+Learning note:
+  useEffect with multiple state dependencies creates a self-driving loop:
+  each setTimeout resolves, updates state, and React re-runs the effect.
+  Returning the clearTimeout cleanup prevents stale timeouts firing after unmount.
+
+---
+
+Feature: Sub-text Paragraph
+-----------------------------
+What was implemented:
+  - Font size: 1.25rem (20px)
+  - Colour: var(--sub-text-color)
+  - Max-width: 590px, centred via the parent flex column
+  - Margin top: 1.25rem, margin bottom: 1.875rem (30px)
+  - Line height: 1.6 for readability
+Files changed:
+  src/website/pages/homePage/hero/hero.scss
+
+---
+
+Feature: CTA Button — Get your quote
+--------------------------------------
+What was implemented:
+  - Rendered as an <a> tag (href="#contact") — semantic anchor, not a <button>
+  - Padding: 1.25rem 6.25rem (20px / 100px in rem)
+  - Border radius: 8px
+  - Background: var(--green-dark), colour: var(--white)
+  - Hover: background switches to var(--primary-btn-hvr)
+  - Box-shadow: 4px 4px 0px 0px #000000 — solid offset creates pressed-tile illusion
+  - Active state: box-shadow: none + transform: translate(4px, 4px)
+    — button visually "presses in" to where the shadow was, completing the illusion
+  - cursor: pointer; transition on background for smooth hover
+Files changed:
+  src/website/pages/homePage/hero/hero.scss
+
+Learning note:
+  The pressed-tile trick works by matching the shadow offset exactly to the active translate.
+  shadow is 4px right + 4px down, so active moves the element 4px right + 4px down — the
+  button appears to sink into the shadow rather than just losing it.

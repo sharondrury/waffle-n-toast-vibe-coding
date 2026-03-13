@@ -1,0 +1,43 @@
+EPIC 002 — Hero Section
+=======================
+
+Features:
+
+Feat-001 | Folder & file scaffold
+  - Create src/website/homePage/hero/ subfolder
+  - Create hero.jsx and hero.scss inside it
+  - Import hero.jsx into homePage.jsx
+  Status: done
+
+Feat-002 | Hero background & vertical spacing
+  - Hero section inherits --green-light background (same as navbar, no visible join)
+  - Top and bottom padding of 90px expressed in rem (5.625rem)
+  - Hero content centred horizontally on screen
+  Status: done
+
+Feat-003 | Typewriter heading
+  - Font size 72px (4.5rem), colour white
+  - Two strings cycle with a typewriter effect
+  - Cursor rendered as | character
+  - Cursor blinks when idle between cycles
+  Status: done
+
+Feat-004 | Sub-text paragraph
+  - Colour: --sub-text-color, font size 1.25rem
+  - Max-width 590px, centred
+  - Margin top 1.25rem, margin bottom 1.875rem
+  Status: done
+
+Feat-005 | CTA button - Get your quote
+  - Padding 1.25rem / 6.25rem, border-radius 8px
+  - Background --green-dark, hover --primary-btn-hvr
+  - Box-shadow pressed-tile effect, active state collapses shadow
+  Status: done
+
+Feat-006 | Add --primary-btn-hvr token
+  - Added --primary-btn-hvr: #3e468e to colours.scss
+  Status: done
+
+---
+STOP AND TEST when all 6 features are marked done.
+See testing.txt for manual test steps.
