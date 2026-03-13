@@ -1,0 +1,125 @@
+EPIC 005 — Showcase Carousel & Modal
+======================================
+
+Feat-001 | Folder & file scaffold
+  - Create folders:
+      vibe-coding/src/website/pages/homePage/showcase/
+      vibe-coding/src/website/pages/homePage/showcase/modalShowcase/
+  - Create files:
+      showcase.jsx
+      showcase.scss
+      data.json
+      modalShowcase/modalShowcase.jsx
+      modalShowcase/modalShowcase.scss
+  - Import showcase.jsx into homePage.jsx
+  Status: not started
+
+Feat-002 | data.json — two named arrays
+  - File: vibe-coding/src/website/pages/homePage/showcase/data.json
+  - Array 1 — name: thumbnailImage
+    Five objects, each with a backgroundImage key:
+      { backgroundImage: "image 1" }
+      { backgroundImage: "image 2" }
+      { backgroundImage: "image 3" }
+      { backgroundImage: "image 4" }
+      { backgroundImage: "image 5" }
+    Note: backgroundImage values are placeholder strings — swap for real asset
+    paths (e.g. /assets/images/showcase/card1.jpg) when images are available.
+  - Array 2 — name: modalShowcaseContent
+    Five objects, each with image1, image2, image3 and heading keys:
+      { image1: "image 1", image2: "image 2", image3: "image 3", heading: "Guy Salmon Consultancy" }
+      { image1: "image 1", image2: "image 2", image3: "image 3", heading: "Gails Tails" }
+      { image1: "image 1", image2: "image 2", image3: "image 3", heading: "Sharon Drury Portfolio" }
+      { image1: "image 1", image2: "image 2", image3: "image 3", heading: "Something else" }
+      { image1: "image 1", image2: "image 2", image3: "image 3", heading: "Also something different" }
+    Note: image values are placeholder strings — swap for real asset paths when
+    images are available.
+  - Both arrays exported from data.json and imported into their respective
+    components (thumbnailImage → showcase.jsx, modalShowcaseContent → modalShowcase.jsx)
+  Status: not started
+
+Feat-003 | Section container — background, border radius, layout
+  - Background: white
+  - Border radius: bottom-left and bottom-right 16px only (top corners square)
+  - Section is full-width to allow the carousel to bleed edge to edge
+  - No max-width constraint on the section itself — carousel tracks full viewport
+  Status: not started
+
+Feat-004 | Carousel — card layout and dimensions
+  - Each card:
+      Width: 354px
+      Height: 423px
+      Border radius: 16px
+      Background: driven by thumbnailImage backgroundImage value (CSS
+      background-image property, background-size: cover, background-position: center)
+  - Cards sit in a horizontal flex row with a consistent gap between them
+  - Sufficient cards are rendered to fill the viewport width with no gaps —
+    the data array is duplicated (or tripled) in the render so the loop appears
+    seamless. Minimum: render the array twice back to back.
+  Status: not started
+
+Feat-005 | Carousel — auto-scroll animation (right to left, seamless loop)
+  - Cards translate continuously from right to left using CSS animation or
+    a requestAnimationFrame loop driven by a ref
+  - Recommended approach: CSS @keyframes marquee on a flex track container
+      translateX(0) → translateX(-50%) when the array is doubled, the second
+      half is a perfect copy so the reset is invisible to the user
+  - Animation plays on mount, is smooth and has no visible jump on loop
+  - Speed: consistent, comfortable reading pace (suggest ~30s–40s for full cycle)
+  Status: not started
+
+Feat-006 | Carousel — pause, hover and drag interactions
+  - Pause on hover:
+      When the user's cursor enters any card or the carousel track,
+      the auto-scroll animation pauses (animation-play-state: paused)
+  - Resume on mouse leave:
+      When the cursor leaves the carousel area, auto-scroll resumes
+      from the current position (not reset to start)
+  - Drag left/right with cursor:
+      Mouse down on carousel → record startX position
+      Mouse move → translate the track by the delta from startX
+      Mouse up → release drag, resume auto-scroll from new position
+      Drag should feel physical — no snapping, no momentum required
+  - Touch support (mobile): same logic using touchstart / touchmove / touchend
+  Status: not started
+
+Feat-007 | Carousel — pause when modal is open, resume on close
+  - showcase.jsx manages a boolean state: isModalOpen
+  - isModalOpen is passed down to the carousel track
+  - When isModalOpen is true, auto-scroll pauses regardless of hover state
+  - When isModalOpen returns to false, auto-scroll resumes
+  - This state is also passed to modalShowcase.jsx to drive open/close
+  Status: not started
+
+Feat-008 | Modal — open on card click
+  - Clicking a carousel card opens the modal
+  - The index of the clicked card is stored in state (selectedIndex)
+  - selectedIndex is passed to modalShowcase.jsx to determine which
+    modalShowcaseContent object to display
+  - Modal is rendered in showcase.jsx and conditionally shown based on
+    isModalOpen state
+  Status: not started
+
+Feat-009 | modalShowcase.jsx — modal layout and content
+  - Uses the modalShowcaseContent object at selectedIndex
+  - Layout:
+      Heading: at the top of the modal, from the heading key
+      Three images: side by side in a flex row, 8px gap between each
+        Each image uses image1, image2, image3 keys as src values
+      × close button: top-right corner of the modal
+  - Images are placeholder strings until real assets are provided —
+    render as <img src={item.image1} alt="" /> etc.
+  - Modal sits above the carousel (z-index) with a backdrop overlay behind it
+  Status: not started
+
+Feat-010 | Modal — close behaviour
+  - Close via × button (top-right)
+  - Close via clicking the backdrop overlay outside the modal content box
+  - Both call the same onClose handler passed from showcase.jsx
+  - Closing sets isModalOpen to false and selectedIndex to null
+  - Smooth open/close transition recommended (opacity + scale or translateY)
+  Status: not started
+
+---
+STOP AND TEST when all 10 features are marked done.
+See testing.txt for manual test steps.
