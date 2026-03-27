@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { thumbnailImage } from './data.json'
 import ModalShowcase from './modalShowcase/modalShowcase'
 import img1 from '../../../../assets/images/image1.png'
@@ -11,15 +11,44 @@ const IMAGE_MAP = { image1: img1, image2: img2, image3: img3, image4: img4 }
 
 const displayCards = [...thumbnailImage, ...thumbnailImage]
 
+const CARD_STEP = 354 + 16                            // card width + margin-right
+const TOTAL_WIDTH = thumbnailImage.length * CARD_STEP // seamless loop distance (1850px)
+const SCROLL_SPEED = 0.88                             // px per frame ≈ 35s cycle at 60fps
+
 const Showcase = () => {
   const [isPaused, setIsPaused] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(null)
 
   const trackRef = useRef(null)
+  const rafRef = useRef(null)
+  const positionRef = useRef(0)
   const isDragging = useRef(false)
+  const dragBasePosition = useRef(0)
   const startX = useRef(0)
   const dragMoved = useRef(false)
+  const isPausedRef = useRef(false)
+  const isModalOpenRef = useRef(false)
+
+  useEffect(() => { isPausedRef.current = isPaused }, [isPaused])
+  useEffect(() => { isModalOpenRef.current = isModalOpen }, [isModalOpen])
+
+  useEffect(() => {
+    const tick = () => {
+      if (!isDragging.current && !isPausedRef.current && !isModalOpenRef.current) {
+        positionRef.current -= SCROLL_SPEED
+        if (positionRef.current <= -TOTAL_WIDTH) {
+          positionRef.current += TOTAL_WIDTH
+        }
+      }
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translateX(${positionRef.current}px)`
+      }
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [])
 
   const handleClose = () => {
     setIsModalOpen(false)
@@ -37,24 +66,19 @@ const Showcase = () => {
     isDragging.current = true
     dragMoved.current = false
     startX.current = e.clientX
-    if (trackRef.current) {
-      trackRef.current.style.animationPlayState = 'paused'
-    }
+    dragBasePosition.current = positionRef.current
 
     const onMove = (moveEvent) => {
       const delta = moveEvent.clientX - startX.current
       if (Math.abs(delta) > 5) dragMoved.current = true
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translateX(${delta}px)`
-      }
+      let next = dragBasePosition.current + delta
+      if (next > 0) next -= TOTAL_WIDTH
+      if (next < -TOTAL_WIDTH) next += TOTAL_WIDTH
+      positionRef.current = next
     }
 
     const onUp = () => {
       isDragging.current = false
-      if (trackRef.current) {
-        trackRef.current.style.transform = ''
-        trackRef.current.style.animationPlayState = ''
-      }
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseup', onUp)
     }
@@ -67,24 +91,19 @@ const Showcase = () => {
     isDragging.current = true
     dragMoved.current = false
     startX.current = e.touches[0].clientX
-    if (trackRef.current) {
-      trackRef.current.style.animationPlayState = 'paused'
-    }
+    dragBasePosition.current = positionRef.current
 
     const onMove = (moveEvent) => {
       const delta = moveEvent.touches[0].clientX - startX.current
       if (Math.abs(delta) > 5) dragMoved.current = true
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translateX(${delta}px)`
-      }
+      let next = dragBasePosition.current + delta
+      if (next > 0) next -= TOTAL_WIDTH
+      if (next < -TOTAL_WIDTH) next += TOTAL_WIDTH
+      positionRef.current = next
     }
 
     const onEnd = () => {
       isDragging.current = false
-      if (trackRef.current) {
-        trackRef.current.style.transform = ''
-        trackRef.current.style.animationPlayState = ''
-      }
       window.removeEventListener('touchmove', onMove)
       window.removeEventListener('touchend', onEnd)
     }
@@ -92,8 +111,6 @@ const Showcase = () => {
     window.addEventListener('touchmove', onMove)
     window.addEventListener('touchend', onEnd)
   }
-
-  const isAnimPaused = isPaused || isModalOpen
 
   return (
     <section className="showcase">
@@ -103,7 +120,7 @@ const Showcase = () => {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div
-          className={`showcase__track${isAnimPaused ? ' showcase__track--paused' : ''}`}
+          className="showcase__track"
           ref={trackRef}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}

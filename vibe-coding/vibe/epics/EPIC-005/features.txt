@@ -120,6 +120,24 @@ Feat-010 | Modal — close behaviour
   - Smooth open/close transition recommended (opacity + scale or translateY)
   Status: done
 
+Feat-011 | Carousel — drag-to-scroll (user-controlled horizontal scroll)
+  - The user can click/press and hold anywhere on the carousel track and
+    drag left or right to scroll the cards manually
+  - Behaviour:
+      Mouse down / touchstart → record startX, pause auto-scroll
+      Mouse move / touchmove  → translate the track by (currentX - startX) delta
+      Mouse up / touchend     → release drag, auto-scroll resumes from current position
+  - Drag should feel physical and direct — no snapping, no momentum required
+  - A drag of more than 5px suppresses the card-click/modal-open so a drag-release
+    does not accidentally open a modal
+  - Works on both desktop (mouse) and mobile (touch)
+  - All tracking held in refs (isDragging, startX, dragMoved) — NOT in state —
+    to avoid re-render jank on every move event
+  Note: The drag mechanism shares the pause/resume infrastructure already built in
+  Feat-006. Feat-011 documents and verifies drag-to-scroll as a standalone
+  user-facing capability, separate from hover-pause behaviour.
+  Status: done — implemented as part of Feat-006. No additional code needed.
+
 ---
-STOP AND TEST when all 10 features are marked done.
+STOP AND TEST when all 11 features are marked done.
 See testing.txt for manual test steps.

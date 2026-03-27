@@ -1,0 +1,25 @@
+BUG — Carousel drag does not move the track
+--------------------------------------------
+Status: fixed
+
+Repro steps:
+  Click and hold any carousel card, drag left or right — carousel does not move.
+
+Root cause:
+  CSS animations override inline style.transform — even when animation-play-state
+  is paused, the animation's frozen transform value wins over any inline transform
+  set via JavaScript. So setting trackRef.current.style.transform = 'translateX(Xpx)'
+  during drag had no visible effect.
+
+Fix:
+  Replaced the CSS @keyframes marquee animation with a requestAnimationFrame loop
+  that writes transform directly to the track ref on every frame. Since the RAF
+  loop owns the transform at all times, drag simply updates the shared positionRef
+  and the RAF picks it up immediately — no CSS cascade conflict.
+
+  Changes:
+    showcase.jsx — removed animationPlayState manipulation; added RAF loop driven
+      by positionRef, isPausedRef, isModalOpenRef; drag handlers now write to
+      positionRef directly.
+    showcase.scss — removed animation, @keyframes marquee,
+      and .showcase__track--paused rule.

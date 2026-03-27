@@ -207,3 +207,30 @@ Engine components considered:
 Tradeoffs / follow-up:
 
 ---
+
+Feature: Feat-011 | Carousel — drag-to-scroll (user-controlled horizontal scroll)
+-----------------------------------------------------------------------------------
+Status: Already fully implemented as part of Feat-006. No code changes required.
+
+Verification — confirmed present in showcase.jsx:
+  - handleMouseDown: records startX, pauses animationPlayState, registers
+    mousemove/mouseup on window, applies translateX(delta) on every move,
+    clears inline styles on mouseup.
+  - handleTouchStart: identical logic using e.touches[0].clientX.
+  - dragMoved ref threshold of 5px in handleCardClick suppresses accidental
+    modal open on drag-release.
+  - All tracking in refs (isDragging, startX, dragMoved) — not state.
+
+Engine components considered:
+  - None. Drag is a direct DOM interaction handled via refs.
+
+Learning note:
+  Storing drag state in refs instead of useState is a key React performance
+  pattern. setState on every mousemove would trigger a re-render at 60fps+,
+  causing visible lag. Refs update the DOM directly and silently, keeping the
+  animation smooth.
+
+Files changed:
+  None — existing showcase.jsx already satisfies all Feat-011 requirements.
+
+---

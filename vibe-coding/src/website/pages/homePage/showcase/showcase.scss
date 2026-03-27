@@ -16,12 +16,7 @@
 .showcase__track {
   display: flex;
   width: max-content;
-  animation: marquee 35s linear infinite;
   user-select: none;
-}
-
-.showcase__track--paused {
-  animation-play-state: paused;
 }
 
 .showcase__card {
@@ -36,7 +31,3 @@
   cursor: pointer;
 }
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
