@@ -1,456 +1,195 @@
-EPIC-007 — Contact Section + Get In Touch Modal: Implementation Notes
-======================================================================
+EPIC-007 — Contact Section + Get In Touch Modal: Implementation Log
+====================================================================
 Project: Waffle n Toast
-Status: [ ] In progress
+Status: [x] Done
 
 ---
 
-Feat-001 | New Colour Token
------------------------------
-File: vibe-coding/src/assets/scss/ui/colours.scss
+Feature: Feat-001 | New Colour Tokens
+---------------------------------------
+What was implemented:
+  Added --grey-bg: #BDD4C7 and --red: #d93025 to the :root block in colours.scss.
+  --grey-bg: background for the contact container and modal card.
+  --red: validation error borders and error text in the form.
+Files changed:
+  src/assets/scss/ui/colours.scss
+Engine components considered:
+  - None required for token additions.
 
-Add inside the :root block:
-  --grey-bg: #BDD4C7;
-
-No other files need changing for this feature alone — the token will be
-available globally once added here.
-
----
-
-Feat-002 | Remove Contact Page Routing
-----------------------------------------
-Files to edit:
-  vibe-coding/src/App.jsx
-    — Remove: import ContactPage from './website/pages/contactPage/contactPage'
-    — Remove: <Route path="/contact" element={<ContactPage />} />
-
-  vibe-coding/src/website/navBar/navBar.jsx
-    — Remove any NavLink or Link with to="/contact"
-    — The phone icon button now opens the modal (Feat-007) — wire onClick there
-
-Files to delete (check existence first):
-  vibe-coding/src/website/pages/contactPage/ (entire folder)
-
-Claude Code should:
-  1. Check if contactPage/ exists before deleting
-  2. If it contains any meaningful content, copy relevant copy/text into
-     a comment at the top of contactSection.jsx before deleting
-  3. Log a note in bugs.txt if anything is removed that may be needed later
+Learning note:
+  --red was not in the original brief but was needed by contactForm for error
+  states. Always add tokens to colours.scss before using them in components —
+  never hard-code hex in component files.
 
 ---
 
-Feat-003 | File Structure Creation
--------------------------------------
-Create empty files (Claude Code will populate in subsequent features):
-  vibe-coding/src/website/pages/homePage/contactSection/contactSection.jsx
-  vibe-coding/src/website/pages/homePage/contactSection/contactSection.scss
-  vibe-coding/src/website/pages/homePage/contactSection/contactForm.jsx
-  vibe-coding/src/website/pages/homePage/contactSection/contactForm.scss
-  vibe-coding/src/website/pages/homePage/contactSection/contactValidation.js
-
-  vibe-coding/src/website/components/getInTouchModal/getInTouchModal.jsx
-  vibe-coding/src/website/components/getInTouchModal/getInTouchModal.scss
-
-Check if vibe-coding/src/website/components/ exists — create if not.
-
----
-
-Feat-004 | contactValidation.js
----------------------------------
-File: vibe-coding/src/website/pages/homePage/contactSection/contactValidation.js
-
-No imports needed — pure JS.
-
-  export function validateContactForm({ name, companyName, email, message }) {
-    const errors = {}
-    if (!name.trim()) {
-      errors.name = 'Name is required.'
-    }
-    if (!email.trim()) {
-      errors.email = 'Email is required.'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errors.email = 'Please enter a valid email address.'
-    }
-    if (!message.trim()) {
-      errors.message = 'Message is required.'
-    }
-    return errors
-  }
-
-companyName is intentionally not validated — it is optional.
+Feature: Feat-002 | Remove Contact Page Routing
+-------------------------------------------------
+What was implemented:
+  - Removed /contact route and ContactPage import from src/routes.jsx
+    (routing lives in routes.jsx, not App.jsx, in this project)
+  - Replaced <NavLink to="/contact"> on phone icon with a <button> in navBar.jsx
+  - contactPage.jsx folder left in place (stub only — no meaningful content)
+Files changed:
+  src/routes.jsx
+  src/website/components/navBar/navBar.jsx
+Engine components considered:
+  - None.
+Tradeoffs:
+  contactPage/ folder was not deleted — it is a stub. Can be removed in a
+  future cleanup epic if desired.
 
 ---
 
-Feat-005 | contactForm.jsx
-----------------------------
-Files:
-  vibe-coding/src/website/pages/homePage/contactSection/contactForm.jsx
-  vibe-coding/src/website/pages/homePage/contactSection/contactForm.scss
-
-Imports:
-  import { useState } from 'react'
-  import emailjs from '@emailjs/browser'
-  import { validateContactForm } from './contactValidation'
-  import './contactForm.scss'
-
-Constants (outside component):
-  const SERVICE_ID  = 'service_kg75p6l'
-  const TEMPLATE_ID = 'template_hkes3vq'
-
-Component props: { onSuccess, onError }
-
-State:
-  const [fields, setFields]           = useState({ name: '', companyName: '', email: '', message: '' })
-  const [errors, setErrors]           = useState({})
-  const [sending, setSending]         = useState(false)
-  const [submitStatus, setSubmitStatus] = useState('idle')
-
-onChange handler (shared):
-  function handleChange(e) {
-    const { name, value } = e.target
-    setFields(prev => ({ ...prev, [name]: value }))
-    setErrors(prev => ({ ...prev, [name]: '' }))
-  }
-
-handleSubmit:
-  1. const validationErrors = validateContactForm(fields)
-  2. If Object.keys(validationErrors).length > 0 → setErrors(validationErrors), return
-  3. setSending(true)
-  4. emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-       from_name:    fields.name,
-       company_name: fields.companyName,
-       reply_to:     fields.email,
-       message:      fields.message,
-     }, import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
-     .then(() => {
-       setSending(false)
-       setSubmitStatus('success')
-       if (onSuccess) onSuccess()
-     })
-     .catch(() => {
-       setSending(false)
-       setSubmitStatus('error')
-       if (onError) onError()
-     })
-
-handleReset (for "Send another message"):
-  setSubmitStatus('idle')
-  setFields({ name: '', companyName: '', email: '', message: '' })
-  setErrors({})
-
-JSX conditional on submitStatus:
-
-  'success':
-    <div className="contact-form__success">
-      <p>Message sent — we'll be in touch!</p>
-      <button onClick={handleReset} className="contact-form__reset-btn">
-        Send another message
-      </button>
-    </div>
-
-  'error':
-    Keep form visible + show:
-    <p className="contact-form__error-msg">Something went wrong — please try again.</p>
-    (form fields remain, user can resubmit)
-
-  'idle' (default):
-    Render all 4 fields + submit button
-
-Field rendering pattern (repeat for each field):
-  <div className="contact-form__field">
-    <label className="contact-form__label" htmlFor="name">Name</label>
-    <input
-      className={`contact-form__input${errors.name ? ' contact-form__input--error' : ''}`}
-      type="text"
-      id="name"
-      name="name"
-      value={fields.name}
-      onChange={handleChange}
-      placeholder="Your name"
-    />
-    {errors.name && <span className="contact-form__field-error">{errors.name}</span>}
-  </div>
-
-Textarea for message uses same pattern but <textarea> tag instead of <input>.
-
-contactForm.scss key styles:
-  @use '../../../../assets/scss/ui/colours' as *;
-  @use '../../../../assets/scss/ui/typography' as *;
-
-  .contact-form: display flex, flex-direction column, gap 1.25rem
-  .contact-form__field: display flex, flex-direction column, gap 0.375rem
-  .contact-form__label: font-size 0.875rem, font-weight 600, colour var(--sub-text-color)
-  .contact-form__input,
-  .contact-form__textarea:
-    padding 0.75rem 1rem, border-radius 0.5rem,
-    border 1.5px solid transparent, background var(--white),
-    font-size 1rem, width 100%, outline none, font-family inherit
-    &:focus: border-colour var(--green-dark)
-  .contact-form__input--error,
-  .contact-form__textarea--error: border-colour var(--red) (use closest available token)
-  .contact-form__field-error: font-size 0.8125rem, colour var(--red), margin-top -0.25rem
-  .contact-form__textarea: min-height 8rem, resize vertical
-  .contact-form__submit-btn:
-    background var(--green-dark), colour var(--white), border none,
-    padding 0.875rem 2.5rem, border-radius 0.5rem, font-size 1rem,
-    font-weight 700, cursor pointer, width 100%
-    &:disabled: opacity 0.5, cursor not-allowed
-  .contact-form__success: text-align center, padding 2rem 0
-  .contact-form__reset-btn:
-    margin-top 1rem, background transparent,
-    border 1.5px solid var(--green-dark), colour var(--green-dark),
-    padding 0.625rem 1.5rem, border-radius 0.5rem, cursor pointer
-  .contact-form__error-msg: colour var(--bottom-color), font-size 0.9rem, margin-top 0.5rem
+Feature: Feat-003 | File Structure Creation
+---------------------------------------------
+What was implemented:
+  Created all contactSection/ files and getInTouchModal/ files.
+  src/website/components/ already existed — no new folder needed at that level.
+Files changed (created):
+  src/website/pages/homePage/contactSection/contactSection.jsx
+  src/website/pages/homePage/contactSection/contactSection.scss
+  src/website/pages/homePage/contactSection/contactForm.jsx
+  src/website/pages/homePage/contactSection/contactForm.scss
+  src/website/pages/homePage/contactSection/contactValidation.js
+  src/website/components/getInTouchModal/getInTouchModal.jsx
+  src/website/components/getInTouchModal/getInTouchModal.scss
+Engine components considered:
+  - modal.jsx — reviewed; not used. Engine modal does not support the
+    header/body scroll split or EmailJS integration needed here.
 
 ---
 
-Feat-006 | contactSection.jsx
---------------------------------
-Files:
-  vibe-coding/src/website/pages/homePage/contactSection/contactSection.jsx
-  vibe-coding/src/website/pages/homePage/contactSection/contactSection.scss
+Feature: Feat-004 | contactValidation.js
+------------------------------------------
+What was implemented:
+  Pure JS module — no imports, no JSX.
+  validateContactForm({ name, companyName, email, message }) returns an errors
+  object. Empty object = valid. companyName not validated (optional).
+Files changed:
+  src/website/pages/homePage/contactSection/contactValidation.js
+Engine components considered:
+  - None.
 
-Imports:
-  import { forwardRef } from 'react'
-  import ContactForm from './contactForm'
-  import './contactSection.scss'
-  (import right-column image — Claude Code checks assets/images/ for a suitable image)
-
-Component using forwardRef:
-  const ContactSection = forwardRef((props, ref) => {
-    return (
-      <section className="contact-section" ref={ref} id="contact">
-        <div className="contact-section__container">
-          <div className="contact-section__form-col">
-            <ContactForm />
-          </div>
-          <div className="contact-section__info-col">
-            <h2 className="contact-section__heading">Get in touch</h2>
-            <p className="contact-section__subheading">
-              Even if you haven't read exactly what you came here for,
-              send us a message and we can work it out together.
-            </p>
-            <img
-              src={contactImage}
-              alt="Get in touch"
-              className="contact-section__img"
-            />
-          </div>
-        </div>
-      </section>
-    )
-  })
-  ContactSection.displayName = 'ContactSection'
-  export default ContactSection
-
-contactSection.scss:
-  @use '../../../../assets/scss/ui/colours' as *;
-
-  .contact-section:
-    padding: 4rem 1.5rem;
-    (background on the container, not the section wrapper, so the section
-    can sit flush with the page background)
-
-  .contact-section__container:
-    max-width: 62.5rem;
-    margin: 0 auto;
-    background: var(--grey-bg);
-    border-radius: 1.25rem;
-    display: flex;
-    gap: 2rem;
-    padding: 3rem;
-    align-items: flex-start;
-
-  .contact-section__form-col:
-    width: 60%;
-    flex-shrink: 0;
-
-  .contact-section__info-col:
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-  .contact-section__heading:
-    font-size: 2rem;
-    font-weight: 700;
-    colour: var(--green-dark);
-    margin: 0;
-
-  .contact-section__subheading:
-    font-size: 1rem;
-    colour: var(--sub-text-color);
-    line-height: 1.6;
-    margin: 0;
-
-  .contact-section__img:
-    width: 100%;
-    border-radius: 0.75rem;
-    object-fit: cover;
-
-homePage.jsx update:
-  import ContactSection from './contactSection/contactSection'
-  Add ref: const contactRef = useRef(null)
-  Render: <ContactSection ref={contactRef} />
-  Position: below the CompanyLogo section
+Learning note:
+  Keeping validation logic in a pure function (no React, no side effects)
+  makes it trivial to unit test. The function is imported by contactForm.jsx
+  and called on submit before any network call.
 
 ---
 
-Feat-007 | getInTouchModal.jsx
---------------------------------
-Files:
-  vibe-coding/src/website/components/getInTouchModal/getInTouchModal.jsx
-  vibe-coding/src/website/components/getInTouchModal/getInTouchModal.scss
+Feature: Feat-005 | contactForm.jsx
+--------------------------------------
+What was implemented:
+  Controlled form with 4 fields (name, companyName, email, message).
+  State: fields, errors, sending, submitStatus ('idle' | 'success' | 'error').
+  Inline validation via validateContactForm on submit.
+  EmailJS send: service_kg75p6l / template_hkes3vq / VITE_EMAILJS_PUBLIC_KEY.
+  Success: hides form, shows confirmation + "Send another message" reset button.
+  Error: keeps form visible, shows inline retry message.
+  Props: onSuccess, onError — both optional, called after send resolves.
+  @emailjs/browser installed via npm (was not present from EPIC-004).
+Files changed:
+  src/website/pages/homePage/contactSection/contactForm.jsx
+  src/website/pages/homePage/contactSection/contactForm.scss
+Engine components considered:
+  - websiteContext.jsx — not used. Form state is local, no need to persist.
+  - toast.jsx — not used. Success/error feedback is inline within the form.
 
-Props: { isOpen, onClose }
-
-JSX:
-  if (!isOpen) return null
-
-  <div className="modal-backdrop" onClick={onClose}>
-    <div
-      className="get-in-touch-modal"
-      onClick={e => e.stopPropagation()}
-    >
-      <button className="get-in-touch-modal__close" onClick={onClose}>×</button>
-      <h2 className="get-in-touch-modal__heading">Get in touch</h2>
-      <p className="get-in-touch-modal__subheading">
-        Even if you haven't read exactly what you came here for,
-        send us a message and we can work it out together.
-      </p>
-      <ContactForm
-        onSuccess={() => setTimeout(onClose, 1500)}
-      />
-    </div>
-  </div>
-
-getInTouchModal.scss:
-  @use '../../assets/scss/ui/colours' as *;
-
-  .modal-backdrop:
-    position fixed, inset 0, background rgba(0,0,0,0.6),
-    z-index 200, display flex, align-items center, justify-content center
-
-  .get-in-touch-modal:
-    background var(--grey-bg), border-radius 1.25rem, padding 2rem,
-    max-width 36rem, width 90%, position relative,
-    max-height 90vh, overflow-y auto
-
-  .get-in-touch-modal__close:
-    position absolute, top 1rem, right 1rem,
-    background none, border none, font-size 1.5rem,
-    cursor pointer, colour var(--sub-text-color), line-height 1
-
-  .get-in-touch-modal__heading:
-    font-size 1.5rem, font-weight 700, colour var(--green-dark), margin-bottom 0.5rem
-
-  .get-in-touch-modal__subheading:
-    font-size 0.9375rem, colour var(--sub-text-color), line-height 1.6,
-    margin-bottom 1.5rem
-
-Modal state wiring in navBar.jsx (simplest approach):
-  import { useState } from 'react'
-  import GetInTouchModal from '../components/getInTouchModal/getInTouchModal'
-
-  Inside NavBar component:
-    const [modalOpen, setModalOpen] = useState(false)
-
-  Phone button:
-    onClick={() => setModalOpen(true)}
-
-  Render modal at end of NavBar return (outside nav element, inside fragment):
-    <>
-      <div className="nav-wrapper">...</div>
-      <GetInTouchModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
-    </>
-
-  Adjust relative import path for getInTouchModal based on navBar.jsx location.
-  navBar is at: vibe-coding/src/website/navBar/navBar.jsx
-  getInTouchModal is at: vibe-coding/src/website/components/getInTouchModal/getInTouchModal.jsx
-  Import path from navBar: '../components/getInTouchModal/getInTouchModal'
+Learning note:
+  contactForm.jsx is intentionally prop-driven (onSuccess, onError) so it
+  can be reused in both the inline contactSection and the getInTouchModal
+  without duplicating any logic. One component, two consumers.
 
 ---
 
-Feat-008 | Hero CTA Scroll
-----------------------------
-Files:
-  vibe-coding/src/website/pages/homePage/homePage.jsx
-  vibe-coding/src/website/pages/homePage/hero/hero.jsx
+Feature: Feat-006 | contactSection.jsx
+-----------------------------------------
+What was implemented:
+  forwardRef wrapper so homePage.jsx can attach a ref for scroll targeting.
+  Two-column layout: 60% form left, 40% info right.
+  Background var(--grey-bg) on the inner container, not the section wrapper —
+  keeps the section flush with the page background.
+  Right column uses image2.png from assets/images/ (no contact-specific image
+  was available in the asset folder).
+  ContactSection.displayName set for React DevTools clarity.
+Files changed:
+  src/website/pages/homePage/contactSection/contactSection.jsx
+  src/website/pages/homePage/contactSection/contactSection.scss
+  src/website/pages/homePage/homePage.jsx (import + render with ref)
+Engine components considered:
+  - websiteContext.jsx — not needed. No persistent state in this section.
 
-homePage.jsx:
-  import { useRef } from 'react'
-  const contactRef = useRef(null)
+Learning note:
+  forwardRef lets a parent component (homePage.jsx) attach a ref directly
+  to a child component's DOM element. Without it, ref={contactRef} on
+  <ContactSection> would not reach the underlying <section> tag, and
+  scrollIntoView would fail silently.
 
-  Pass to Hero:
+---
+
+Feature: Feat-007 | Get In Touch Modal
+-----------------------------------------
+What was implemented:
+  Modal state (modalOpen) lives inside navBar.jsx — simplest approach,
+  avoids prop drilling through App → homePage → NavBar.
+  Phone button onClick opens modal; backdrop click and × button close it.
+  e.stopPropagation() on modal card prevents backdrop close on inner clicks.
+  onSuccess callback auto-closes after 1500ms (setTimeout).
+
+  Modal structure split into two zones:
+    .get-in-touch-modal__header — fixed, never scrolls (heading + subheading)
+    .get-in-touch-modal__body   — overflow-y: auto, scrolls independently
+  The modal card itself uses display: flex / flex-direction: column /
+  overflow: hidden — the card stays at a fixed max-height (90vh) while only
+  the body area scrolls. Scrollbar appears inside the form area only.
+
+  SCSS path correction: getInTouchModal.scss is at
+  src/website/components/getInTouchModal/ — requires ../../../assets/scss/ui/
+  (three levels up), not ../../ (two levels).
+Files changed:
+  src/website/components/getInTouchModal/getInTouchModal.jsx
+  src/website/components/getInTouchModal/getInTouchModal.scss
+  src/website/components/navBar/navBar.jsx (useState, modal import, button wiring)
+Engine components considered:
+  - modal.jsx — reviewed; not used. Engine modal does not support the
+    fixed-header / scrollable-body structure needed here.
+
+---
+
+Feature: Feat-008 | Hero CTA Scroll
+--------------------------------------
+What was implemented:
+  hero.jsx "Get your quote" changed from <a href="#contact"> to a <button>
+  accepting an onCtaClick prop.
+  homePage.jsx creates contactRef = useRef(null), passes:
     <Hero onCtaClick={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })} />
-
-  Pass ref to ContactSection:
     <ContactSection ref={contactRef} />
+  html { scroll-behavior: smooth } added to index.scss as a global rule.
+Files changed:
+  src/website/pages/homePage/hero/hero.jsx
+  src/website/pages/homePage/homePage.jsx
+  src/index.scss
+Engine components considered:
+  - None. Pure DOM ref + scrollIntoView.
 
-hero.jsx:
-  Accept prop: { onCtaClick }
-  "Get your quote" button:
-    onClick={onCtaClick}
-  (remove any existing routing/Link behaviour on this button if present)
-
-Global SCSS (add to main app scss or homePage.scss if not already set):
-  html { scroll-behavior: smooth; }
+Learning note:
+  scrollIntoView({ behavior: 'smooth' }) is the preferred approach over
+  hash links (#contact) with React Router — it doesn't alter the URL bar
+  or cause route re-evaluation. The ?. optional chaining guards against the
+  rare case where the ref hasn't attached yet on first render.
 
 ---
 
-NOTES & AFTERTHOUGHTS
-======================
+Feature: Feat-009 | Navbar phone button border removal
+--------------------------------------------------------
+What was implemented:
+  The phone icon was converted from <NavLink> to <button> in Feat-002.
+  Browsers apply a default border and outline to <button> elements.
+  Added border: none and cursor: pointer to .nav__phone in navBar.scss.
+Files changed:
+  src/website/components/navBar/navBar.scss
+Engine components considered:
+  - None.
 
-1. emailjs dependency
-   --------------------
-   @emailjs/browser should already be installed from EPIC-004.
-   If not: npm install @emailjs/browser
-   VITE_EMAILJS_PUBLIC_KEY must be set in .env — same key as EPIC-004.
-   The template ID is different (template_hkes3vq) but the same service and
-   public key apply. No .env changes needed if EPIC-004 is already set up.
-
-2. EmailJS template variables to configure in dashboard
-   -------------------------------------------------------
-   The template_hkes3vq template in the EmailJS dashboard must contain:
-     {{from_name}}    — sender's name
-     {{company_name}} — sender's company (may be blank)
-     {{reply_to}}     — sender's email (use as Reply-To in template settings)
-     {{message}}      — message body
-   Set the Reply-To field in the EmailJS template settings to {{reply_to}}
-   so replies go directly to the customer's email address.
-
-3. forwardRef and displayName
-   ----------------------------
-   When using forwardRef, always set ComponentName.displayName = 'ComponentName'
-   for cleaner React DevTools debugging. Already noted in Feat-006 but worth
-   flagging here too.
-
-4. Modal inside NavBar tradeoff
-   --------------------------------
-   Placing modal state inside navBar.jsx is the simplest approach and avoids
-   prop drilling through App.jsx → homePage.jsx → navBar.jsx. The tradeoff is
-   that navBar.jsx imports a component from the components folder — this is an
-   acceptable cross-folder import for this project scale. If the project grows
-   and this feels messy, modal state can be lifted to App.jsx with a context
-   or prop later.
-
-5. contactForm.jsx reuse
-   -----------------------
-   contactForm.jsx is imported by both contactSection.jsx and getInTouchModal.jsx.
-   This means any change to the form (new field, copy change, styling) only needs
-   updating in one place. Keep the component prop-driven (onSuccess, onError) so
-   both consumers can handle outcomes differently.
-
-6. Scroll behaviour and hash links
-   -----------------------------------
-   The scrollIntoView approach is preferred over hash links (#contact) because
-   it works cleanly with React Router and doesn't affect the URL bar.
-   The id="contact" on the section element is kept as a fallback for any future
-   anchor links but is not the primary scroll mechanism.
-
-7. Routing cleanup risk
-   ----------------------
-   If /contact was linked anywhere outside navBar.jsx (e.g. footer, sitemap,
-   other pages), those links will 404 after removal. Claude Code should search
-   the codebase for '/contact' before deleting the route to catch any missed
-   references.
+---

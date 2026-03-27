@@ -49,11 +49,11 @@
   background: var(--green-dark);
   padding: 12px;
   border-radius: var(--nav-radius);
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
-  
+  cursor: pointer;
 }
 
 .nav__phone-icon {

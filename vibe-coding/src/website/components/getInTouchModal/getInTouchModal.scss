@@ -13,12 +13,13 @@
 .get-in-touch-modal {
   background: var(--grey-bg);
   border-radius: 1.25rem;
-  padding: 2rem;
   max-width: 36rem;
   width: 90%;
-  position: relative;
   max-height: 90vh;
-  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .get-in-touch-modal__close {
@@ -31,6 +32,12 @@
   cursor: pointer;
   color: var(--sub-text-color);
   line-height: 1;
+  z-index: 1;
+}
+
+.get-in-touch-modal__header {
+  padding: 2rem 2rem 1rem;
+  flex-shrink: 0;
 }
 
 .get-in-touch-modal__heading {
@@ -44,5 +51,11 @@
   font-size: 0.9375rem;
   color: var(--sub-text-color);
   line-height: 1.6;
-  margin-bottom: 1.5rem;
+  margin: 0;
+}
+
+.get-in-touch-modal__body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 1rem 2rem 2rem;
 }

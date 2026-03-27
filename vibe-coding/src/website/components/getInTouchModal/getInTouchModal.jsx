@@ -11,14 +11,18 @@ const GetInTouchModal = ({ isOpen, onClose }) => {
         onClick={e => e.stopPropagation()}
       >
         <button className="get-in-touch-modal__close" onClick={onClose}>×</button>
-        <h2 className="get-in-touch-modal__heading">Get in touch</h2>
-        <p className="get-in-touch-modal__subheading">
-          Even if you haven't read exactly what you came here for,
-          send us a message and we can work it out together.
-        </p>
-        <ContactForm
-          onSuccess={() => setTimeout(onClose, 1500)}
-        />
+        <div className="get-in-touch-modal__header">
+          <h2 className="get-in-touch-modal__heading">Get in touch</h2>
+          <p className="get-in-touch-modal__subheading">
+            Even if you haven't read exactly what you came here for,
+            send us a message and we can work it out together.
+          </p>
+        </div>
+        <div className="get-in-touch-modal__body">
+          <ContactForm
+            onSuccess={() => setTimeout(onClose, 1500)}
+          />
+        </div>
       </div>
     </div>
   )
