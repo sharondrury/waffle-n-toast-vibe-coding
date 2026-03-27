@@ -10,7 +10,7 @@ const TYPING_SPEED = 60
 const DELETING_SPEED = 35
 const IDLE_PAUSE = 1800
 
-const Hero = () => {
+const Hero = ({ onCtaClick }) => {
   const [displayText, setDisplayText] = useState('')
   const [stringIndex, setStringIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -67,9 +67,9 @@ const Hero = () => {
           We can help refine your design, and connect you to your awaiting customers.
         </p>
 
-        <a href="#contact" className="hero__cta">
+        <button className="hero__cta" onClick={onCtaClick}>
           Get your quote
-        </a>
+        </button>
       </div>
     </section>
   )

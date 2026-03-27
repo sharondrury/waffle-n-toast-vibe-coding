@@ -1,0 +1,48 @@
+@use '../../../assets/scss/ui/colours' as *;
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.get-in-touch-modal {
+  background: var(--grey-bg);
+  border-radius: 1.25rem;
+  padding: 2rem;
+  max-width: 36rem;
+  width: 90%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.get-in-touch-modal__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--sub-text-color);
+  line-height: 1;
+}
+
+.get-in-touch-modal__heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 0.5rem;
+}
+
+.get-in-touch-modal__subheading {
+  font-size: 0.9375rem;
+  color: var(--sub-text-color);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}

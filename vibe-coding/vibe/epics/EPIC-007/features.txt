@@ -1,0 +1,321 @@
+EPIC-007 — Contact Section + Get In Touch Modal
+================================================
+Project: Waffle n Toast
+Colour tokens: vibe-coding/src/assets/scss/ui/colours.scss
+Typography: vibe-coding/src/assets/scss/ui/typography.scss
+EmailJS Template ID: template_hkes3vq
+EmailJS Service ID: service_kg75p6l (reuse from EPIC-004 pattern)
+
+---
+
+Feat-001 | New Colour Token
+-----------------------------
+Add the following token to:
+  vibe-coding/src/assets/scss/ui/colours.scss
+
+  --grey-bg: #BDD4C7;
+
+This token is used as the background of the contact container and modal card.
+
+---
+
+Feat-002 | Remove / Reconfigure Contact Page Routing
+------------------------------------------------------
+The standalone /contact route and contactPage.jsx are no longer needed.
+Contact functionality now lives inline on the home page and in a modal.
+
+Actions:
+  - Remove <Route path="/contact" ... /> from App.jsx (or router config)
+  - Remove import of contactPage component from App.jsx
+  - Remove or archive vibe-coding/src/website/pages/contactPage/ folder
+    (Claude Code should check if the folder exists before deleting)
+  - Remove any NavLink or Link pointing to /contact in navBar.jsx
+    (the phone icon in the navbar will now trigger the modal instead —
+    see Feat-005)
+
+If contactPage.jsx contains any content worth preserving, note it in bugs.txt
+before removing.
+
+---
+
+Feat-003 | Contact Section File Structure
+------------------------------------------
+Create the following folder and files:
+  vibe-coding/src/website/pages/homePage/contactSection/
+    contactSection.jsx       — outer container, two-column layout
+    contactSection.scss      — styles for container and two-column layout
+    contactForm.jsx          — form fields, controlled inputs, submit logic
+    contactForm.scss         — form-specific styles
+    contactValidation.js     — pure validation functions, no JSX
+
+All camelCase per project naming convention.
+
+contactSection.jsx imports contactForm.jsx.
+contactSection.jsx imported into homePage.jsx and rendered below the
+companyLogo section.
+
+---
+
+Feat-004 | contactValidation.js
+---------------------------------
+File: vibe-coding/src/website/pages/homePage/contactSection/contactValidation.js
+
+Pure JS module — no React, no JSX. Exports a single validate function.
+
+  export function validateContactForm({ name, companyName, email, message }) {
+    const errors = {}
+    if (!name.trim()) errors.name = 'Name is required.'
+    if (!email.trim()) errors.email = 'Email is required.'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      errors.email = 'Please enter a valid email address.'
+    if (!message.trim()) errors.message = 'Message is required.'
+    // companyName is optional — no validation needed
+    return errors  // empty object = valid
+  }
+
+Rules:
+  - name: required
+  - companyName: optional
+  - email: required + valid format
+  - message: required
+  - Returns an errors object — empty means valid, keys match field names
+
+---
+
+Feat-005 | contactForm.jsx
+----------------------------
+File: vibe-coding/src/website/pages/homePage/contactSection/contactForm.jsx
+
+Self-contained form component used in both the inline contact section
+and the Get In Touch modal. Props:
+  - onSuccess (function) — called after successful EmailJS send
+  - onError   (function) — called after failed send (optional, can show inline)
+
+Internal state:
+  const [fields, setFields] = useState({ name: '', companyName: '', email: '', message: '' })
+  const [errors, setErrors] = useState({})
+  const [sending, setSending] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState('idle')
+  // submitStatus values: 'idle' | 'success' | 'error'
+
+Fields rendered (left column, stacked):
+  1. Name           — text input, required, label "Name"
+  2. Company Name   — text input, optional, label "Company Name (optional)"
+  3. Email          — email input, required, label "Email"
+  4. Message        — textarea, required, label "Message", min-height 8rem
+
+Each field:
+  - Label above input
+  - Input/textarea with controlled value and onChange
+  - Inline error message below input when errors[field] exists
+  - Error input: border colour var(--red) or similar error token
+
+Submit button:
+  - Label: "Send Message"
+  - Background var(--green-dark), colour var(--white)
+  - Padding 0.875rem 2.5rem, border-radius 0.5rem
+  - Disabled + "Sending..." while sending === true
+  - Full width of the left column
+
+EmailJS send call:
+  emailjs.send(
+    'service_kg75p6l',
+    'template_hkes3vq',
+    {
+      from_name:    fields.name,
+      company_name: fields.companyName,
+      reply_to:     fields.email,
+      message:      fields.message,
+    },
+    import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+  )
+
+On success:
+  setSubmitStatus('success')
+  call onSuccess() if provided
+
+On error:
+  setSubmitStatus('error')
+  call onError() if provided
+
+Success state render:
+  Hide form fields and submit button.
+  Show message: "Message sent — we'll be in touch!"
+  Show a "Send another message" button that calls:
+    setSubmitStatus('idle')
+    setFields({ name: '', companyName: '', email: '', message: '' })
+    setErrors({})
+  This resets the form without a page refresh.
+
+Error state render:
+  Keep form visible.
+  Show inline message: "Something went wrong — please try again."
+  Styled in var(--red) or var(--bottom-color).
+
+Validation on submit:
+  Call validateContactForm(fields) from contactValidation.js
+  If errors returned, set errors state and return early — do not send.
+  Clear individual field error on that field's onChange.
+
+---
+
+Feat-006 | contactSection.jsx — Two-Column Container
+------------------------------------------------------
+File: vibe-coding/src/website/pages/homePage/contactSection/contactSection.jsx
+File: vibe-coding/src/website/pages/homePage/contactSection/contactSection.scss
+
+Add a ref anchor for scroll targeting:
+  Accept a sectionRef prop OR define forwardRef so homePage.jsx can attach a ref.
+  This ref is used by the hero CTA button (Feat-008) to scroll to this section.
+  Recommended pattern:
+    import { forwardRef } from 'react'
+    const ContactSection = forwardRef((props, ref) => (
+      <section className="contact-section" ref={ref} id="contact">
+        ...
+      </section>
+    ))
+    export default ContactSection
+
+Layout — two columns inside the container:
+  Left column (60% width):
+    - Renders <ContactForm /> component
+  Right column (40% width):
+    - H2 heading: "Get in touch"
+    - Subheading paragraph: "Even if you haven't read exactly what you came
+      here for, send us a message and we can work it out together."
+    - Image below subheading — Claude Code should check for a suitable image
+      in vibe-coding/src/assets/images/ and use it. If none suitable exists,
+      use a placeholder div with background var(--green-light) and a note.
+
+Container styles (.contact-section):
+  - Max-width: 62.5rem (1000px)
+  - Margin: 0 auto
+  - Padding: 4rem 1.5rem
+  - Background: var(--grey-bg)
+  - Border-radius: 1.25rem (20px)
+  - Display: flex
+  - Gap: 2rem
+
+Left column (.contact-section__form-col):
+  - Width: 60%
+  - flex-shrink: 0
+
+Right column (.contact-section__info-col):
+  - Width: 40%
+  - Display: flex, flex-direction: column, gap: 1rem
+
+Right column heading (.contact-section__heading):
+  - Font-size: 2rem, font-weight: 700, colour: var(--green-dark)
+
+Right column subheading (.contact-section__subheading):
+  - Font-size: 1rem, colour: var(--sub-text-color), line-height: 1.6
+
+Right column image (.contact-section__img):
+  - Width: 100%, border-radius: 0.75rem, object-fit: cover
+
+Outer wrapper in homePage.jsx:
+  - Padding: 4rem 1.5rem (breathing room above and below)
+  - Background: same as surrounding home page section
+
+---
+
+Feat-007 | Get In Touch Modal
+-------------------------------
+The phone icon button in navBar.jsx currently has an animation (EPIC-001).
+Clicking it should now open a "Get In Touch" modal.
+
+New files:
+  vibe-coding/src/website/components/getInTouchModal/getInTouchModal.jsx
+  vibe-coding/src/website/components/getInTouchModal/getInTouchModal.scss
+
+Modal content mirrors the contactSection right column info + contactForm,
+but displayed in a modal overlay rather than inline on the page.
+
+Modal structure:
+  Backdrop (.modal-backdrop):
+    - Position fixed, inset 0, background rgba(0,0,0,0.6), z-index 200
+    - Click backdrop to close
+  Modal card (.get-in-touch-modal):
+    - Background: var(--grey-bg)
+    - Border-radius: 1.25rem (20px)
+    - Padding: 2rem
+    - Max-width: 36rem, width: 90%
+    - Position relative
+    - Max-height: 90vh, overflow-y: auto (for smaller screens)
+  Close button (.get-in-touch-modal__close):
+    - Position absolute, top 1rem, right 1rem
+    - Background none, border none, font-size 1.5rem, cursor pointer
+    - Colour: var(--sub-text-color)
+  Heading: "Get in touch" — var(--green-dark), font-size 1.5rem, font-weight 700
+  Subheading paragraph — same copy as contactSection right column
+  ContactForm rendered below subheading
+    - onSuccess closes the modal after a short delay (setTimeout 1500ms)
+
+Modal state lives in navBar.jsx or a parent that can pass isOpen + onClose props.
+
+Recommended approach — modal state in App.jsx or homePage.jsx:
+  const [modalOpen, setModalOpen] = useState(false)
+  Pass setModalOpen(true) down to NavBar as a prop: onPhoneClick
+  NavBar phone button onClick calls onPhoneClick()
+  GetInTouchModal rendered at App or homePage level, receives
+    isOpen={modalOpen} onClose={() => setModalOpen(false)}
+
+Alternative simpler approach — modal state inside navBar.jsx:
+  const [modalOpen, setModalOpen] = useState(false)
+  Render GetInTouchModal directly inside the NavBar return, conditionally
+  This avoids prop drilling but places a modal inside the nav — acceptable
+  for this project scale.
+  Claude Code should choose whichever fits the existing navBar.jsx structure.
+
+---
+
+Feat-008 | Hero CTA Scroll to Contact Section
+-----------------------------------------------
+File: vibe-coding/src/website/pages/homePage/hero/hero.jsx
+File: vibe-coding/src/website/pages/homePage/homePage.jsx
+
+The "Get your quote" button in hero.jsx should smoothly scroll the page
+down to the contact section when clicked.
+
+Implementation using a ref passed from homePage.jsx:
+
+In homePage.jsx:
+  import { useRef } from 'react'
+  const contactRef = useRef(null)
+
+  Pass ref to ContactSection:
+    <ContactSection ref={contactRef} />
+
+  Pass scroll handler to Hero:
+    <Hero onCtaClick={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })} />
+
+In hero.jsx:
+  Accept onCtaClick prop
+  "Get your quote" button onClick={onCtaClick}
+
+contactSection.jsx must be wrapped in forwardRef as described in Feat-006
+for the ref to attach correctly.
+
+CSS scroll behaviour (add to global or homePage scss if not already present):
+  html { scroll-behavior: smooth; }
+
+---
+
+STOP AND TEST when all 8 features are marked done.
+Verify:
+  [ ] --grey-bg token added to colours.scss
+  [ ] /contact route removed, no broken links
+  [ ] contactSection renders below companyLogo on home page
+  [ ] Two-column layout correct — 60% form left, 40% info right
+  [ ] All four form fields render with labels
+  [ ] Name, email, message show validation errors when empty on submit
+  [ ] Company name submits without error when empty
+  [ ] EmailJS send fires with correct template_hkes3vq
+  [ ] Success state shows confirmation message and "Send another message" button
+  [ ] "Send another message" resets form to blank idle state
+  [ ] Error state shows retry message, form stays visible
+  [ ] Phone icon in navbar opens Get In Touch modal
+  [ ] Modal closes on backdrop click and × button
+  [ ] Modal contains same form — success closes modal after delay
+  [ ] "Get your quote" in hero scrolls smoothly to contact section
+  [ ] No hex colours or hard-coded values in jsx/scss — tokens only
