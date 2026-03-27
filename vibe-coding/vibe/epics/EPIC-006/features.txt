@@ -1,0 +1,203 @@
+EPIC-006 — Company Logo Carousel
+==================================
+Project: Waffle n Toast
+Component folder: vibe-coding/src/website/pages/homePage/companyLogo/
+Files: companyLogo.jsx + companyLogo.scss
+Images: vibe-coding/src/assets/images/logoCarousel/
+Colour tokens: vibe-coding/src/assets/scss/ui/colours.scss
+Typography: vibe-coding/src/assets/scss/ui/typography.scss
+
+---
+
+Feat-001 | File & Folder Setup
+--------------------------------
+Create the following:
+  vibe-coding/src/website/pages/homePage/companyLogo/companyLogo.jsx
+  vibe-coding/src/website/pages/homePage/companyLogo/companyLogo.scss
+
+companyLogo.jsx is a self-contained component.
+companyLogo.scss scoped to this component only.
+Import companyLogo.scss at the top of companyLogo.jsx.
+Import colour and typography tokens from vibe-coding/src/assets/scss/ui/
+Import companyLogo into homePage.jsx and render it in the appropriate
+position within the home page layout.
+
+---
+
+Feat-002 | Logo Image Imports + Data Array
+-------------------------------------------
+Claude Code should:
+  1. List the contents of vibe-coding/src/assets/images/logoCarousel/
+  2. Import every image file found as an ES module at the top of companyLogo.jsx
+     e.g. import logoAcme from '../../../../assets/images/logoCarousel/acme.png'
+  3. Build a LOGOS array above the component:
+     const LOGOS = [
+       { id: 'acme',    src: logoAcme,    alt: 'Acme' },
+       { id: 'client2', src: logoClient2, alt: 'Client 2' },
+       ...
+     ]
+  4. Import variable names should be camelCase matching the filename.
+  5. alt text should be a readable version of the filename (strip extension,
+     capitalise first letter, replace hyphens/underscores with spaces).
+
+---
+
+Feat-003 | Greyscale Treatment
+--------------------------------
+All logo images rendered inside the carousel are greyscale.
+Apply via CSS filter on the img element:
+  filter: grayscale(100%)
+
+No JS, no canvas — CSS only.
+This means no changes to the source image files.
+The greyscale filter is scoped to images inside .company-logo only.
+
+---
+
+Feat-004 | Carousel Track & Looping
+-------------------------------------
+The carousel renders a horizontally scrolling track of logos that loops
+infinitely, similar to the pattern used in showcase.jsx.
+
+Structure:
+  <div className="company-logo">
+    <div className="company-logo__track" ref={trackRef}>
+      {[...LOGOS, ...LOGOS].map((logo, index) => (
+        <div className="company-logo__item" key={`${logo.id}-${index}`}>
+          <img src={logo.src} alt={logo.alt} className="company-logo__img" />
+        </div>
+      ))}
+    </div>
+  </div>
+
+The LOGOS array is duplicated ([...LOGOS, ...LOGOS]) to create the illusion
+of an infinite loop. When the track scrolls past the halfway point, position
+resets silently to the start — seamless loop with no visual jump.
+
+Layout:
+  .company-logo: width 100%, overflow hidden, position relative
+  .company-logo__track: display flex, align-items center, gap 3rem (48px)
+    width: max-content (natural width of all items side by side)
+    will-change: transform (hint browser for GPU compositing)
+  .company-logo__item: flex-shrink 0
+  .company-logo__img: height 3rem (48px), width auto, object-fit contain,
+    filter grayscale(100%), opacity 0.7 (slight base opacity for visual softness)
+
+---
+
+Feat-005 | Scroll-Driven Direction
+------------------------------------
+The carousel direction responds to the user's scroll direction:
+  Scroll DOWN → logos animate left to right  (positive translateX direction)
+  Scroll UP   → logos animate right to left  (negative translateX direction)
+
+Implementation using useEffect + window scroll listener and useRef for position:
+
+  const positionRef = useRef(0)        // current translateX value
+  const directionRef = useRef(1)       // 1 = left-to-right, -1 = right-to-left
+  const lastScrollY = useRef(0)        // previous scrollY for direction detection
+  const animFrameRef = useRef(null)    // requestAnimationFrame handle
+  const trackRef = useRef(null)        // ref to the track DOM element
+
+Scroll listener (attached in useEffect):
+  function handleScroll() {
+    const currentY = window.scrollY
+    directionRef.current = currentY > lastScrollY.current ? 1 : -1
+    lastScrollY.current = currentY
+  }
+
+Animation loop (requestAnimationFrame):
+  Speed constant: const SPEED = 1 (pixels per frame — adjust for feel)
+
+  function animate() {
+    positionRef.current += SPEED * directionRef.current
+    // Loop reset — when position exceeds half total track width, reset to 0
+    // When position goes below 0, reset to half track width
+    const halfWidth = trackRef.current.scrollWidth / 2
+    if (positionRef.current >= halfWidth) positionRef.current = 0
+    if (positionRef.current < 0) positionRef.current = halfWidth - 1
+    trackRef.current.style.transform = `translateX(-${positionRef.current}px)`
+    animFrameRef.current = requestAnimationFrame(animate)
+  }
+
+useEffect cleanup:
+  Cancel animFrameRef.current on unmount.
+  Remove scroll event listener on unmount.
+
+All animation values stored in refs (not state) to prevent re-renders.
+
+---
+
+Feat-006 | Smooth Direction Transition
+----------------------------------------
+When scroll direction changes (up → down or down → up) the carousel
+should not snap abruptly — it should ease into the new direction.
+
+Implementation:
+  Instead of directly switching directionRef to 1 or -1, use a
+  smoothDirection ref that lerps (linear interpolates) toward the
+  target direction each frame:
+
+  const targetDirectionRef = useRef(1)   // set by scroll handler
+  const smoothDirectionRef = useRef(1)   // interpolated value used in animate()
+
+  In handleScroll: set targetDirectionRef.current = currentY > lastScrollY ? 1 : -1
+
+  In animate loop:
+    smoothDirectionRef.current += (targetDirectionRef.current - smoothDirectionRef.current) * 0.08
+    positionRef.current += SPEED * smoothDirectionRef.current
+
+  The 0.08 lerp factor controls how quickly it transitions — lower = smoother/slower,
+  higher = snappier. 0.08 is a good starting value; Claude Code can tune if needed.
+
+---
+
+Feat-007 | Fade Edges (50% opacity gradient)
+----------------------------------------------
+A visual fade applied at the left and right edges of the carousel container
+to give the impression logos emerge and disappear smoothly.
+
+Implementation — CSS pseudo-elements on .company-logo:
+
+  .company-logo: position relative, overflow hidden
+
+  .company-logo::before,
+  .company-logo::after:
+    content: ''
+    position: absolute
+    top: 0
+    width: 12rem  (192px — adjust to taste)
+    height: 100%
+    z-index: 2
+    pointer-events: none
+
+  .company-logo::before (left fade):
+    left: 0
+    background: linear-gradient(to right, var(--website-bg) 0%, transparent 100%)
+
+  .company-logo::after (right fade):
+    right: 0
+    background: linear-gradient(to left, var(--website-bg) 0%, transparent 100%)
+
+The gradient uses var(--website-bg) — this token must match whatever the
+home page background colour is set to. If the background is white use
+var(--white). If no background token exists, create --website-bg in
+colours.scss and set it to match.
+
+The opacity effect is achieved by fading to transparent, giving the 50% fade
+appearance at the edges. No additional opacity property needed on the track itself.
+
+---
+
+STOP AND TEST when all 7 features are marked done.
+Verify:
+  [ ] companyLogo.jsx and companyLogo.scss created in correct folder
+  [ ] All images from logoCarousel folder imported and rendering
+  [ ] All images rendered in greyscale via CSS filter
+  [ ] Carousel loops seamlessly with no visual jump
+  [ ] Scrolling down moves logos left to right
+  [ ] Scrolling up moves logos right to left
+  [ ] Direction change transitions smoothly — no snap
+  [ ] Left and right edges have visible fade/gradient overlay
+  [ ] Component renders correctly within homePage.jsx
+  [ ] No colour or typography hard-coded — tokens used throughout

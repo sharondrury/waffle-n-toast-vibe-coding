@@ -1,5 +1,6 @@
 import NavBar from '../../components/navBar/navBar'
 import Hero from './hero/hero'
+import CompanyLogo from './companyLogo/companyLogo'
 import CompanyServices from './companyServices/companyServices'
 import Faq from './faq/faq'
 import Showcase from './showcase/showcase'
@@ -14,6 +15,7 @@ const HomePage = () => {
         <CompanyServices />
         <Faq />
         <Showcase />
+        <CompanyLogo />
       </main>
     </>
   )

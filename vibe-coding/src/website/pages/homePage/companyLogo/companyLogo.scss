@@ -1,0 +1,51 @@
+@use '../../../../assets/scss/ui/colours' as *;
+@use '../../../../assets/scss/ui/typography' as *;
+
+.company-logo {
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  padding: 2rem 0;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 12rem;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, var(--green-light) 0%, transparent 100%);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, var(--green-light) 0%, transparent 100%);
+  }
+}
+
+.company-logo__track {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  width: max-content;
+  will-change: transform;
+}
+
+.company-logo__item {
+  flex-shrink: 0;
+}
+
+.company-logo__img {
+  height: 3rem;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.7;
+}

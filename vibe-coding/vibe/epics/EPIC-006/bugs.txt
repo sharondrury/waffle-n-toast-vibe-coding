@@ -1,0 +1,3 @@
+Not on a continuos loop.
+
+Not a bug but make max-width 1200px and centered to the screen

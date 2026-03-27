@@ -1,0 +1,248 @@
+EPIC-006 — Company Logo Carousel: Implementation Notes
+=======================================================
+Project: Waffle n Toast
+Status: [ ] In progress
+
+---
+
+Feat-001 | File & Folder Setup
+--------------------------------
+Files to create:
+  vibe-coding/src/website/pages/homePage/companyLogo/companyLogo.jsx
+  vibe-coding/src/website/pages/homePage/companyLogo/companyLogo.scss
+
+File to edit:
+  vibe-coding/src/website/pages/homePage/homePage.jsx
+    — import CompanyLogo from './companyLogo/companyLogo'
+    — render <CompanyLogo /> in the home page layout at an appropriate position
+      (likely below the services or hero section — check existing homePage.jsx structure)
+
+companyLogo.scss imports:
+  @use '../../../../assets/scss/ui/colours' as *;
+  @use '../../../../assets/scss/ui/typography' as *;
+  (adjust relative path depth if needed — count folders up from companyLogo/)
+
+---
+
+Feat-002 | Logo Imports + Data Array
+--------------------------------------
+Claude Code first step:
+  List contents of: vibe-coding/src/assets/images/logoCarousel/
+
+Build imports at top of companyLogo.jsx — one per image found.
+Build LOGOS array above the component function.
+No hardcoded paths in JSX — all images go through the import pipeline.
+
+---
+
+Feat-003 | Greyscale Treatment
+--------------------------------
+File: vibe-coding/src/website/pages/homePage/companyLogo/companyLogo.scss
+
+Add to .company-logo__img:
+  filter: grayscale(100%);
+  opacity: 0.7;
+
+No JS or canvas involved. Source files untouched.
+
+---
+
+Feat-004 | Carousel Track & Looping
+-------------------------------------
+File: vibe-coding/src/website/pages/homePage/companyLogo/companyLogo.jsx
+
+Imports needed:
+  import { useRef, useEffect } from 'react'
+
+Refs:
+  const trackRef = useRef(null)
+  const positionRef = useRef(0)
+  const directionRef = useRef(1)
+  const targetDirectionRef = useRef(1)
+  const smoothDirectionRef = useRef(1)
+  const lastScrollY = useRef(0)
+  const animFrameRef = useRef(null)
+
+JSX structure:
+  <div className="company-logo">
+    <div className="company-logo__track" ref={trackRef}>
+      {[...LOGOS, ...LOGOS].map((logo, index) => (
+        <div className="company-logo__item" key={`${logo.id}-${index}`}>
+          <img
+            src={logo.src}
+            alt={logo.alt}
+            className="company-logo__img"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+SCSS for track and items:
+  .company-logo:
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 2rem 0;
+
+  .company-logo__track:
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    width: max-content;
+    will-change: transform;
+
+  .company-logo__item:
+    flex-shrink: 0;
+
+  .company-logo__img:
+    height: 3rem;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.7;
+
+---
+
+Feat-005 | Scroll-Driven Direction + Animation Loop
+-----------------------------------------------------
+File: vibe-coding/src/website/pages/homePage/companyLogo/companyLogo.jsx
+
+Full useEffect block:
+
+  const SPEED = 1
+
+  useEffect(() => {
+    function handleScroll() {
+      const currentY = window.scrollY
+      targetDirectionRef.current = currentY > lastScrollY.current ? 1 : -1
+      lastScrollY.current = currentY
+    }
+
+    function animate() {
+      if (!trackRef.current) return
+
+      // Lerp smooth direction toward target
+      smoothDirectionRef.current +=
+        (targetDirectionRef.current - smoothDirectionRef.current) * 0.08
+
+      positionRef.current += SPEED * smoothDirectionRef.current
+
+      const halfWidth = trackRef.current.scrollWidth / 2
+
+      // Loop bounds
+      if (positionRef.current >= halfWidth) positionRef.current = 0
+      if (positionRef.current < 0) positionRef.current = halfWidth - 1
+
+      trackRef.current.style.transform = `translateX(-${positionRef.current}px)`
+      animFrameRef.current = requestAnimationFrame(animate)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    animFrameRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      cancelAnimationFrame(animFrameRef.current)
+    }
+  }, [])
+
+Notes:
+  - { passive: true } on the scroll listener improves scroll performance.
+  - All values in refs — no setState inside the animation loop.
+  - The loop starts immediately on mount so the carousel is always moving
+    even before the user scrolls. This gives a live feel on page load.
+    Initial direction is left-to-right (directionRef default = 1).
+
+---
+
+Feat-006 | Smooth Direction Transition
+----------------------------------------
+Covered within Feat-005 useEffect above via the lerp on smoothDirectionRef.
+No additional file changes needed.
+
+Tuning note for Claude Code:
+  0.08 lerp factor = moderately smooth transition (~12 frames to settle).
+  If it feels too sluggish increase toward 0.12.
+  If it feels too snappy decrease toward 0.05.
+  Tune based on visual feel during testing.
+
+---
+
+Feat-007 | Fade Edge Gradients
+--------------------------------
+File: vibe-coding/src/website/pages/homePage/companyLogo/companyLogo.scss
+
+Add pseudo-elements to .company-logo:
+
+  .company-logo::before,
+  .company-logo::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 12rem;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .company-logo::before {
+    left: 0;
+    background: linear-gradient(to right, var(--green-light) 0%, transparent 100%);
+  }
+
+  .company-logo::after {
+    right: 0;
+    background: linear-gradient(to left, var(--green-light) 0%, transparent 100%);
+  }
+
+IMPORTANT — background colour match:
+  The gradient start colour must exactly match the page background behind the carousel.
+  Check what background colour homePage.jsx / the parent section uses.
+  If the carousel sits on a --green-light section, use var(--green-light).
+  If it sits on white or another token, swap accordingly.
+  If no suitable token exists, add --website-bg to colours.scss and use that.
+  A mismatch will show a solid colour block rather than a smooth fade.
+
+---
+
+NOTES & AFTERTHOUGHTS
+======================
+
+1. Similarity to showcase.jsx
+   ----------------------------
+   This component intentionally mirrors the pattern in showcase.jsx (EPIC-005).
+   If showcase.jsx already has a working loop/animation approach, Claude Code
+   should reference it for consistency — particularly the loop reset logic and
+   ref-based animation. The key difference here is scroll-driven direction rather
+   than a constant auto-scroll.
+
+2. Initial scroll direction on page load
+   ----------------------------------------
+   On first load, smoothDirectionRef starts at 1 (left to right).
+   The carousel moves left to right until the user scrolls.
+   This is intentional — it gives the component life immediately.
+   If the preference is for it to be still until first scroll, wrap the
+   animate() call start in a flag that only begins after the first scroll event.
+
+3. Performance — will-change
+   ---------------------------
+   will-change: transform on .company-logo__track hints to the browser to
+   promote the element to its own GPU layer. This prevents the animation from
+   causing repaints on the rest of the page. Keep this in the SCSS.
+
+4. Reduced motion accessibility
+   --------------------------------
+   Consider adding a prefers-reduced-motion media query to pause the animation:
+     @media (prefers-reduced-motion: reduce) {
+       .company-logo__track { animation: none; }
+     }
+   For the rAF-based approach, check matchMedia in the useEffect and skip the
+   animate() call if reduced motion is preferred. Nice-to-have for this epic,
+   not a blocker.
+
+5. Bugs note
+   ----------
+   Any bugs found during implementation should be logged in:
+   vibe-coding/vibe/epics/EPIC-005/bugs.txt
+   (as specified in the brief — note this is EPIC-005 bugs file, not EPIC-006)
