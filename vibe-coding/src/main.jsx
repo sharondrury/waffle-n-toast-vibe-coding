@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.scss'
 import App from './App.jsx'
 
+import '@fortawesome/fontawesome-free/css/all.min.css'
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
