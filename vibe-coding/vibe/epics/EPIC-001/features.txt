@@ -9,6 +9,8 @@ Feature: Navbar Component
 
 Feature: Phone Icon Vibrate Animation
 ---------------------------------------
+STATUS: Updated — icon changed from 📱 emoji to Font Awesome fa-solid fa-mobile-button
+        @fortawesome/fontawesome-free installed via npm; CSS imported in main.jsx
 
 Feature: React Router Pages
 -----------------------------

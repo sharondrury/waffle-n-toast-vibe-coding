@@ -21,7 +21,9 @@ const NavBar = () => {
           </div>
 
           <button className="nav__phone" onClick={() => setModalOpen(true)}>
-            <div className="nav__phone-icon">📱</div>
+            <div className="nav__phone-icon">
+              <i className="fa-solid fa-mobile-button"></i>
+            </div>
           </button>
         </nav>
       </div>

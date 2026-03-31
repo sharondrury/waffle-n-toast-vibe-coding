@@ -45,6 +45,16 @@ What was implemented:
   - Mimics a phone vibrating on a table: 8 quick alternating rotations, then rest
   - transform-origin: center for natural pivot
 
+Update — Phone icon changed to Font Awesome:
+  - Replaced 📱 emoji with <i className="fa-solid fa-mobile-button"></i>
+  - Installed @fortawesome/fontawesome-free via npm
+  - Imported '@fortawesome/fontawesome-free/css/all.min.css' in src/main.jsx
+  - .nav__phone-icon wrapper still applies the phone-ring animation as before
+  - icon colour inherits from CSS (currentColor / parent colour)
+Files changed:
+  src/website/components/navBar/navBar.jsx
+  src/main.jsx
+
 ---
 
 Feature: React Router Pages

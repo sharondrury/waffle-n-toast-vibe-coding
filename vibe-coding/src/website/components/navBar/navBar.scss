@@ -59,6 +59,7 @@
 .nav__phone-icon {
   font-size: 2rem;
   animation: phone-ring 2.4s infinite;
+  color: var(--white);
 }
 
 @keyframes phone-ring {
