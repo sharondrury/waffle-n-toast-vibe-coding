@@ -1,0 +1,133 @@
+EPIC-008 — Footer: Implementation Log
+======================================
+Project: Waffle n Toast
+Status: [x] Done
+
+---
+
+Feature: Feat-001 | New Colour Tokens
+----------------------------------------
+What was implemented:
+  Added to :root in colours.scss:
+    --text-grey: #4A4A4A  — all footer text colour
+    --footer-height: 7.5rem — layout offset token for body padding compensation
+  --footer-height is an estimate. Check rendered height in browser and adjust
+  this single token in colours.scss if the value needs changing — it propagates
+  globally.
+Files changed:
+  src/assets/scss/ui/colours.scss
+Engine components considered:
+  - None required for token additions.
+
+---
+
+Feature: Feat-002 | Footer File Setup + App.jsx Integration
+--------------------------------------------------------------
+What was implemented:
+  Created footer.jsx and footer.scss in src/website/components/footer/.
+  Imported Footer into App.jsx and rendered it below <AppRoutes /> inside a
+  React fragment. BrowserRouter lives in main.jsx so App.jsx does not need to
+  re-wrap it — Footer renders inside the Router context and can use Link/hooks.
+  Added padding-bottom: var(--footer-height) to body in index.scss so the
+  fixed footer does not hide page content.
+Files changed:
+  src/website/components/footer/footer.jsx  (created)
+  src/website/components/footer/footer.scss  (created)
+  src/App.jsx
+  src/index.scss
+Engine components considered:
+  - websiteContext.jsx — not needed. Footer has no state.
+  - bars.jsx — not used. Custom layout required.
+
+Learning note:
+  Rendering Footer in App.jsx outside <Routes> is the correct pattern for
+  shared layout elements. It renders once regardless of the active route.
+  No need to import Footer into every page component.
+
+---
+
+Feature: Feat-003 | Footer Layout & Fixed Positioning
+-------------------------------------------------------
+What was implemented:
+  .footer-wrapper: position fixed, bottom 0, left 0, right 0 — stays anchored
+  to viewport bottom regardless of scroll position.
+  z-index: 100 — sits above page content but below modals (z-index 200 from EPIC-007).
+  .footer: 3-column grid, max-width 34.375rem, centred.
+  Responsive fallback at 480px — collapses to single column.
+  .footer__copyright: centred below the grid.
+Files changed:
+  src/website/components/footer/footer.jsx
+  src/website/components/footer/footer.scss
+Engine components considered:
+  - None.
+
+---
+
+Feature: Feat-004 | Column One — Logo, Address, Email
+-------------------------------------------------------
+What was implemented:
+  WnT-logo.svg imported as a URL via standard ES import (Vite default for SVG).
+  Rendered as <img src={wntLogo} alt="Waffle n Toast">. Build confirmed Vite
+  processed and hashed it (WnT-logo-CI1-WjqO.svg in dist/assets/).
+  No ?react suffix needed — the logo rendered correctly as <img>.
+  <address> element used for semantic HTML. font-style: normal overrides the
+  browser default italic on <address>.
+  Placeholder address and email used — developer should update before launch.
+Files changed:
+  src/website/components/footer/footer.jsx
+  src/website/components/footer/footer.scss
+Engine components considered:
+  - None.
+
+Learning note:
+  Vite handles SVG imports as URL strings by default when you do:
+    import wntLogo from './file.svg'
+  If you need to style SVG internals (fill, stroke via CSS), use the ?react
+  suffix to import as a React component instead:
+    import WntLogo from './file.svg?react'
+  For a logo used as a static image, the URL import is simpler and sufficient.
+
+---
+
+Feature: Feat-005 | Column Two — Navigation Links
+---------------------------------------------------
+What was implemented:
+  "Home" rendered as a <button> (not <a href="#">) to avoid URL hash pollution.
+  onClick calls window.scrollTo({ top: 0, behavior: 'smooth' }).
+  "Projects" and "Pricing" use React Router <Link> for SPA navigation.
+  "Blog" opens Instagram in a new tab (rel="noopener noreferrer").
+  Column heading "Links" styled in var(--right-color) uppercase.
+  All links share .footer__nav-link — consistent padding, font, hover colour.
+Files changed:
+  src/website/components/footer/footer.jsx
+  src/website/components/footer/footer.scss
+Engine components considered:
+  - None.
+
+---
+
+Feature: Feat-006 | Column Three — Social Icons
+-------------------------------------------------
+What was implemented:
+  Three inline SVG icon components defined above the Footer function:
+    FacebookIcon  — fill="currentColor" (inherits color from parent)
+    InstagramIcon — stroke="currentColor" with rounded rect + inner circle
+    LinkedInIcon  — fill="currentColor"
+  All icons 20x20px. No external icon library — zero additional dependency.
+  All social links: target="_blank" rel="noopener noreferrer".
+  Placeholder URLs used — developer must update to real profile URLs.
+  Column heading "Follow" matches "Links" heading style.
+  Hover colour: var(--right-color) on all links and social icons.
+Files changed:
+  src/website/components/footer/footer.jsx
+  src/website/components/footer/footer.scss
+Engine components considered:
+  - None.
+
+Learning note:
+  Using fill="currentColor" and stroke="currentColor" on SVGs means the icon
+  colour is controlled entirely by CSS (the color property on the parent element).
+  This lets a single hover rule on .footer__social-link change both the text
+  label and the SVG icon colour simultaneously — no separate SVG fill override needed.
+
+---

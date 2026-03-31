@@ -1,0 +1,139 @@
+EPIC-008 — Footer
+==================
+Project: Waffle n Toast
+Component folder: vibe-coding/src/website/components/footer/
+Files: footer.jsx + footer.scss
+Colour tokens: vibe-coding/src/assets/scss/ui/colours.scss
+Typography: vibe-coding/src/assets/scss/ui/typography.scss
+Logo: vibe-coding/src/assets/images/WnT-logo.svg
+
+---
+
+Feat-001 | New Colour Tokens
+------------------------------
+Add the following tokens to:
+  vibe-coding/src/assets/scss/ui/colours.scss
+
+  --text-grey: #4A4A4A;    — all footer text
+  --footer-height: 7.5rem; — layout token for body padding-bottom compensation
+                             Adjust after checking actual rendered footer height.
+                             One change in colours.scss fixes it globally.
+
+  Status: done
+
+---
+
+Feat-002 | Footer File Setup + App.jsx Integration
+----------------------------------------------------
+Files created:
+  vibe-coding/src/website/components/footer/footer.jsx
+  vibe-coding/src/website/components/footer/footer.scss
+
+Footer imported into App.jsx and rendered below <AppRoutes /> outside the
+Routes block — ensures Footer appears on every page without duplicating it
+in each page component.
+
+body { padding-bottom: var(--footer-height) } added to index.scss to
+prevent page content being hidden behind the fixed footer.
+
+  Status: done
+
+---
+
+Feat-003 | Footer Layout & Fixed Positioning
+---------------------------------------------
+.footer-wrapper:
+  - position: fixed, bottom: 0, left: 0, right: 0
+  - background: var(--green-dark)
+  - z-index: 100 (modal is z-index 200 — stays above footer correctly)
+  - padding: 1.5rem 1.5rem 0
+
+.footer:
+  - max-width: 34.375rem (550px), centred margin: 0 auto
+  - display: grid, grid-template-columns: repeat(3, 1fr), gap: 1.5rem
+  - Responsive fallback: @media (max-width: 480px) → 1fr single column
+
+.footer__copyright:
+  - © Copyright Waffle & Toast 2026
+  - centred, font-size: 0.75rem, color: var(--text-grey)
+
+  Status: done
+
+---
+
+Feat-004 | Column One — Logo, Address, Email
+---------------------------------------------
+Logo:
+  - WnT-logo.svg imported as URL (standard <img> import)
+  - Vite processed and hashed in dist/assets/ — no ?react suffix needed
+  - height: 2.5rem, width: auto
+
+Address:
+  - <address> element, font-style: normal (overrides browser italic default)
+  - Placeholder: 123 Example Street, London, EC1A 1BB
+  - DEVELOPER NOTE: replace with real address before launch
+
+Email:
+  - <a href="mailto:email@email.com">
+  - Placeholder: email@email.com
+  - DEVELOPER NOTE: replace with real email before launch
+
+  Status: done
+
+---
+
+Feat-005 | Column Two — Navigation Links
+------------------------------------------
+Links:
+  1. Home     — <button> onClick: window.scrollTo({ top: 0, behavior: 'smooth' })
+  2. Projects — <Link to="/projects">
+  3. Pricing  — <Link to="/pricing">
+  4. Blog     — <a href="https://www.instagram.com" target="_blank">
+                DEVELOPER NOTE: replace with actual Instagram page URL
+
+Column heading: "Links" — var(--right-color), uppercase, 0.6875rem
+
+Home uses <button> styled as link — avoids URL hash pollution from <a href="#">
+
+  Status: done
+
+---
+
+Feat-006 | Column Three — Social Icons
+----------------------------------------
+Icons: inline SVG — no external icon library dependency.
+  - FacebookIcon  — fill="currentColor"
+  - InstagramIcon — stroke="currentColor"
+  - LinkedInIcon  — fill="currentColor"
+
+All icons: width/height 20px, flex-shrink 0.
+All links: target="_blank" rel="noopener noreferrer"
+
+Placeholder URLs (DEVELOPER NOTE: update before launch):
+  - https://www.facebook.com
+  - https://www.instagram.com
+  - https://www.linkedin.com
+
+Column heading: "Follow" — same style as col two heading
+
+Hover: all links and social icons transition to var(--right-color)
+
+  Status: done
+
+---
+
+STOP AND TEST when all 6 features are marked done.
+Verify:
+  [ ] --text-grey and --footer-height tokens added to colours.scss
+  [ ] Footer renders on every page (home, about, projects, pricing)
+  [ ] Footer fixed to bottom of viewport — does not scroll away
+  [ ] Background is var(--green-dark)
+  [ ] Max-width 550px, centred
+  [ ] Three equal columns in grid
+  [ ] Col 1: WnT-logo.svg renders, address and email visible
+  [ ] Col 2: Home scrolls to top, Projects and Pricing route correctly, Blog opens Instagram in new tab
+  [ ] Col 3: Facebook, Instagram, LinkedIn icons render and link out in new tab
+  [ ] Copyright line centred below grid
+  [ ] Page content not hidden behind footer — body padding-bottom applied
+  [ ] No hex values in footer.jsx or footer.scss — tokens only
+  [ ] Check actual rendered footer height and adjust --footer-height if needed

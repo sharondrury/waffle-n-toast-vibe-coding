@@ -1,0 +1,9 @@
+I want the footer to sit at the bottom of the page, I don't want it fixed. Please change.
+
+Make the font bold and slightly bigger.
+
+The logo should be to the left side of the first column.
+
+Remove text from social logos and make logos slightly bigger.
+
+Remove headings - LINKS and FOLLOW.

@@ -1,0 +1,109 @@
+@use '../../../assets/scss/ui/colours' as *;
+@use '../../../assets/scss/ui/typography' as *;
+
+.footer-wrapper {
+  background: var(--green-dark);
+  padding: 1.5rem 1.5rem 0;
+}
+
+.footer {
+  max-width: 34.375rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer__copyright {
+  max-width: 34.375rem;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-grey);
+  padding: 1rem 0;
+}
+
+// Column one
+.footer__col-one {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.footer__logo {
+  height: 2.5rem;
+  width: auto;
+}
+
+.footer__address {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-grey);
+  line-height: 1.6;
+}
+
+.footer__email {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-grey);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Column two
+.footer__col-two {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer__nav-link {
+  color: var(--text-grey);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: block;
+  padding: 0.25rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--right-color);
+  }
+}
+
+// Column three
+.footer__col-three {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.footer__social-link {
+  display: flex;
+  align-items: center;
+  color: var(--text-grey);
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--right-color);
+  }
+}
