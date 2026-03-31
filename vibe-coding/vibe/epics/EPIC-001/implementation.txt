@@ -57,6 +57,19 @@ Files changed:
 
 ---
 
+Feature: Nav Links Always Centred
+----------------------------------
+What was implemented:
+  - .nav given position: relative so children can use absolute positioning
+  - .nav__links given position: absolute; left: 50%; transform: translateX(-50%)
+  - This pins the links pill to the true centre of the nav at all viewport widths,
+    independent of the logo and phone button widths on either side
+  - justify-content: space-between kept on .nav so logo stays left and phone stays right
+Files changed:
+  src/website/components/navBar/navBar.scss
+
+---
+
 Feature: React Router Pages
 -----------------------------
 What was implemented:
