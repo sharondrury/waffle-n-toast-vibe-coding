@@ -16,4 +16,19 @@ body {
   background: var(--green-light);
   font-family: var(--font-body);
   color: var(--sub-text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
