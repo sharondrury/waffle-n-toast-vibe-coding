@@ -57,6 +57,24 @@ Files changed:
 
 ---
 
+Feature: Sticky Nav with Scroll Background
+-------------------------------------------
+What was implemented:
+  - .nav-wrapper given position: sticky; top: 0; z-index: 100 so it stays at the top
+  - useEffect in NavBar adds a passive scroll listener; sets `scrolled` state true when
+    window.scrollY > 0, false when back at the very top
+  - When scrolled, .nav-wrapper--scrolled class is applied:
+      background: rgba(255, 255, 255, 0.6) — semi-transparent white
+      backdrop-filter: blur(10px) — frosted glass effect showing content behind
+      padding reduced from 20px/40px to 12px for a compact scrolled look
+  - Transitions on background and backdrop-filter for a smooth fade-in/out
+  - Event listener cleaned up on unmount via useEffect return
+Files changed:
+  src/website/components/navBar/navBar.jsx
+  src/website/components/navBar/navBar.scss
+
+---
+
 Feature: Nav Links Always Centred
 ----------------------------------
 What was implemented:

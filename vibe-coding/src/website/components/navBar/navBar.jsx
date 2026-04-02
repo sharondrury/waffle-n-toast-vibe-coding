@@ -1,14 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import GetInTouchModal from '../getInTouchModal/getInTouchModal'
 import './navBar.scss'
 
 const NavBar = () => {
   const [modalOpen, setModalOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <>
-      <div className="nav-wrapper">
+      <div className={`nav-wrapper${scrolled ? ' nav-wrapper--scrolled' : ''}`}>
         <nav className="nav">
           <NavLink to="/" className="nav__logo">
             Waffle n Toast

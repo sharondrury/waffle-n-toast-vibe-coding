@@ -12,6 +12,11 @@ Feature: Phone Icon Vibrate Animation
 STATUS: Updated — icon changed from 📱 emoji to Font Awesome fa-solid fa-mobile-button
         @fortawesome/fontawesome-free installed via npm; CSS imported in main.jsx
 
+Feature: Sticky Nav with Scroll Background
+-------------------------------------------
+STATUS: Complete — nav sticks to top on scroll; frosted-glass white background appears
+        when user scrolls down, disappears when back at top
+
 Feature: Nav Links Always Centred
 ----------------------------------
 STATUS: Complete — About, Projects, Pricing pill is always centred to the page
