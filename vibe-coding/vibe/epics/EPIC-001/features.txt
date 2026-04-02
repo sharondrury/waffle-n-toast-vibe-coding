@@ -1,27 +1,44 @@
-EPIC 001 — Navbar: Implementation Log
-======================================
+EPIC 001 — Navbar
+=================
 
-Feature: Global SCSS Token Setup
----------------------------------
+Feat-001 | Global SCSS token setup (colours, typography)
+  Status: done
 
-Feature: Navbar Component
---------------------------
+Feat-002 | Navbar layout — logo left, links centre, phone icon right
+  Status: done
 
-Feature: Phone Icon Vibrate Animation
----------------------------------------
-STATUS: Updated — icon changed from 📱 emoji to Font Awesome fa-solid fa-mobile-button
-        @fortawesome/fontawesome-free installed via npm; CSS imported in main.jsx
+Feat-003 | Green-light background bleeding into hero section
+  Status: done
 
-Feature: Sticky Nav with Scroll Background
--------------------------------------------
-STATUS: Complete — nav sticks to top on scroll; frosted-glass white background appears
-        when user scrolls down, disappears when back at top
+Feat-004 | Vibrating/ringing animation on phone icon
+  Status: done
 
-Feature: Nav Links Always Centred
-----------------------------------
-STATUS: Complete — About, Projects, Pricing pill is always centred to the page
-        regardless of logo or phone button width
+Feat-005 | React Router — /about, /projects, /pricing pages with shared navbar
+  Status: done
 
-Feature: React Router Pages
------------------------------
+Feat-006 | Max-width 1270px constraint on nav
+  Status: done
 
+Feat-007 | Phone icon updated to Font Awesome fa-solid fa-mobile-button
+  Status: done
+
+Feat-008 | Nav links (About, Projects, Pricing) always centred to the page
+  Status: done
+
+Feat-009 | Sticky navbar — frosted-glass white background on scroll
+  Status: done
+
+Feat-010 | Sticky footer — always at bottom of viewport on short pages
+  Status: done
+
+Feat-011 | Add --company-colour token to colours.scss
+  Status: done
+
+Feat-012 | Replace logo text with Font Awesome bread-slice icon
+  Status: done
+
+Feat-013 | Update favicon to bread-slice SVG
+  Status: done
+
+---
+STOP AND TEST — all features complete. See testing.txt for manual test steps.

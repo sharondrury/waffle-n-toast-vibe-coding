@@ -36,9 +36,8 @@ const Footer = () => {
   return (
     <footer className="footer-wrapper">
       <div className="footer">
-
         <div className="footer__col-one">
-          <img src={wntLogo} alt="Waffle n Toast" className="footer__logo" />
+          <i className="fa-solid fa-bread-slice"></i>
           <address className="footer__address">
             <span>123 Example Street</span>
             <span>London</span>
@@ -52,12 +51,16 @@ const Footer = () => {
         <div className="footer__col-two">
           <button
             className="footer__nav-link"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             Home
           </button>
-          <Link className="footer__nav-link" to="/projects">Projects</Link>
-          <Link className="footer__nav-link" to="/pricing">Pricing</Link>
+          <Link className="footer__nav-link" to="/projects">
+            Projects
+          </Link>
+          <Link className="footer__nav-link" to="/pricing">
+            Pricing
+          </Link>
           <a
             className="footer__nav-link"
             href="https://www.instagram.com"
@@ -97,11 +100,10 @@ const Footer = () => {
             <LinkedInIcon />
           </a>
         </div>
-
       </div>
       <p className="footer__copyright">© Copyright Waffle & Toast 2026</p>
     </footer>
-  )
+  );
 }
 
 export default Footer

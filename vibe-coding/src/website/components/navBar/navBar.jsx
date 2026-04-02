@@ -17,8 +17,8 @@ const NavBar = () => {
     <>
       <div className={`nav-wrapper${scrolled ? ' nav-wrapper--scrolled' : ''}`}>
         <nav className="nav">
-          <NavLink to="/" className="nav__logo">
-            Waffle n Toast
+          <NavLink to="/" className="nav__logo" aria-label="Home">
+            <i className="fa-solid fa-bread-slice"></i>
           </NavLink>
 
           <div className="nav__links">

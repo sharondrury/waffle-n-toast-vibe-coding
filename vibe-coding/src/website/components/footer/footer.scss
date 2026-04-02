@@ -35,11 +35,8 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
-}
-
-.footer__logo {
-  height: 2.5rem;
-  width: auto;
+  color: var(--company-colour);
+  font-size: 1.4rem;
 }
 
 .footer__address {

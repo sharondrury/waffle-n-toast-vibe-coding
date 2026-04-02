@@ -29,11 +29,11 @@
   background: var(--green-dark);
   padding: 10px 18px;
   border-radius: var(--nav-radius);
-  color: var(--white);
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1rem;
+  color: var(--company-colour);
+  font-size: 1.4rem;
   text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
 .nav__links {

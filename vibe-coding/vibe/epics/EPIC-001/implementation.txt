@@ -1,12 +1,13 @@
 EPIC 001 — Navbar: Implementation Log
 ======================================
 
-Feature: Global SCSS Token Setup
----------------------------------
+Feat-001 | Global SCSS Token Setup
+-------------------------------------
 What was implemented:
   - colours.scss: all design tokens (--green-light, --green-dark, --sub-text-color,
     --bottom-color, --right-color, --secondary-bg, --white, --nav-radius, --nav-item-pad)
-  - typography.scss: Google Fonts import (Syne + DM Sans), font variables
+  - typography.scss: Google Fonts import (Inter + DM Sans), font variables
+    (--font-heading: Inter, --font-body: Inter)
   - _import.scss: @forward barrel for both files
 Files changed:
   src/assets/scss/ui/colours.scss
@@ -15,21 +16,30 @@ Files changed:
 
 ---
 
-Feature: Navbar Component
---------------------------
+Feat-002 to Feat-006 | Navbar Layout, Routing, Animation, Max-width
+----------------------------------------------------------------------
 What was implemented:
-  - nav-wrapper div carries --green-light background with extra bottom padding
-    to bleed visually into the hero section (Epic 002)
+  - .nav-wrapper carries --green-light background with extra bottom padding
+    to bleed visually into the hero section (EPIC-002)
   - Three pill sections: logo (left), links (centre), phone icon (right)
-  - All three use --green-dark background with 12px border radius
+  - All pills use --green-dark background with --nav-radius border radius
   - Max-width 1270px, centred via margin: 0 auto
-  - NavLink used from react-router-dom so .active class is applied automatically
+  - NavLink from react-router-dom applies .active class automatically
+  - Phone icon uses @keyframes phone-ring — 8 quick alternating rotations then rest
+  - Routes: / → HomePage, /about → AboutPage, /projects → ProjectsPage, /pricing → PricingPage
+  - Routing moved out of App.jsx into src/routes.jsx
+  - Each page in its own subfolder: src/website/pages/[page]/[page].jsx
 Files changed:
-  src/website/navBar/navBar.jsx
-  src/website/navBar/navBar.scss
-
+  src/website/components/navBar/navBar.jsx
+  src/website/components/navBar/navBar.scss
+  src/App.jsx
+  src/routes.jsx
+  src/website/pages/homePage/homePage.jsx
+  src/website/pages/aboutPage/aboutPage.jsx
+  src/website/pages/projectsPage/projectsPage.jsx
+  src/website/pages/pricingPage/pricingPage.jsx
 Engine components considered:
-  - websiteContext.jsx — not needed yet, no persistent state in navbar
+  - websiteContext.jsx — not needed, no persistent state in navbar
   - button.jsx — not used; nav phone button is custom to match pill aesthetic
   - modal.jsx / slidePanel.jsx — not needed for this epic
   - bars.jsx — not needed; custom layout built for this nav
@@ -37,37 +47,43 @@ Engine components considered:
 
 ---
 
-Feature: Phone Icon Vibrate Animation
----------------------------------------
+Feat-007 | Phone Icon Updated to Font Awesome
+-----------------------------------------------
 What was implemented:
-  - Pure CSS @keyframes phone-ring on the SVG element
-  - Rotates left/right in a rapid burst then pauses (2.4s loop)
-  - Mimics a phone vibrating on a table: 8 quick alternating rotations, then rest
-  - transform-origin: center for natural pivot
-
-Update — Phone icon changed to Font Awesome:
   - Replaced 📱 emoji with <i className="fa-solid fa-mobile-button"></i>
   - Installed @fortawesome/fontawesome-free via npm
   - Imported '@fortawesome/fontawesome-free/css/all.min.css' in src/main.jsx
   - .nav__phone-icon wrapper still applies the phone-ring animation as before
-  - icon colour inherits from CSS (currentColor / parent colour)
+  - Icon colour inherits from CSS via currentColor on the parent
 Files changed:
   src/website/components/navBar/navBar.jsx
   src/main.jsx
 
 ---
 
-Feature: Sticky Nav with Scroll Background
--------------------------------------------
+Feat-008 | Nav Links Always Centred
+-------------------------------------
 What was implemented:
-  - .nav-wrapper given position: sticky; top: 0; z-index: 100 so it stays at the top
-  - useEffect in NavBar adds a passive scroll listener; sets `scrolled` state true when
-    window.scrollY > 0, false when back at the very top
+  - .nav given position: relative so children can use absolute positioning
+  - .nav__links given position: absolute; left: 50%; transform: translateX(-50%)
+  - This pins the links pill to the true page centre at all viewport widths,
+    independent of the logo and phone button widths on either side
+  - justify-content: space-between kept on .nav so logo stays left, phone stays right
+Files changed:
+  src/website/components/navBar/navBar.scss
+
+---
+
+Feat-009 | Sticky Navbar with Frosted-Glass Scroll Background
+---------------------------------------------------------------
+What was implemented:
+  - .nav-wrapper given position: sticky; top: 0; z-index: 100
+  - useEffect in NavBar adds a passive scroll listener; sets `scrolled` state
+    true when window.scrollY > 0, false when back at the very top
   - When scrolled, .nav-wrapper--scrolled class is applied:
-      background: rgba(255, 255, 255, 0.6) — semi-transparent white
+      background: linear-gradient white fade (opaque at top, transparent at bottom)
       backdrop-filter: blur(10px) — frosted glass effect showing content behind
-      padding reduced from 20px/40px to 12px for a compact scrolled look
-  - Transitions on background and backdrop-filter for a smooth fade-in/out
+  - CSS transition on background for smooth fade-in/out
   - Event listener cleaned up on unmount via useEffect return
 Files changed:
   src/website/components/navBar/navBar.jsx
@@ -75,38 +91,66 @@ Files changed:
 
 ---
 
-Feature: Nav Links Always Centred
-----------------------------------
+Feat-010 | Sticky Footer — Always at Bottom of Viewport
+---------------------------------------------------------
 What was implemented:
-  - .nav given position: relative so children can use absolute positioning
-  - .nav__links given position: absolute; left: 50%; transform: translateX(-50%)
-  - This pins the links pill to the true centre of the nav at all viewport widths,
-    independent of the logo and phone button widths on either side
-  - justify-content: space-between kept on .nav so logo stays left and phone stays right
+  - body given min-height: 100vh; display: flex; flex-direction: column
+  - #root given display: flex; flex: 1 to fill body height
+  - .app wrapper in App.jsx given display: flex; flex-direction: column; flex: 1
+  - <main> wrapper in routes.jsx given flex: 1 so page content grows to fill space
+  - Footer uncommented in App.jsx so it renders on all routes
+  - Footer always sits at the bottom on short pages; sits naturally below content
+    on tall pages
 Files changed:
+  src/index.scss
+  src/App.jsx
+  src/routes.jsx
+
+---
+
+Feat-011 | Add --company-colour Token
+--------------------------------------
+What was implemented:
+  - Added --company-colour: #EB662D to the :root block in colours.scss
+  - All references to the brand orange must use var(--company-colour), never hard-coded hex
+Files changed:
+  src/assets/scss/ui/colours.scss
+
+---
+
+Feat-012 | Replace Logo Text with Font Awesome Bread-Slice Icon
+----------------------------------------------------------------
+What was implemented:
+  - Replaced "Waffle n Toast" text in NavLink logo with <i className="fa-solid fa-bread-slice">
+  - aria-label="Home" added to NavLink for accessibility
+  - .nav__logo colour changed to var(--company-colour) so icon renders in brand orange
+  - display: flex; align-items: center added to .nav__logo for vertical alignment
+  - @fortawesome/fontawesome-free already installed (Feat-007), no new dependency needed
+Files changed:
+  src/website/components/navBar/navBar.jsx
   src/website/components/navBar/navBar.scss
 
 ---
 
-Feature: React Router Pages
------------------------------
+Feat-013 | Bread-Slice SVG Favicon
+-------------------------------------
 What was implemented:
-  - BrowserRouter + Routes in App.jsx
-  - Routes: / → HomePage, /about → AboutPage, /projects → ProjectsPage, /pricing → PricingPage
-  - Each page imports Navbar so it renders on every route
-  - Page content stubs ready for future epics
+  - Created public/favicon.svg using the bread-slice SVG path, fill #EB662D
+    (hard-coded hex required — CSS variables are not available in standalone SVG favicons)
+  - Updated index.html <link rel="icon"> from /vite.svg to /favicon.svg
 Files changed:
-  src/App.jsx
-  src/website/pages/homePage.jsx
-  src/website/pages/aboutPage.jsx
-  src/website/pages/projectsPage.jsx
-  src/website/pages/pricingPage.jsx
+  public/favicon.svg
+  index.html
 
-Tradeoffs:
-  - Pages are stub shells only — no content until respective epics
-  - Hamburger/mobile menu hidden at <640px for now; can be added as its own epic
+---
 
-Learning note:
-  NavLink from react-router-dom automatically adds an `active` class when the
-  current URL matches the `to` prop. We leverage this to style the active link
-  differently without any manual state tracking.
+Learning Notes
+---------------
+  - NavLink applies an `active` class automatically when the URL matches the `to`
+    prop — no manual state tracking needed for active link styling
+  - CSS animation via @keyframes conflicts with inline style.transform. For
+    carousels that need drag (EPIC-005), switch to a RAF loop instead
+  - position: absolute + left: 50% + translateX(-50%) is the cleanest way to
+    true-centre a flex child when siblings have unequal widths
+  - Sticky footer: flex column on body/root/app + flex: 1 on main is the most
+    reliable approach across all page lengths
