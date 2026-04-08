@@ -1,13 +1,17 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Monitor, Server, Pen } from 'lucide-react'
+import ReactIcon from '../../../../assets/images/react-brands-solid-full.svg?react'
+import ServerIcon from '../../../../assets/images/server-solid-full.svg?react'
+import FigmaIcon from '../../../../assets/images/figma-brands-solid-full.svg?react'
+import ArrowsIcon from "../../../../assets/images/arrows-down-to-people-solid-full.svg?react";
 import servicesData from './data.json'
 import './companyServices.scss'
 
 const ICON_MAP = {
-  1: Monitor,
-  2: Server,
-  3: Pen,
+  'react-brands-solid-full.svg': ReactIcon,
+  'server-solid-full.svg': ServerIcon,
+  'figma-brands-solid-full.svg': FigmaIcon,
+  'arrows-down-to-people-solid-full.svg': ArrowsIcon,
 }
 
 const LINK_TEXT = 'Get in touch.'
@@ -51,8 +55,10 @@ const CompanyServices = () => {
       <div className="company-services__container">
         <div className="company-services__left">
           <h2 className="company-services__heading">
-            What's on offer for our{' '}
-            <span className="company-services__heading--underline">service</span>
+            Complete web design solutions{" "}
+            <span className="company-services__heading--underline">
+              solutions
+            </span>
           </h2>
         </div>
         <div className="company-services__right">
@@ -65,11 +71,15 @@ const CompanyServices = () => {
                 ref={(el) => (cardRefs.current[i] = el)}
               >
                 <div className="company-services__card-icon">
-                  {Icon && <Icon size={32} />}
+                  {Icon && <Icon width={32} height={32} />}
                 </div>
                 <div className="company-services__card-content">
-                  <h3 className="company-services__card-heading">{item.heading}</h3>
-                  <p className="company-services__card-text">{renderText(item.text)}</p>
+                  <h3 className="company-services__card-heading">
+                    {item.heading}
+                  </h3>
+                  <p className="company-services__card-text">
+                    {renderText(item.text)}
+                  </p>
                 </div>
               </div>
             )

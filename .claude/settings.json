@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /c/Repos/waffle-n-toast-vibe-coding/vibe-coding/src/assets/images/*.svg)",
+      "Bash(npm install:*)"
+    ]
+  }
+}

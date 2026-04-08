@@ -1,32 +1,22 @@
 [
   {
-    "icon": 1,
+    "icon": "react-brands-solid-full.svg",
     "heading": "Modern website",
     "text": "We help build interactive, modern websites to demonstrate a professional website for your customers."
   },
   {
-    "icon": 2,
+    "icon": "server-solid-full.svg",
     "heading": "Hosting and Domains",
     "text": "No need to worry about hosting and domains we've got you covered if you haven't done already. Take a look at our price-list and see what suites your business best."
   },
   {
-    "icon": 3,
+    "icon": "figma-brands-solid-full.svg",
     "heading": "Design",
-    "text": "If you have a design in mind great, we can work from that. If you need help with some design ideas, we can help with that. If you need something from scratch, we can also help with that. Get in touch."
+    "text": "We design in figma! It's great! If you are only looking for you site to be designed, we can send over the Figma files. Figma also offers interactive mockups so you can see how your website will look before it's built. Get in touch."
   },
   {
-    "icon": 1,
-    "heading": "Modern website",
-    "text": "We help build interactive, modern websites to demonstrate a professional website for your customers."
-  },
-  {
-    "icon": 2,
-    "heading": "Hosting and Domains",
-    "text": "No need to worry about hosting and domains we've got you covered if you haven't done already. Take a look at our price-list and see what suites your business best."
-  },
-  {
-    "icon": 3,
-    "heading": "Design",
-    "text": "If you have a design in mind great, we can work from that. If you need help with some design ideas, we can help with that. If you need something from scratch, we can also help with that. Get in touch."
+    "icon": "arrows-down-to-people-solid-full.svg",
+    "heading": "Collaborate",
+    "text": "We work together on ever step of the way. You have an idea, lets bring it into play, lets implements, lets make it happen."
   }
 ]
