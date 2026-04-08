@@ -41,8 +41,87 @@
   margin: 0;
 }
 
-.contact-section__img {
+// ============================================================
+// Rolling Shape Animation
+// Circle rolls in → bounces → becomes square → bounces back
+// to circle → rolls off screen
+// ============================================================
+
+$shape-size:    80px;
+$container-h:   340px;
+$ground:        calc(#{$container-h} - #{$shape-size} - 10px);
+$bounce-peak:   150px;
+$duration:      5s;
+$color-square:  var(--company-colour);
+$color-circle:  var(--green-dark);
+$radius-circle: 50%;
+$radius-square: 4px;
+
+.stage {
+  position: relative;
   width: 100%;
-  border-radius: 0.75rem;
-  object-fit: cover;
+  height: $container-h;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.12);
+  }
+}
+
+.shape {
+  position: absolute;
+  width:  $shape-size;
+  height: $shape-size;
+  background: $color-circle;
+  top: $ground;
+  transform-origin: center center;
+
+  animation:
+    shape-move-x   $duration cubic-bezier(0.25, 0.1, 0.75, 0.9) infinite,
+    shape-move-y   $duration ease-in-out                          infinite,
+    shape-rotate   $duration linear                               infinite,
+    shape-morph    $duration ease-in-out                          infinite;
+}
+
+@keyframes shape-move-x {
+  0%   { left: -#{$shape-size + 10px}; }
+  35%  { left: calc(50% - #{$shape-size * 0.5}); }
+  65%  { left: calc(50% - #{$shape-size * 0.5}); }
+  100% { left: calc(100% + 10px); }
+}
+
+@keyframes shape-move-y {
+  0%   { top: $ground; }
+  32%  { top: $ground; }
+  40%  { top: calc(#{$ground} - #{$bounce-peak}); }
+  47%  { top: $ground; }
+  55%  { top: calc(#{$ground} - #{$bounce-peak}); }
+  62%  { top: $ground; }
+  100% { top: $ground; }
+}
+
+@keyframes shape-rotate {
+  0%   { rotate: 0deg; }
+  35%  { rotate: 630deg; }
+  62%  { rotate: 630deg; }
+  100% { rotate: 1260deg; }
+}
+
+@keyframes shape-morph {
+  0%   { border-radius: $radius-circle; background: $color-circle; }
+  33%  { border-radius: $radius-circle; background: $color-circle; }
+  38%  { border-radius: 12px;           background: $color-circle; }
+  40%  { border-radius: $radius-square; background: $color-square; }
+  47%  { border-radius: $radius-square; background: $color-square; }
+  52%  { border-radius: $radius-square; background: $color-square; }
+  55%  { border-radius: $radius-square; background: $color-square; }
+  59%  { border-radius: $radius-circle; background: $color-circle; }
+  62%  { border-radius: $radius-circle; background: $color-circle; }
+  100% { border-radius: $radius-circle; background: $color-circle; }
 }

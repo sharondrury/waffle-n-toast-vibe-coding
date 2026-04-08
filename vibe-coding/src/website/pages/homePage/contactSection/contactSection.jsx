@@ -1,6 +1,5 @@
 import { forwardRef } from 'react'
 import ContactForm from './contactForm'
-import contactImage from '../../../../assets/images/image2.png'
 import './contactSection.scss'
 
 const ContactSection = forwardRef((props, ref) => {
@@ -16,11 +15,9 @@ const ContactSection = forwardRef((props, ref) => {
             Even if you haven't read exactly what you came here for,
             send us a message and we can work it out together.
           </p>
-          <img
-            src={contactImage}
-            alt="Get in touch"
-            className="contact-section__img"
-          />
+          <div className="stage">
+            <div className="shape" />
+          </div>
         </div>
       </div>
     </section>

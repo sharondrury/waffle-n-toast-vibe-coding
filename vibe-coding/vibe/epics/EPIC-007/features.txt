@@ -171,7 +171,32 @@ cursor: pointer also added.
 
 ---
 
-STOP AND TEST when all 9 features are marked done.
+Feat-010 | Replace contact image with rolling shape CSS animation
+------------------------------------------------------------------
+Replace the static image2.png in the info column of contactSection with a
+pure CSS animation — no JS, no external library.
+
+Animation sequence:
+  - A circle rolls in from the left
+  - Bounces twice at centre, morphing into a square at each bounce peak
+  - Reverts to a circle and rolls off to the right
+  - Loops infinitely
+
+Implementation:
+  - Markup: <div class="stage"><div class="shape" /></div>
+  - All animation via 4 simultaneous CSS @keyframes on .shape:
+      shape-move-x  — horizontal travel (cubic-bezier)
+      shape-move-y  — vertical bounces (ease-in-out)
+      shape-rotate  — spin while rolling, pauses during bounces
+      shape-morph   — border-radius transitions circle ↔ square
+  - SCSS variables control size, timing, colour, and ground position
+  - No animejs, no JS
+
+  Status: done
+
+---
+
+STOP AND TEST when all 10 features are marked done.
 Verify:
   [ ] --grey-bg and --red tokens added to colours.scss
   [ ] /contact route removed, no broken links

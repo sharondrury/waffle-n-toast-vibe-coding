@@ -193,3 +193,29 @@ Engine components considered:
   - None.
 
 ---
+
+Feature: Feat-010 | Rolling Shape CSS Animation replaces contact image
+-----------------------------------------------------------------------
+What was implemented:
+  - Removed <img src={contactImage}> and the contactImage import from contactSection.jsx
+  - Replaced with <div className="stage"><div className="shape" /></div>
+  - Added full pure-CSS animation to contactSection.scss using 4 @keyframes:
+      shape-move-x  — rolls in from off-screen left, holds centre, exits right
+                      easing: cubic-bezier(0.25, 0.1, 0.75, 0.9) for natural roll feel
+      shape-move-y  — flat on ground while rolling, two bounce arcs at centre
+      shape-rotate  — 1.75 rotations rolling in, pauses during bounces, 1.75 rolling out
+      shape-morph   — border-radius: 50% (circle) while rolling; morphs to 4px (square)
+                      at each bounce peak; reverts to circle before rolling off
+  - SCSS variables at top of block control all magic numbers:
+      $shape-size, $container-h, $ground, $bounce-peak, $duration, $color
+  - No JS, no animejs, no external library — pure CSS only
+  - .stage has overflow: hidden and a ground reference line via ::after pseudo-element
+  - Animation loops infinitely
+
+Files changed:
+  src/website/pages/homePage/contactSection/contactSection.jsx
+  src/website/pages/homePage/contactSection/contactSection.scss
+Engine components considered:
+  - None — pure CSS, no component needed.
+
+---
