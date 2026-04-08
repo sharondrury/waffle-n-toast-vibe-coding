@@ -1,10 +1,10 @@
 .hero {
   background: var(--green-light);
-  padding: 5.625rem 1.5rem;
+  padding: 60px 24px;
 }
 
 .hero__inner {
-  max-width: 1270px;
+  max-width: 750px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@
 }
 
 .hero__heading-wrapper {
-  height: 11rem;
+  height: 250px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -46,10 +46,12 @@
 .hero__subtext {
   font-size: 1.25rem;
   color: var(--sub-text-color);
+  font-family: var(--font-body);
+  font-weight: 700;
   max-width: 590px;
   margin-top: 1.25rem;
   margin-bottom: 1.875rem;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 .hero__cta {
@@ -61,6 +63,7 @@
   font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 4px 4px 0px 0px #000000;

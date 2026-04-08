@@ -27,7 +27,7 @@
 
 .nav__logo {
   background: var(--green-dark);
-  padding: 10px 18px;
+  padding: 16px 18px;
   border-radius: var(--nav-radius);
   color: var(--company-colour);
   font-size: 1.4rem;
@@ -38,9 +38,9 @@
 
 .nav__links {
   display: flex;
-  gap: 30px;
+  gap: 60px;
   background: var(--green-dark);
-  padding: var(--nav-item-pad);
+  padding: 12px 36px;
   border-radius: var(--nav-radius);
   position: absolute;
   left: 50%;
