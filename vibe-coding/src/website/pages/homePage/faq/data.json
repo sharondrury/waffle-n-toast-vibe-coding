@@ -1,18 +1,22 @@
 [
   {
-    "question": "question 1",
-    "answer": "Some answer here about the title, some blah blah. Some answer here about the title, some blah blah. Some answer here about the title, some blah blah."
+    "question": "How long does it take to build a website?",
+    "answer": "The timeline for building a website can vary depending on the complexity of the project. A simple website might take a few weeks, while a more complex one could take several months."
   },
   {
-    "question": "question 2",
-    "answer": "Some answer here about the title, some blah blah. Some answer here about the title, some blah blah. Some answer here about the title, some blah blah."
+    "question": "How much does it cost to build a website?",
+    "answer": "This depends on your project requirements. We can provide you with a quote after we have a better understanding of your needs."
   },
   {
-    "question": "question 3",
-    "answer": "Some answer here about the title, some blah blah. Some answer here about the title, some blah blah. Some answer here about the title, some blah blah."
+    "question": "How do I get started with a website project?",
+    "answer": "The first step is to discuss your requirements with our team. We'll then create a plan and provide you with a quote."
   },
   {
-    "question": "question 4",
-    "answer": "Some answer here about the title, some blah blah. Some answer here about the title, some blah blah. Some answer here about the title, some blah blah."
+    "question": "What if I need changes after the website is built?",
+    "answer": "We offer post-launch support to address any necessary changes or updates."
+  },
+  {
+    "question": "What are the terms of payment?",
+    "answer": "We typically require a deposit of 50% upfront, 20% once design is complete, with the remaining balance due upon completion of the project. However, we can discuss and agree on a payment schedule that works best for you."
   }
 ]
