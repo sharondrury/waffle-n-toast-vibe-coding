@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import wntLogo from '../../../assets/images/WnT-logo.svg'
 import './footer.scss'
 
 function FacebookIcon() {
@@ -37,18 +36,20 @@ const Footer = () => {
     <footer className="footer-wrapper">
       <div className="footer">
         <div className="footer__col-one">
-          <i className="fa-solid fa-bread-slice"></i>
+          <i className="fa-solid fa-bread-slice fa-2x"></i>
           <address className="footer__address">
-            <span>123 Example Street</span>
-            <span>London</span>
-            <span>EC1A 1BB</span>
+            <span>
+              <i class="fa-solid fa-location-dot fa-lg"></i>North Wales, UK
+            </span>
           </address>
           <a href="mailto:email@email.com" className="footer__email">
-            email@email.com
+            <i class="fa-regular fa-envelope fa-lg"></i>
+            infowaffleandtoast@gmail.com
           </a>
         </div>
 
         <div className="footer__col-two">
+          <h3 className=" footer-header">Explore</h3>
           <button
             className="footer__nav-link"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -72,33 +73,33 @@ const Footer = () => {
         </div>
 
         <div className="footer__col-three">
-          <a
-            href="https://www.facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer__social-link"
-            aria-label="Facebook"
-          >
-            <FacebookIcon />
-          </a>
-          <a
-            href="https://www.instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer__social-link"
-            aria-label="Instagram"
-          >
-            <InstagramIcon />
-          </a>
-          <a
-            href="https://www.linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer__social-link"
-            aria-label="LinkedIn"
-          >
-            <LinkedInIcon />
-          </a>
+          <h3 className=" footer-header">Follow Us</h3>
+          <div className="footer__social-link">
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
+              <FacebookIcon />
+            </a>
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <InstagramIcon />
+            </a>
+            <a
+              href="https://www.linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <LinkedInIcon />
+            </a>
+          </div>
         </div>
       </div>
       <p className="footer__copyright">© Copyright Waffle & Toast 2026</p>

@@ -70,6 +70,10 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
+   &:hover {
+    background: var(--primary-btn-hvr);
+  }
 }
 
 .nav__phone-icon {
