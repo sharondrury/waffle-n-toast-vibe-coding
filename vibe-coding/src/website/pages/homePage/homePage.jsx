@@ -16,7 +16,7 @@ const HomePage = () => {
       <NavBar />
       <main className="homePage">
         <Hero onCtaClick={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })} />
-        <CompanyServices />
+        <CompanyServices onGetInTouch={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })} />
         <Faq />
         <Showcase />
         <CompanyLogo />

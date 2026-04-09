@@ -78,3 +78,17 @@
     }
   }
 }
+
+.company-services__inline-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--green-dark);
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

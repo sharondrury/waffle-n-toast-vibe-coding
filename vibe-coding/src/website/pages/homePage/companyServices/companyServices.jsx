@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
 import ReactIcon from '../../../../assets/images/react-brands-solid-full.svg?react'
 import ServerIcon from '../../../../assets/images/server-solid-full.svg?react'
 import FigmaIcon from '../../../../assets/images/figma-brands-solid-full.svg?react'
@@ -17,18 +16,22 @@ const ICON_MAP = {
 const LINK_TEXT = 'Get in touch.'
 const TRIGGER_DISTANCE = 300
 
-const renderText = (text) => {
+const renderText = (text, onGetInTouch) => {
   const idx = text.lastIndexOf(LINK_TEXT)
   if (idx === -1) return text
   return (
     <>
       {text.slice(0, idx)}
-      <strong><Link to="/contact">{LINK_TEXT}</Link></strong>
+      <strong>
+        <button className="company-services__inline-btn" onClick={onGetInTouch}>
+          {LINK_TEXT}
+        </button>
+      </strong>
     </>
   )
 }
 
-const CompanyServices = () => {
+const CompanyServices = ({ onGetInTouch }) => {
   const cardRefs = useRef([])
 
   useEffect(() => {
@@ -78,7 +81,7 @@ const CompanyServices = () => {
                     {item.heading}
                   </h3>
                   <p className="company-services__card-text">
-                    {renderText(item.text)}
+                    {renderText(item.text, onGetInTouch)}
                   </p>
                 </div>
               </div>
