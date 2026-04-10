@@ -1,0 +1,88 @@
+EPIC 009 — Mobile Responsiveness
+==================================
+Breakpoint: 1000px and below for all features unless stated otherwise.
+Global rule: ensure safe left/right margin on all sections so no text or
+images touch the screen edge on mobile.
+
+---
+
+Feat-001 | Global mobile margin token
+  - --mobile-gutter: 18px added to colours.scss :root
+  - Consumed via var(--mobile-gutter) in all mobile media queries
+  Status: done
+
+---
+
+Feat-002 | Navbar — hamburger menu at 1000px and below
+  - Desktop links pill hidden at ≤1000px
+  - fa-solid fa-bars hamburger button shown instead
+  - Right slide-in panel with About / Projects / Pricing links + × close button
+  - Backdrop click closes panel; NavLink click closes + navigates
+  - menuOpen state local to navBar.jsx
+  Status: done
+
+---
+
+Feat-003 | Hero — reduced type scale and button margin at 1000px and below
+  - Heading: 2.5rem (was 4.5rem)
+  - Subtext: 1rem (was 1.25rem), max-width: 100%
+  - CTA: padding 0.875rem 2.5rem, width fills gutters so it never touches edges
+  - Typewriter JS unaffected — CSS only change
+  Status: done
+
+---
+
+Feat-004 | CompanyServices — stacked layout at 1000px and below
+  - flex-direction: column on container
+  - Heading: position: static (overrides sticky), text-align: left, 1.75rem
+  - Padding uses var(--mobile-gutter)
+  - Scroll animation requires no change
+  Status: done
+
+---
+
+Feat-005 | FAQ — reposition floating question marks at 1000px and below
+  - Two ? centred above heading (top: 8px)
+  - Two ? centred below last pill (bottom: 8px)
+  - Float animations continue unchanged
+  - faq__inner gets mobile-gutter padding; faq__heading width: 100%
+  Status: done
+
+---
+
+Feat-006 | Showcase — reduced card size at 1000px and below
+  - Card: 248×296px (354×423 × 0.7)
+  - Gap and margin-right reduced to 11px
+  - Carousel RAF loop unaffected
+  Status: done
+
+---
+
+Feat-007 | Showcase modal — single column image grid at 1000px and below
+  - modal-showcase__images: flex-direction: column
+  - Each image: width 100%, height 200px
+  - Content box: max-height 90vh, overflow-y: auto, width 95%
+  Status: done
+
+---
+
+Feat-008 | ContactSection — remove animation and restack layout at 1000px and below
+  - Container: flex-direction: column
+  - Form col and info col: width 100%
+  - Heading: 1.5rem
+  - .stage hidden (display: none); .shape: animation: none !important
+  - Padding uses var(--mobile-gutter)
+  Status: done
+
+---
+
+Feat-009 | Footer — vertical stack at 1000px and below
+  - grid-template-columns: 1fr (was repeat(4, 1fr))
+  - Breakpoint updated from 480px to 1000px
+  - Horizontal padding uses var(--mobile-gutter)
+  Status: done
+
+---
+STOP AND TEST — all 9 features complete.
+Test on real device or browser DevTools at 375px, 390px and 768px viewport widths.
+See testing.txt for manual test steps.

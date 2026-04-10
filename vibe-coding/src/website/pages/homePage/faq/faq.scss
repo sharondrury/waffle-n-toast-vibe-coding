@@ -119,6 +119,45 @@
   animation: floatD 6s ease-in-out infinite;
 }
 
+@media (max-width: 1000px) {
+  .faq {
+    padding: 60px 0;
+  }
+
+  .faq__inner {
+    padding: 0 var(--mobile-gutter);
+  }
+
+  .faq__heading {
+    width: 100%;
+  }
+
+  // Two ? above the heading
+  .faq__decoration--tl {
+    top: 8px;
+    left: calc(50% - 64px);
+    right: auto;
+  }
+
+  .faq__decoration--tr {
+    top: 8px;
+    right: auto;
+    left: calc(50% + 4px);
+  }
+
+  // Two ? below the last pill
+  .faq__decoration--bl {
+    bottom: 8px;
+    left: calc(50% - 64px);
+  }
+
+  .faq__decoration--br {
+    bottom: 8px;
+    right: auto;
+    left: calc(50% + 4px);
+  }
+}
+
 @keyframes floatA {
   0%, 100% { transform: translate(0, 0); }
   40%       { transform: translate(8px, -12px); }

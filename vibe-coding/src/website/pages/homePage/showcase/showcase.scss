@@ -33,3 +33,19 @@
   cursor: pointer;
 }
 
+@media (max-width: 1000px) {
+  .showcase {
+    padding: 60px 0;
+  }
+
+  .showcase__card {
+    width: 248px;
+    height: 296px;
+    margin-right: 11px;
+  }
+
+  .showcase__track {
+    gap: 11px;
+  }
+}
+

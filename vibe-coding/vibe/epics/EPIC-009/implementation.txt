@@ -1,0 +1,171 @@
+EPIC 009 — Mobile Responsiveness: Implementation Log
+=====================================================
+All changes are behind a @media (max-width: 1000px) breakpoint unless noted.
+
+---
+
+Feature: Feat-001 | Global mobile margin token
+------------------------------------------------
+What was implemented:
+  Added --mobile-gutter: 18px to :root in colours.scss. All mobile media
+  queries consume var(--mobile-gutter) for horizontal padding so future
+  spacing adjustments are a one-line change.
+Files changed:
+  src/assets/scss/ui/colours.scss
+Engine components considered:
+  - None required.
+
+---
+
+Feature: Feat-002 | Navbar — hamburger menu
+---------------------------------------------
+What was implemented:
+  - slidePanel.jsx engine component does not exist in this project.
+    A lightweight custom panel was built local to navBar.
+  - Added menuOpen state to navBar.jsx (alongside existing modalOpen + scrolled).
+  - nav__right wrapper div groups the hamburger and phone pill so they stay
+    paired on the right at all viewport widths.
+  - nav__hamburger button: fa-solid fa-bars icon, hidden at desktop via CSS,
+    shown at ≤1000px via display: flex.
+  - nav__panel: position fixed, slides in from right via translateX(100%) →
+    translateX(0), CSS transition 0.3s ease. Contains About / Projects / Pricing
+    NavLinks and a × close button (fa-solid fa-xmark).
+  - nav__backdrop: fixed full-screen dark overlay behind the panel.
+    Click closes the menu.
+  - Each NavLink inside the panel calls closeMenu() onClick so it closes on
+    navigation.
+  - nav__links (desktop pill) hidden at ≤1000px via display: none.
+Files changed:
+  src/website/components/navBar/navBar.jsx
+  src/website/components/navBar/navBar.scss
+Engine components considered:
+  - slidePanel.jsx — does not exist in this project. Custom panel built instead,
+    kept local to navBar as it has no other consumers.
+
+---
+
+Feature: Feat-003 | Hero — reduced type scale and button margin
+----------------------------------------------------------------
+What was implemented:
+  - .hero padding reduced to 40px var(--mobile-gutter).
+  - .hero__heading-wrapper height reduced to 180px.
+  - .hero__heading font-size reduced from 4.5rem to 2.5rem.
+  - .hero__subtext font-size reduced to 1rem, max-width: 100%.
+  - .hero__cta padding reduced to 0.875rem 2.5rem; width fills available
+    space minus gutters so it never touches screen edges.
+  - Typewriter JS logic is unaffected — only CSS changed.
+Files changed:
+  src/website/pages/homePage/hero/hero.scss
+Engine components considered:
+  - None.
+
+---
+
+Feature: Feat-004 | CompanyServices — stacked layout
+------------------------------------------------------
+What was implemented:
+  - .company-services__container: flex-direction: column at mobile.
+  - .company-services__left: width 100%, padding-right 0.
+  - .company-services__heading: position: static (overrides sticky explicitly),
+    text-align: left, font-size 1.75rem.
+  - Padding uses var(--mobile-gutter).
+  - Scroll-driven card animation (scroll listener + inline styles) requires
+    no change — it is position-driven, not layout-driven.
+Files changed:
+  src/website/pages/homePage/companyServices/companyServices.scss
+Engine components considered:
+  - None.
+Note: position: static explicitly overrides position: sticky as required.
+Without this the heading behaves unexpectedly in the stacked layout.
+
+---
+
+Feature: Feat-005 | FAQ — reposition floating question marks
+-------------------------------------------------------------
+What was implemented:
+  - At ≤1000px the ? decorations move from left/right screen edges to
+    centred above and below the section content.
+  - --tl and --tr: top: 8px, bracketing the horizontal centre.
+  - --bl and --br: bottom: 8px, mirrored below.
+  - right: auto used on --tr and --br to cancel their existing right values.
+  - Float animations continue unchanged from the new base positions.
+  - .faq__inner gets var(--mobile-gutter) horizontal padding.
+  - .faq__heading width: 100% overrides the fixed 750px desktop value.
+Files changed:
+  src/website/pages/homePage/faq/faq.scss
+Engine components considered:
+  - None.
+
+---
+
+Feature: Feat-006 | Showcase — reduced card size
+--------------------------------------------------
+What was implemented:
+  - .showcase__card: width 248px (354 × 0.7), height 296px (423 × 0.7).
+  - margin-right and gap reduced proportionally to 11px.
+  - Carousel RAF loop writes translateX directly — not CSS dependent.
+    No JS changes needed.
+Files changed:
+  src/website/pages/homePage/showcase/showcase.scss
+Engine components considered:
+  - None.
+
+---
+
+Feature: Feat-007 | Showcase modal — single column image grid
+--------------------------------------------------------------
+What was implemented:
+  - .modal-showcase__content: max-height 90vh, overflow-y: auto,
+    reduced padding, width 95%.
+  - .modal-showcase__images: flex-direction: column.
+  - .modal-showcase__image: width 100%, height 200px.
+Files changed:
+  src/website/pages/homePage/showcase/modalShowcase/modalShowcase.scss
+Engine components considered:
+  - None.
+
+---
+
+Feature: Feat-008 | ContactSection — remove animation, restack layout
+----------------------------------------------------------------------
+What was implemented:
+  - .contact-section__container: flex-direction: column.
+  - .contact-section__form-col and __info-col: width 100%.
+  - .contact-section__heading: font-size 1.5rem.
+  - .stage: display: none — hides the shape animation at mobile where the
+    stage is too narrow to be meaningful.
+  - .shape: animation: none !important to reliably override any CSS animation
+    without touching JavaScript logic.
+  - Padding uses var(--mobile-gutter).
+Files changed:
+  src/website/pages/homePage/contactSection/contactSection.scss
+Engine components considered:
+  - None.
+Note: animation: none !important overrides animation regardless of class
+application order — the safest approach for JS-toggled animation classes.
+
+---
+
+Feature: Feat-009 | Footer — vertical stack
+---------------------------------------------
+What was implemented:
+  - Updated existing @media (max-width: 480px) to @media (max-width: 1000px).
+  - grid-template-columns: 1fr stacks all columns into a single column.
+  - Horizontal padding updated to var(--mobile-gutter).
+Files changed:
+  src/website/components/footer/footer.scss
+Engine components considered:
+  - None. Footer uses CSS Grid — switching to 1fr is straightforward.
+
+---
+
+Learning Notes
+---------------
+  - position: sticky must be explicitly overridden with position: static inside
+    a media query — it does not automatically reset when layout changes.
+  - animation: none !important is the safest way to kill JS-toggled CSS
+    animations at mobile without changing any JavaScript logic.
+  - Slide panel built local to navBar — no engine component needed because it
+    has exactly one consumer and is tightly coupled to nav's menu state.
+  - var(--mobile-gutter) defined once, consumed everywhere — future gutter
+    changes are a one-line edit in colours.scss.

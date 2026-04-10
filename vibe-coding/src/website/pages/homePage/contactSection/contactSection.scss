@@ -41,6 +41,38 @@
   margin: 0;
 }
 
+@media (max-width: 1000px) {
+  .contact-section {
+    padding: 2rem var(--mobile-gutter);
+  }
+
+  .contact-section__container {
+    flex-direction: column;
+    padding: 1.5rem var(--mobile-gutter);
+    gap: 1.5rem;
+  }
+
+  .contact-section__form-col {
+    width: 100%;
+  }
+
+  .contact-section__info-col {
+    width: 100%;
+  }
+
+  .contact-section__heading {
+    font-size: 1.5rem;
+  }
+
+  .shape {
+    animation: none !important;
+  }
+
+  .stage {
+    display: none;
+  }
+}
+
 // ============================================================
 // Rolling Shape Animation
 // Circle rolls in → bounces → becomes square → bounces back

@@ -79,6 +79,25 @@
   }
 }
 
+@media (max-width: 1000px) {
+  .company-services__container {
+    flex-direction: column;
+    padding: 40px var(--mobile-gutter);
+  }
+
+  .company-services__left {
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 24px;
+  }
+
+  .company-services__heading {
+    position: static;
+    text-align: left;
+    font-size: 1.75rem;
+  }
+}
+
 .company-services__inline-btn {
   background: none;
   border: none;
