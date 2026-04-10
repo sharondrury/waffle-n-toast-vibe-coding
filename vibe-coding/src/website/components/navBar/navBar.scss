@@ -7,10 +7,15 @@
   transition: background 0.3s ease, backdrop-filter 0.3s ease;
 
   &--scrolled {
-    // background: #ffffff;
-    background: linear-gradient(180deg,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.58) 78%, rgba(255, 255, 255, 0) 100%);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.04) 0%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
     padding: 20px 0;
   }
 }
