@@ -1,11 +1,23 @@
 import NavBar from '../../components/navBar/navBar'
-import './pricingPage.scss'
 
 const PricingPage = () => {
   return (
     <>
       <NavBar />
-      <main className="pricingPage">
+      <main style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <p style={{
+          color: 'var(--white)',
+          fontFamily: 'var(--font-heading)',
+          fontSize: '2rem',
+          fontWeight: 700,
+        }}>
+          Coming Soon
+        </p>
       </main>
     </>
   )
