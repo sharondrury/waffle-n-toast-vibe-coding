@@ -1,12 +1,18 @@
-EPIC 011 — [Title]: Implementation Log
-=======================================
+EPIC 011 — Projects Page: Implementation Log
+=============================================
 
-Feature: Feat-001 |
---------------------
+Feature: Feat-001 | Projects page — coming soon placeholder
+-------------------------------------------------------------
 What was implemented:
+  - Replaced empty stub with a centred "Coming Soon" message
+  - Layout: min-height 100vh, flexbox centre both axes via inline styles
+  - Text styled with var(--white), var(--font-heading), 2rem, font-weight 700
+  - Unused projectsPage.scss import removed — no SCSS needed for this placeholder
+  - NavBar renders above as normal via existing routing
 Files changed:
+  src/website/pages/projectsPage/projectsPage.jsx
 Engine components considered:
-  -
+  - All engine UI components reviewed — none required for a simple placeholder.
 Tradeoffs / follow-up:
-
----
+  - Inline styles used intentionally — no SCSS file warranted for a single
+    centred text element. Full projects page content will be a future epic.
