@@ -1,0 +1,12 @@
+EPIC 012 — [Title]: Implementation Log
+=======================================
+
+Feature: Feat-001 |
+--------------------
+What was implemented:
+Files changed:
+Engine components considered:
+  -
+Tradeoffs / follow-up:
+
+---
