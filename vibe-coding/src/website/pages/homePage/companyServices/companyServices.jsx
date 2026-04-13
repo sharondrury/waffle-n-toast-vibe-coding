@@ -58,7 +58,7 @@ const CompanyServices = ({ onGetInTouch }) => {
       <div className="company-services__container">
         <div className="company-services__left">
           <h2 className="company-services__heading">
-            Complete web design solutions{" "}
+            Complete web design {" "}
             <span className="company-services__heading--underline">
               solutions
             </span>
