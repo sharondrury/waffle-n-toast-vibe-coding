@@ -1,0 +1,21 @@
+EPIC 010 — About Page
+======================
+
+Feat-001 | About page — coming soon placeholder
+  File: vibe-coding/src/website/pages/aboutPage/aboutPage.jsx
+  - The page already exists from EPIC-001 routing setup
+  - Replace any existing stub content with a centred "Coming Soon" message
+  - Layout:
+      Full viewport height (min-height: 100vh) so the message sits in the
+      true centre of the screen
+      Text centred both horizontally and vertically (flexbox recommended)
+      Text colour: white
+      The navbar renders above this page as normal (already wired via routing)
+  - No additional files or SCSS file needed unless styling cannot be done
+    inline — keep it simple
+  Status: done
+
+---
+STOP AND TEST when Feat-001 is marked done.
+Manual test: navigate to /about — page should show navbar and a white
+"Coming Soon" message centred on the page.
