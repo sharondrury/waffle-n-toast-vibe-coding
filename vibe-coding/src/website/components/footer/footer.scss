@@ -27,7 +27,8 @@
   margin: 0 auto;
   text-align: center;
   font-size: 0.75rem;
-  color: var(--text-grey);
+  font-weight: 600;
+  color: var(--footer-text-colour);
   padding: 1rem 0;
 }
 
@@ -56,7 +57,7 @@
   gap: 0.125rem;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--text-grey);
+  color: var(--footer-text-colour);
   line-height: 1.6;
   padding-top: 10px;
 
@@ -68,7 +69,7 @@
 .footer__email {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--text-grey);
+  color: var(--underline-green);
   text-decoration: none;
 
   i {
@@ -87,7 +88,7 @@
 }
 
 .footer__nav-link {
-  color: var(--text-grey);
+  color: var(--footer-text-colour);
   font-size: 0.9375rem;
   font-weight: 600;
   text-decoration: none;
@@ -120,7 +121,7 @@
   transition: color 0.2s ease;
 
   a {
-    color:  var(--text-grey);
+    color:  var(--footer-text-colour);
 
       &:hover {
       color: var(--right-color);
