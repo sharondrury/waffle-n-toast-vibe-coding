@@ -18,9 +18,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-end;
 }
 
 .company-services__heading {
+  max-width: 250px;
   font-family: var(--font-heading);
   font-size: 2.25rem;
   font-weight: 700;
@@ -81,21 +83,26 @@
 }
 
 @media (max-width: 1000px) {
+  .company-services {
+    padding: var(--mobile-gutter);
+  }
+
   .company-services__container {
     flex-direction: column;
-    padding: 40px var(--mobile-gutter);
   }
 
   .company-services__left {
     width: 100%;
-    padding-right: 0;
+    padding-right: 20px;
     padding-bottom: 24px;
+    align-items: flex-start;
   }
 
   .company-services__heading {
     position: static;
     text-align: left;
     font-size: 1.75rem;
+    max-width: 500px;
   }
 }
 

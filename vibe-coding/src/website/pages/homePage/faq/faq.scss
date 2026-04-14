@@ -29,6 +29,7 @@
   overflow: hidden;
   border: 1px solid var(--black);
   box-shadow: 4px 4px 0px 0px var(--sub-text-color);
+  z-index: 2;
 }
 
 .faq__question {
@@ -82,6 +83,7 @@
 .faq__decorations {
   pointer-events: none;
   user-select: none;
+  z-index: -0;
 }
 
 .faq__decoration {
@@ -137,26 +139,26 @@
   // Two ? above the heading
   .faq__decoration--tl {
     top: 8px;
-    left: calc(50% - 64px);
+    left: calc(40% - 64px);
     right: auto;
   }
 
   .faq__decoration--tr {
     top: 8px;
     right: auto;
-    left: calc(50% + 4px);
+    left: calc(60% + 4px);
   }
 
   // Two ? below the last pill
   .faq__decoration--bl {
     bottom: 8px;
-    left: calc(50% - 64px);
+    left: calc(40% - 64px);
   }
 
   .faq__decoration--br {
     bottom: 8px;
     right: auto;
-    left: calc(50% + 4px);
+    left: calc(60% + 4px);
   }
 }
 
