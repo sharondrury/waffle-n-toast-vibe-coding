@@ -2,11 +2,11 @@
 @use '../../../../assets/scss/ui/typography' as *;
 
 .company-logo {
-  max-width: 1200px;
+  // max-width: 1200px;
   margin: 0 auto;
   overflow: hidden;
   position: relative;
-  padding: 3rem 0 0 0;
+  padding: 4rem 0 0 0;
 
   &::before,
   &::after {
@@ -19,15 +19,15 @@
     pointer-events: none;
   }
 
-  &::before {
-    left: 0;
-    background: linear-gradient(to right, var(--white) 0%, transparent 100%);
-  }
+  // &::before {
+  //   left: 0;
+  //   background: linear-gradient(to right, var(--white) 0%, transparent 100%);
+  // }
 
-  &::after {
-    right: 0;
-    background: linear-gradient(to left, var(--white) 0%, transparent 100%);
-  }
+  // &::after {
+  //   right: 0;
+  //   background: linear-gradient(to left, var(--white) 0%, transparent 100%);
+  // }
 }
 
 .company-logo__track {
@@ -47,5 +47,4 @@
   width: auto;
   object-fit: contain;
   opacity: 0.8;
-  filter: grayscale(100%);
 }

@@ -23,7 +23,8 @@
 .contact-form__textarea {
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  border: 1.5px solid transparent;
+  border: 1.5px solid var(--black);
+  box-shadow: 4px 4px 0px 0px var(--sub-text-color);
   background: var(--white);
   font-size: 1rem;
   font-family: inherit;
@@ -52,20 +53,31 @@
 }
 
 .contact-form__submit-btn {
-  background: var(--green-dark);
-  color: var(--white);
-  border: none;
-  padding: 0.875rem 2.5rem;
+  background: var(--underline-green);
+  box-shadow: 4px 4px 0px 0px var(--black);
+  color: var(--green-dark);
+  border: 1px solid var(--black);
+  padding: 1.3rem 2.5rem;
   border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
-  width: 100%;
+  width: 40%;
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  &:hover {
+    background: var(--company-colour);
+    color: var(--white);
+  }
+
+  &:active {
+    box-shadow: none;
+    transform: translate(4px, 4px);
   }
 }
 

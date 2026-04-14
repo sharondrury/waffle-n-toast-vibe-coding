@@ -23,7 +23,7 @@
   font-family: var(--font-heading);
   font-size: 4.5rem;
   font-weight: 800;
-  color: var(--green-light-secondary);
+  color: var(--white);
   line-height: 1.15;
   text-align: center;
 }
@@ -82,19 +82,20 @@
   display: inline-block;
   padding: 1.25rem 6.25rem;
   background: var(--green-light-secondary);
-  color: var(--sub-text-color);
+  color: var(--green-dark);
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 800;
   text-decoration: none;
-  border: none;
+  border: 1px solid var(--black);
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 4px 4px 0px 0px var(--sub-text-color);
   transition: background 0.2s;
 
   &:hover {
-    background: var(--primary-btn-hvr);
+    background: var(--company-colour);
+    color: var(--white);
   }
 
   &:active {
