@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 import logoGailsTails from '../../../../assets/images/logoCarousel/gails-tails-logo.png'
-import logoGsConsultancy from '../../../../assets/images/logoCarousel/gs-consultancy-logo.png'
+import logoGsConsultancy from '../../../../assets/images/logoCarousel/guy-salmon-logo.png'
 import logoSd from '../../../../assets/images/logoCarousel/sd-logo.png'
 import './companyLogo.scss'
 

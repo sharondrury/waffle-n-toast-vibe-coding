@@ -21,12 +21,12 @@
 
   &::before {
     left: 0;
-    background: linear-gradient(to right, var(--green-light) 0%, transparent 100%);
+    background: linear-gradient(to right, var(--white) 0%, transparent 100%);
   }
 
   &::after {
     right: 0;
-    background: linear-gradient(to left, var(--green-light) 0%, transparent 100%);
+    background: linear-gradient(to left, var(--white) 0%, transparent 100%);
   }
 }
 
@@ -47,4 +47,5 @@
   width: auto;
   object-fit: contain;
   opacity: 0.8;
+  filter: grayscale(100%);
 }
