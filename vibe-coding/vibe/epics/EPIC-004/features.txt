@@ -104,3 +104,14 @@ Feat-007 | Floating question mark decorations
 ---
 STOP AND TEST when all 7 features are marked done.
 See testing.txt for manual test steps.
+
+--- AMENDMENTS ---
+
+Amend-001 | FAQ pill — border and box-shadow wrap the entire open pill
+  - Moved border: 2px solid var(--black) from .faq__question to .faq__pill
+  - Moved box-shadow: 4px 4px 0px 0px var(--sub-text-color) to .faq__pill
+  - Re-enabled overflow: hidden on .faq__pill so the answer clips to the border-radius
+  - Removed border and border-radius from .faq__question (border: none only)
+  - Result: when a pill opens, the border and shadow wrap question + answer
+    together as a single unified container
+  Status: done

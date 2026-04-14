@@ -150,3 +150,26 @@ Engine components considered:
 Tradeoffs / follow-up:
 
 ---
+
+Amendment: Amend-001 | FAQ pill — border and box-shadow wrap entire open pill
+-------------------------------------------------------------------------------
+What was changed:
+  Originally the border (2px solid var(--black)) and box-shadow
+  (4px 4px 0px 0px var(--sub-text-color)) were on .faq__question, meaning only
+  the question button row had the outline. When a pill opened the answer appeared
+  below with no border, making the pill look split.
+  Moved both border and box-shadow to .faq__pill so they wrap question + answer
+  as one unified container. Re-enabled overflow: hidden on .faq__pill (it had
+  been removed to avoid clipping) — the grid-template-rows animation does not
+  require the pill itself to have overflow: visible; only the inner
+  .faq__answer needs overflow: hidden for the 0fr collapse to work.
+  Removed border and border-radius from .faq__question (set border: none).
+Files changed:
+  vibe-coding/src/website/pages/homePage/faq/faq.scss
+Engine components considered:
+  - None.
+Tradeoffs / follow-up:
+  overflow: hidden on .faq__pill clips the answer to the pill's border-radius,
+  which is the desired visual result. The grid row animation is unaffected.
+
+---
