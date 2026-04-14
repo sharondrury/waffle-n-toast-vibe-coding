@@ -141,3 +141,23 @@ Feat-011 | Carousel — drag-to-scroll (user-controlled horizontal scroll)
 ---
 STOP AND TEST when all 11 features are marked done.
 See testing.txt for manual test steps.
+
+--- AMENDMENTS ---
+
+Amend-001 | Carousel cards — colour overlay on hover
+  - Each card shows a distinct semi-transparent colour overlay when hovered
+    to communicate that it is clickable
+  - Overlay implemented via ::after pseudo-element (position: absolute, inset: 0,
+    border-radius: inherit, pointer-events: none)
+  - Opacity transitions 0 → 1 on :hover with a 0.3s ease transition
+  - Five distinct colours, one per real card index (0–4), using color-mix()
+    with existing colour tokens:
+      index 0 → var(--green-light)        55% opacity
+      index 1 → var(--company-colour)     55% opacity
+      index 2 → var(--green-dark)         50% opacity
+      index 3 → var(--underline-green)    55% opacity
+      index 4 → var(--very-light-green-bg) 65% opacity
+  - data-color-index={i % thumbnailImage.length} attribute added to each card
+    div in showcase.jsx so duplicated cards share the same colour as their
+    original counterpart
+  Status: done

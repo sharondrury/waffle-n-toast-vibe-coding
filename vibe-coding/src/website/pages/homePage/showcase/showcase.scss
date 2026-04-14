@@ -22,6 +22,7 @@
 }
 
 .showcase__card {
+  position: relative;
   width: 354px;
   height: 423px;
   flex-shrink: 0;
@@ -31,6 +32,26 @@
   background-size: cover;
   background-position: center;
   cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+
+  &[data-color-index="0"]::after { background: color-mix(in srgb, var(--green-light) 55%, transparent); }
+  &[data-color-index="1"]::after { background: color-mix(in srgb, var(--company-colour) 55%, transparent); }
+  &[data-color-index="2"]::after { background: color-mix(in srgb, var(--green-dark) 50%, transparent); }
+  &[data-color-index="3"]::after { background: color-mix(in srgb, var(--underline-green) 55%, transparent); }
+  &[data-color-index="4"]::after { background: color-mix(in srgb, var(--very-light-green-bg) 65%, transparent); }
 }
 
 @media (max-width: 1000px) {

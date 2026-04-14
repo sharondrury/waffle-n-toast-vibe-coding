@@ -234,3 +234,30 @@ Files changed:
   None — existing showcase.jsx already satisfies all Feat-011 requirements.
 
 ---
+
+Amendment: Amend-001 | Carousel cards — colour overlay on hover
+-----------------------------------------------------------------
+What was changed:
+  Cards had no hover feedback, making them feel unclickable. Added a
+  ::after pseudo-element overlay to each card that fades in on hover.
+  Each of the 5 unique card slots gets a distinct colour using
+  data-color-index={i % thumbnailImage.length} on the card div in
+  showcase.jsx, so duplicated carousel copies share the same colour as
+  their original.
+  Overlay uses color-mix() with existing colour tokens — no new hex
+  values introduced. opacity transitions 0→1 with 0.3s ease.
+  pointer-events: none on ::after ensures the overlay does not block
+  drag and click events on the card itself.
+Files changed:
+  vibe-coding/src/website/pages/homePage/showcase/showcase.jsx
+    (data-color-index attribute added to card div)
+  vibe-coding/src/website/pages/homePage/showcase/showcase.scss
+    (position: relative on card, ::after overlay, 5 data-attribute
+    colour selectors)
+Engine components considered:
+  - None.
+Tradeoffs / follow-up:
+  color-mix() is natively supported in all modern browsers (Chrome 111+,
+  Firefox 113+, Safari 16.2+). No fallback needed for this project.
+
+---

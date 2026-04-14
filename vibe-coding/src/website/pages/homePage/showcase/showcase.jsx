@@ -129,6 +129,7 @@ const Showcase = () => {
             <div
               key={i}
               className="showcase__card"
+              data-color-index={i % thumbnailImage.length}
               style={{ backgroundImage: `url(${IMAGE_MAP[card.backgroundImage]})` }}
               onClick={() => handleCardClick(i)}
             />
