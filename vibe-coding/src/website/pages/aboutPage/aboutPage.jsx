@@ -1,21 +1,13 @@
-import NavBar from '../../components/navBar/navBar'
+import NavBar from '../../components/navBar/navBar';
+
+import "./aboutPage.scss";
 
 const AboutPage = () => {
   return (
     <>
       <NavBar />
-      <main style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <p style={{
-          color: 'var(--white)',
-          fontFamily: 'var(--font-heading)',
-          fontSize: '2rem',
-          fontWeight: 700,
-        }}>
+      <main className='about-page-container' >
+        <p>
           Coming Soon
         </p>
       </main>

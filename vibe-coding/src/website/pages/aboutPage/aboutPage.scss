@@ -1,0 +1,21 @@
+@use '../../../assets/scss/ui/colours' as *;
+@use '../../../assets/scss/ui/typography' as *;
+
+main {
+    background: var(--green-light);
+
+    .about-page-container {
+        min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+    
+
+    p {
+        color: var(--bottom-color);
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 700;
+    }
+}

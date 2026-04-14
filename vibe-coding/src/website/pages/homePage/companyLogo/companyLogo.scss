@@ -2,7 +2,7 @@
 @use '../../../../assets/scss/ui/typography' as *;
 
 .company-logo {
-  // max-width: 1200px;
+  background: var(--white);
   margin: 0 auto;
   overflow: hidden;
   position: relative;

@@ -1,5 +1,7 @@
 import NavBar from '../../components/navBar/navBar'
 
+import './pricingPage.scss'
+
 const PricingPage = () => {
   return (
     <>
@@ -11,7 +13,7 @@ const PricingPage = () => {
         justifyContent: 'center',
       }}>
         <p style={{
-          color: 'var(--white)',
+          color: 'var(--company-colour)',
           fontFamily: 'var(--font-heading)',
           fontSize: '2rem',
           fontWeight: 700,
