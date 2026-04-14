@@ -1,5 +1,5 @@
 .company-services {
-  background: var(--secondary-bg);
+  background: var(--very-light-green-bg);
 }
 
 .company-services__container {
@@ -32,8 +32,9 @@
 
 .company-services__heading--underline {
   text-decoration: underline;
-  text-decoration-color: var(--green-light);
-  text-decoration-thickness: 3px;
+  text-decoration-color: var(--underline-green);
+  text-decoration-thickness: 6px;
+  text-underline-offset: 8px;
 }
 
 .company-services__right {
