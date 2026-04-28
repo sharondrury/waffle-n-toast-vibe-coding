@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import './footer.scss'
 
 function FacebookIcon() {
@@ -32,6 +32,18 @@ function LinkedInIcon() {
 }
 
 const Footer = () => {
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  const handleHome = () => {
+    if (pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      navigate('/')
+      window.scrollTo({ top: 0, behavior: 'instant' })
+    }
+  }
+
   return (
     <footer className="footer-wrapper">
       <div className="footer">
@@ -52,7 +64,7 @@ const Footer = () => {
           <h3 className=" footer-header">Explore</h3>
           <button
             className="footer__nav-link"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={handleHome}
           >
             Home
           </button>
