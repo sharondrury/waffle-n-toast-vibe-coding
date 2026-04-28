@@ -3,7 +3,7 @@ import emailjs from '@emailjs/browser'
 import { validateContactForm } from './contactValidation'
 import './contactForm.scss'
 
-const SERVICE_ID  = 'service_kg75p6l'
+const SERVICE_ID  = 'service_vdrnqgz'
 const TEMPLATE_ID = 'template_hkes3vq'
 
 const ContactForm = ({ onSuccess, onError }) => {

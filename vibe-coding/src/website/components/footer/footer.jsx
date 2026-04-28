@@ -51,11 +51,11 @@ const Footer = () => {
           <i className="fa-solid fa-bread-slice fa-2x"></i>
           <address className="footer__address">
             <span>
-              <i class="fa-solid fa-location-dot fa-lg"></i>North Wales, UK
+              <i className="fa-solid fa-location-dot fa-lg"></i>North Wales, UK
             </span>
           </address>
           <a href="mailto:email@email.com" className="footer__email">
-            <i class="fa-regular fa-envelope fa-lg"></i>
+            <i className="fa-regular fa-envelope fa-lg"></i>
             infowaffleandtoast@gmail.com
           </a>
         </div>
