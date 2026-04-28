@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
 import { thumbnailImage } from './data.json'
 import ModalShowcase from './modalShowcase/modalShowcase'
-import img1 from '../../../../assets/images/image1.png'
-import img2 from '../../../../assets/images/image2.png'
-import img3 from '../../../../assets/images/image3.png'
-import img4 from '../../../../assets/images/image4.png'
+import img1 from '../../../../assets/images/gs-website.png'
+import img2 from '../../../../assets/images/gt-website.png'
+import img3 from '../../../../assets/images/sd-website.png'
+import img4 from '../../../../assets/images/wa-website.png'
 import './showcase.scss'
 
-const IMAGE_MAP = { image1: img1, image2: img2, image3: img3, image4: img4 }
+const IMAGE_MAP = { 'gs-website': img1, 'gt-website': img2, 'sd-website': img3, 'wa-website': img4 }
 
 const displayCards = [...thumbnailImage, ...thumbnailImage]
 

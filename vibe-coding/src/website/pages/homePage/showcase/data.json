@@ -1,14 +1,20 @@
 {
   "thumbnailImage": [
-    { "backgroundImage": "image1" },
-    { "backgroundImage": "image2" },
-    { "backgroundImage": "image3" },
-    { "backgroundImage": "image4" }
+    { "backgroundImage": "gs-website" },
+    { "backgroundImage": "gt-website" },
+    { "backgroundImage": "sd-website" },
+    { "backgroundImage": "wa-website" }
   ],
   "modalShowcaseContent": [
-    { "image1": "image1", "image2": "image2", "image3": "image3", "heading": "Guy Salmon Consultancy" },
-    { "image1": "image2", "image2": "image3", "image3": "image4", "heading": "Gails Tails" },
-    { "image1": "image3", "image2": "image4", "image3": "image1", "heading": "Sharon Drury Portfolio" },
-    { "image1": "image4", "image2": "image1", "image3": "image2", "heading": "Something else" }
+    { "image1": "gs-website", "video2": "guySalmonVideo1", "image3": "sd-website", "heading": "Guy Salmon Consultancy" },
+    { "video1": "gailsTailsVideo1", "image2": "gt-website", "video3": "gailsTailsVideo2", "heading": "Gails Tails" },
+    { "image1": "sd-website", "image2": "sd-website", "image3": "sd-website", "heading": "Sharon Drury Portfolio" },
+    { "image1": "wa-website", "image2": "wa-website", "image3": "wa-website", "heading": "Weather App" }
+  ],
+  "clientWebsite": [
+    { "name": "Guy Salmon Consultancy", "url": "https://sharondrury.github.io/guy-site/" },
+    { "name": "Gails Tails", "url": "https://sharondrury.github.io/gails-tails/" },
+    { "name": "Sharon Drury Portfolio", "url": "https://www.sharondrury.com/" },
+    { "name": "Weather App", "url": "https://www.instagram.com/i_am_waffle_and_toast/?hl=en" }
   ]
 }
