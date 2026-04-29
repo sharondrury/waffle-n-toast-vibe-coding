@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import './index.scss'
 import App from './App.jsx'
 
@@ -11,8 +12,10 @@ import "primeicons/primeicons.css";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/waffle-n-toast-vibe-coding/">
-      <App />
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter basename="/waffle-n-toast-vibe-coding/">
+        <App />
+      </BrowserRouter>
+    </HelmetProvider>
   </StrictMode>,
 )

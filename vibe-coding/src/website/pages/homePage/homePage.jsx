@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Helmet } from 'react-helmet-async'
 import NavBar from '../../components/navBar/navBar'
 import Hero from './hero/hero'
 import CompanyLogo from './companyLogo/companyLogo'
@@ -13,6 +14,13 @@ const HomePage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Waffle &amp; Toast | Vibe Coding</title>
+        <meta name="description" content="Custom websites built with passion. Waffle &amp; Toast creates beautiful, fast websites for small businesses and creatives." />
+        <meta property="og:title" content="Waffle &amp; Toast | Vibe Coding" />
+        <meta property="og:description" content="Custom websites built with passion. Waffle &amp; Toast creates beautiful, fast websites for small businesses and creatives." />
+        <meta property="og:url" content="https://sharondrury.github.io/waffle-n-toast-vibe-coding/" />
+      </Helmet>
       <NavBar />
       <main className="homePage">
         <Hero onCtaClick={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })} />
