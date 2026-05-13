@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import './hero.scss'
 
 const STRINGS = [
-  'Helping your customers see your business.',
-  'Mobile first, SEO, animated - you name it we can do it.',
-]
+  "Websites that look great, say the right thing, and actually work.",
+  "Designed with care, built to be found, ready for every screen."
+];
 
 const TYPING_SPEED = 60
 const DELETING_SPEED = 35
